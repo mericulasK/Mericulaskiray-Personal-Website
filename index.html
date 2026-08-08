@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meriç Ulaş Kıray · Senior Full Stack Developer & Software Engineer | Sanctum Codex</title>
+  
+  <!-- SEO & GEO Meta Tags -->
+  <meta name="description" content="Meriç Ulaş Kıray · Full Stack Developer & Software Engineer portfolio. Enterprise .NET Core, React, TypeScript, Node.js, and Awwwards-grade 3D WebGL experiences.">
+  <meta name="keywords" content="Meriç Ulaş Kıray, Full Stack Developer, Software Engineer, .NET Core, React, TypeScript, C#, Azure DevOps, Lüleburgaz, Kırklareli, Turkey, Portfolio">
+  <meta name="author" content="Meriç Ulaş Kıray">
+  <meta name="geo.region" content="TR-39">
+  <meta name="geo.placename" content="Lüleburgaz / Kırklareli">
+  <meta name="theme-color" content="#060504">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Meriç Ulaş Kıray · Senior Full Stack Developer">
+  <meta property="og:description" content="World-class 3D Full Stack Developer Portfolio blending .NET Core, React, TypeScript & dark sci-fi aesthetics.">
+  <meta property="og:url" content="https://mericulaskiray.com">
+
+  <!-- Fonts (Cinzel, Cormorant Garamond, Manrope, JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Meriç Ulaş Kıray",
+    "jobTitle": "Full Stack Developer & Software Engineer",
+    "email": "mericulas1@gmail.com",
+    "telephone": "+90-537-478-2666",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lüleburgaz",
+      "addressRegion": "Kırklareli",
+      "addressCountry": "TR"
+    },
+    "sameAs": [
+      "https://github.com/mericulasK",
+      "https://www.linkedin.com/in/meric-ulas-kiray-b51254224/",
+      "https://www.instagram.com/mericulas/"
+    ],
+    "knowsAbout": [".NET Core", "C#", "React", "TypeScript", "ASP.NET Core Web API", "MSSQL", "Node.js", "Express", "Azure DevOps", "Three.js"]
+  }
+  </script>
+</head>
+<body>
+  <!-- Custom Light Halo Follower -->
+  <div class="cursor-glow-halo" id="cursor-halo"></div>
+
+  <!-- Ambient Grain Overlay -->
+  <div class="bg-grain"></div>
+
+  <!-- HEADER NAVIGATION -->
+  <header class="header">
+    <div class="logo-container">
+      <div class="logo-icon">M</div>
+      <div class="logo-text">
+        <span class="logo-name">MERİÇ ULAŞ KIRAY</span>
+        <span class="logo-title">SENIOR FULL STACK ENGINEER</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#about" class="nav-link" data-i18n="navAbout">Hakkımda</a>
+      <a href="#projects" class="nav-link" data-i18n="navProjects">Projeler</a>
+      <a href="#skills" class="nav-link" data-i18n="navSkills">Yetenekler</a>
+      <a href="#experience" class="nav-link" data-i18n="navExperience">Deneyim</a>
+      <a href="#games" class="nav-link" data-i18n="navSanctum">Oyun Alanı</a>
+      <a href="#contact" class="nav-link" data-i18n="navContact">İletişim</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="sound-toggle-btn" onclick="sanctumAudio.toggleSound()" title="Toggle Ambient Audio">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>
+      </button>
+
+      <button class="lang-selector-btn" onclick="openModal('lang-modal')">
+        <span id="current-lang-text">🇹🇷 TR</span>
+        <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>
+      </button>
+
+      <span class="cmd-k-badge" onclick="openModal('cmd-modal')">⌘K</span>
+
+      <button class="mobile-nav-toggle icon-btn" id="mobile-nav-toggle">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO SECTION & 3D CANVAS -->
+  <section class="hero-section" id="hero">
+    <div id="hero-3d-wrapper">
+      <canvas id="three-hero-canvas"></canvas>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-status-badge">
+        <span class="status-dot"></span>
+        <span class="status-text" data-i18n="statusBadge">Full-Stack & Yazılım Mühendisliği Pozisyonları İçin Müsait</span>
+      </div>
+
+      <h1 class="hero-heading">
+        <span class="gold-gradient" data-i18n="heroTitle">Yüksek Performanslı Sistemlerin ve Dijital Dünyaların Mimarım</span>
+      </h1>
+
+      <p class="hero-subheading" data-i18n="heroSubtitle">
+        Mühendislik hassasiyetini karanlık sci-fi ve epik fantezi estetiğiyle harmanlıyorum
+      </p>
+
+      <p class="hero-description" data-i18n="heroDesc">
+        Milisaniyeler mertebesinde performans, sarsılmaz güvenilirlik ve unutulmaz görsel deneyimler sunan kurumsal .NET Core, React ve Node.js çözümleri geliştiriyorum.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#projects" class="btn-primary" data-i18n="btnExplore">
+          Sistemi Keşfet <span>→</span>
+        </a>
+        <a href="#contact" class="btn-secondary" data-i18n="btnContact">
+          İletişime Geç
+        </a>
+      </div>
+    </div>
+
+    <div class="three-controls-hint">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+      <span>Interactive 3D Holocron — Drag & Tilt to Rotate</span>
+    </div>
+  </section>
+
+  <!-- SECTION I: ABOUT SANCTUM -->
+  <section class="section scroll-scrub-target" id="about">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="aboutTag">Sütun I · Temel</span>
+      <h2 class="section-title" data-i18n="aboutTitle">Mimarın Vizyonu</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <p class="about-text" data-i18n="aboutText1">
+          Ben Meriç Ulaş Kıray; BilgeAdam BOOST Yıldız Yazılımcı Yetiştirme Programı mezunu Full Stack Developer ve Yazılım Mühendisiyim. Karmaşık web uygulamaları, backend API'leri, mikroservisler ve etkileşimli dijital deneyimler üretme tutkusuna sahibim.
+        </p>
+        <p class="about-text" data-i18n="aboutText2">
+          SOLID prensipleri, katmanlı mimari ve ölçeklenebilir tasarım desenleri ışığında; .NET Core ve Express ile backend mantığı kurarken, React, TypeScript ve Three.js ile kullanıcı dostu arayüzler geliştiriyorum.
+        </p>
+
+        <div class="bio-stats">
+          <div class="stat-item">
+            <div class="stat-number" data-target="6" data-suffix="+ Ay">0</div>
+            <div class="stat-label" data-i18n="statExp">Yoğun Full Stack Eğitimi</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="2" data-suffix=" Vitrin">0</div>
+            <div class="stat-label" data-i18n="statProjects">Kurumsal Projeler</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="99" data-suffix=".9%">0</div>
+            <div class="stat-label" data-i18n="statUptime">Uptime Hedefi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Codex Profile Badge -->
+      <div class="profile-visual">
+        <div class="codex-frame">
+          <div class="codex-header">
+            <span>ARCHITECT CODEX</span>
+            <span>ID: MUK-980302</span>
+          </div>
+
+          <div class="codex-row">
+            <span class="codex-label" data-i18n="codexRole">Unvan</span>
+            <span class="codex-val" data-i18n="codexRoleVal">Senior Full Stack Developer</span>
+          </div>
+          <div class="codex-row">
+            <span class="codex-label" data-i18n="codexLocation">Konum</span>
+            <span class="codex-val" data-i18n="codexLocVal">Lüleburgaz / Kırklareli, Türkiye</span>
+          </div>
+          <div class="codex-row">
+            <span class="codex-label" data-i18n="codexEducation">Eğitim</span>
+            <span class="codex-val" data-i18n="codexEduVal">BilgeAdam BOOST & Kırklareli Üniv.</span>
+          </div>
+          <div class="codex-row">
+            <span class="codex-label" data-i18n="codexLanguages">Bildiği Diller</span>
+            <span class="codex-val" data-i18n="codexLangVal">Türkçe (Ana Dil), İngilizce (B2), Almanca (A2)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION II: PROJECTS (ELITESHOP & EXAMAPP) -->
+  <section class="section scroll-scrub-target" id="projects">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="projectsTag">Sütun II · Üretimler</span>
+      <h2 class="section-title" data-i18n="projectsTitle">Önemli Projeler ve Vitrin</h2>
+    </div>
+
+    <div class="projects-grid">
+      <!-- Project 1: EliteShop -->
+      <div class="project-card">
+        <div class="project-media">
+          <div class="project-media-bg"></div>
+          <div class="project-mockup">
+            <div class="mockup-header">
+              <span class="mockup-dot red"></span>
+              <span class="mockup-dot yellow"></span>
+              <span class="mockup-dot green"></span>
+            </div>
+            <pre class="mockup-code">
+// EliteShop — Full-Stack E-Commerce Engine
+const app = express();
+app.use(cors({ origin: 'https://eliteshop.store' }));
+app.use('/api/products', productRouter);
+app.use('/api/orders', authGuard, orderRouter);
+            </pre>
+          </div>
+        </div>
+
+        <div class="project-info">
+          <span class="project-badge">Enterprise E-Commerce Platform</span>
+          <h3 class="project-title">EliteShop</h3>
+          <p class="project-desc">
+            Kapsamlı pazaryeri (marketplace) platformu; satıcı panelleri, ürün yönetimi (CRUD), stok takibi, sipariş işleme, müşteri yorum sistemi, kalıcı sepet ve role-based yetkilendirme altyapısı. PM2 süreç yönetimi ve /health endpoint'leri ile 24/7 yüksek erişilebilirlik.
+          </p>
+
+          <div class="tech-tag-list">
+            <span class="tech-tag">React 18.3.1</span>
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">Express</span>
+            <span class="tech-tag">TanStack Query</span>
+            <span class="tech-tag">Tailwind CSS</span>
+            <span class="tech-tag">shadcn/ui</span>
+            <span class="tech-tag">PM2</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: ExamApp -->
+      <div class="project-card">
+        <div class="project-media">
+          <div class="project-media-bg"></div>
+          <div class="project-mockup">
+            <div class="mockup-header">
+              <span class="mockup-dot red"></span>
+              <span class="mockup-dot yellow"></span>
+              <span class="mockup-dot green"></span>
+            </div>
+            <pre class="mockup-code">
+// ExamApp — ASP.NET Core Web API + React
+[ApiController]
+[Route("api/[controller]")]
+public class ExamController : ControllerBase {
+    private readonly IExamService _service;
+}
+            </pre>
+          </div>
+        </div>
+
+        <div class="project-info">
+          <span class="project-badge">BilgeAdam BOOST Staj Projesi</span>
+          <h3 class="project-title">ExamApp</h3>
+          <p class="project-desc">
+            ASP.NET Core Web API, MVC ve Microsoft SQL Server üzerinde geliştirilmiş katmanlı mimariye sahip sınav ve değerlendirme sistemi. React.js ile kullanıcı dostu ön yüz ve Azure DevOps ile CI/CD boru hatları ve versiyon kontrol süreçleri.
+          </p>
+
+          <div class="tech-tag-list">
+            <span class="tech-tag">ASP.NET Core</span>
+            <span class="tech-tag">C#</span>
+            <span class="tech-tag">Entity Framework Core</span>
+            <span class="tech-tag">MSSQL Server</span>
+            <span class="tech-tag">React.js</span>
+            <span class="tech-tag">Azure DevOps</span>
+            <span class="tech-tag">SOLID</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION III: TECH MATRIX & SKILL ARSENAL -->
+  <section class="section scroll-scrub-target" id="skills">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="skillsTag">Sütun III · Uzmanlık</span>
+      <h2 class="section-title" data-i18n="skillsTitle">Teknoloji Matrisi ve Yetenekler</h2>
+    </div>
+
+    <div class="skills-grid">
+      <!-- Frontend Category -->
+      <div class="skill-category-card">
+        <div class="skill-cat-header">
+          <div class="skill-icon">⚡</div>
+          <h3 class="skill-cat-title">Frontend Engineering</h3>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">React / React.js</span>
+            <span class="skill-level">Advanced</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 90%;"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">TypeScript & JS</span>
+            <span class="skill-level">Advanced</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 88%;"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">HTML5 / CSS3 / Tailwind</span>
+            <span class="skill-level">Expert</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 95%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Backend Category -->
+      <div class="skill-category-card">
+        <div class="skill-cat-header">
+          <div class="skill-icon">⚙️</div>
+          <h3 class="skill-cat-title">Backend Architecture</h3>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">C# & .NET Core</span>
+            <span class="skill-level">Expert</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 92%;"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">ASP.NET Core Web API / MVC</span>
+            <span class="skill-level">Advanced</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 90%;"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">Node.js & Express</span>
+            <span class="skill-level">Advanced</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 85%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Database & DevOps Category -->
+      <div class="skill-category-card">
+        <div class="skill-cat-header">
+          <div class="skill-icon">🛡️</div>
+          <h3 class="skill-cat-title">Database & DevOps</h3>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">MSSQL & PostgreSQL</span>
+            <span class="skill-level">Advanced</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 88%;"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">Azure DevOps & Git</span>
+            <span class="skill-level">Advanced</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 85%;"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-info-row">
+            <span class="skill-name">PM2 & Health Checks</span>
+            <span class="skill-level">Advanced</span>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 82%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION IV: EXPERIENCE CHRONICLES -->
+  <section class="section scroll-scrub-target" id="experience">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="timelineTag">Sütun IV · Geçmiş</span>
+      <h2 class="section-title" data-i18n="timelineTitle">Kariyer ve Eğitim Yolculuğu</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-node"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">Ocak 2025 – Ağustos 2025</div>
+          <h3 class="timeline-title">BilgeAdam BOOST Yıldız Yazılımcı Programı</h3>
+          <div class="timeline-company">Uygulamalı Full Stack .NET Developer Eğitimi</div>
+          <p class="timeline-text">
+            6 ay boyunca teorik ve yoğun pratik eğitimler; ASP.NET Core, C#, Web API, React.js ve SQL Server ile katmanlı mimaride projeler üretildi. ExamApp projesinde aktif rol alındı.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-node"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">Kasım 2024 – Aralık 2025</div>
+          <h3 class="timeline-title">BilgeAdam Teknoloji Full Stack Stajı</h3>
+          <div class="timeline-company">Stajyer Full Stack Developer</div>
+          <p class="timeline-text">
+            ASP.NET Core MVC ve React.js üzerinde canlı projeler, SOLID prensipleri uygulamaları, Azure DevOps ile versiyon kontrolü ve CI/CD süreç katkıları.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-node"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">Haziran 2021 – Ağustos 2022</div>
+          <h3 class="timeline-title">Dekim İnşaat Ltd.</h3>
+          <div class="timeline-company">Şirket Ortağı / Yönetici</div>
+          <p class="timeline-text">
+            Şirket sevk, idare ve proje yönetimi operasyonları, bütçeleme ve ekip yönetimi.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-node"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">2021</div>
+          <h3 class="timeline-title">Kırklareli Üniversitesi</h3>
+          <div class="timeline-company">Turizm Fakültesi — Lisans</div>
+          <p class="timeline-text">
+            Lisans eğitimi mezuniyeti.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION V: MINI-GAMES SANCTUM -->
+  <section class="section scroll-scrub-target" id="games">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="gamesTag">Sütun V · Deneyim</span>
+      <h2 class="section-title" data-i18n="gamesTitle">İnteraktif Oyun ve Test Alanı</h2>
+    </div>
+
+    <div class="games-sanctum">
+      <div class="game-tabs">
+        <button class="game-tab-btn active" onclick="switchGameTab('cipher-game')">⌨️ Cipher Matrix (Speed Typing)</button>
+        <button class="game-tab-btn" onclick="switchGameTab('relic-game')">🔮 3D Relic Aligner (Puzzle)</button>
+      </div>
+
+      <!-- Game 1: Cipher Matrix -->
+      <div class="game-panel active" id="cipher-game">
+        <div class="cipher-terminal">
+          <div class="cipher-header">
+            <span>TERMINAL DECODER v2.6</span>
+            <span>STATUS: ACTIVE</span>
+          </div>
+
+          <div class="cipher-target-text" id="cipher-target">Loading snippet...</div>
+
+          <input type="text" class="cipher-input" id="cipher-input" placeholder="Type the exact code snippet above to decode..." autocomplete="off">
+
+          <div class="cipher-stats">
+            <div>SCORE: <span id="cipher-score">0</span></div>
+            <div>SPEED: <span id="cipher-wpm">0</span> WPM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game 2: 3D Relic Aligner -->
+      <div class="game-panel" id="relic-game">
+        <div class="relic-3d-container" id="relic-3d-container">
+          <canvas id="relic-canvas"></canvas>
+          <div class="relic-overlay-hud">
+            <div id="relic-status">🔒 Click Relic to rotate rings & align ancient runes!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION VI: CONTACT PORTAL -->
+  <section class="section scroll-scrub-target" id="contact">
+    <div class="section-header">
+      <span class="section-tag" data-i18n="contactTag">Sütun VI · Bağlantı</span>
+      <h2 class="section-title" data-i18n="contactTitle">Sinyal Gönder / İletişim</h2>
+    </div>
+
+    <div class="contact-container">
+      <div class="contact-info-card">
+        <div class="contact-method">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-detail-title">E-Mail Direct</div>
+            <div class="contact-detail-val">
+              <a href="mailto:mericulas1@gmail.com" class="contact-detail-link">mericulas1@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-detail-title">Phone & WhatsApp</div>
+            <div class="contact-detail-val">
+              <a href="https://wa.me/905374782666" target="_blank" rel="noopener noreferrer" class="contact-detail-link">+90 537 478 26 66</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-detail-title">Location</div>
+            <div class="contact-detail-val">
+              <a href="https://maps.google.com/?q=L%C3%BCleburgaz,K%C4%B1rklareli,Turkey" target="_blank" rel="noopener noreferrer" class="contact-detail-link">Lüleburgaz / Kırklareli, Turkey</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-portal-socials">
+          <span class="form-label" style="margin-bottom: 12px; display: block;">QUICK CONNECTIONS</span>
+          <div class="social-links" style="justify-content: flex-start;">
+            <a href="https://github.com/mericulasK" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="GitHub">GH</a>
+            <a href="https://www.linkedin.com/in/meric-ulas-kiray-b51254224/" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="LinkedIn">IN</a>
+            <a href="https://www.instagram.com/mericulas/" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="Instagram">IG</a>
+            <a href="https://wa.me/905374782666" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="WhatsApp">WA</a>
+            <a href="mailto:mericulas1@gmail.com" class="social-icon-link" title="Email">✉️</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <form id="contact-form">
+          <div class="form-group">
+            <label class="form-label">YOUR NAME</label>
+            <input type="text" class="form-input" placeholder="e.g. Lord Commander / Tech Lead" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">YOUR EMAIL</label>
+            <input type="email" class="form-input" placeholder="name@company.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">TRANSMISSION MESSAGE</label>
+            <textarea class="form-textarea" placeholder="Write your signal or project proposal..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+            TRANSMIT SIGNAL <span>⚡</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-links">
+        <a href="https://github.com/mericulasK" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="GitHub">GH</a>
+        <a href="https://www.linkedin.com/in/meric-ulas-kiray-b51254224/" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="LinkedIn">IN</a>
+        <a href="https://www.instagram.com/mericulas/" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="Instagram">IG</a>
+        <a href="mailto:mericulas1@gmail.com" class="social-icon-link" title="Email">✉️</a>
+      </div>
+
+      <p class="footer-copy" data-i18n="footerCopy">
+        © 2026 Meriç Ulaş Kıray. Awwwards mükemmellik standartları ile tasarlanmıştır.
+      </p>
+    </div>
+  </footer>
+
+  <!-- COMMAND PALETTE MODAL (Ctrl+K) -->
+  <div class="modal-overlay" id="cmd-modal">
+    <div class="cmd-modal">
+      <div class="cmd-input-wrapper">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a command or jump to section..." autofocus>
+      </div>
+
+      <div class="cmd-results-list">
+        <div class="cmd-item" onclick="executeCmd('nav-hero')">🏠 Jump to Top / Hero Canvas</div>
+        <div class="cmd-item" onclick="executeCmd('nav-about')">👤 Jump to About Sanctum</div>
+        <div class="cmd-item" onclick="executeCmd('nav-projects')">🚀 View Projects (EliteShop & ExamApp)</div>
+        <div class="cmd-item" onclick="executeCmd('nav-skills')">⚡ View Tech Matrix & Skills</div>
+        <div class="cmd-item" onclick="executeCmd('nav-games')">🎮 Launch Interactive Games</div>
+        <div class="cmd-item" onclick="executeCmd('nav-contact')">✉️ Initiate Contact Signal</div>
+        <div class="cmd-item" onclick="executeCmd('lang')">🌍 Switch Language (50+ Languages)</div>
+        <div class="cmd-item" onclick="executeCmd('sound')">🎵 Toggle Ambient Audio Synthesizer</div>
+        <div class="cmd-item" onclick="executeCmd('copy-email')">📋 Copy Direct Email (mericulas1@gmail.com)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANGUAGE SELECTOR MODAL (50+ LANGUAGES) -->
+  <div class="modal-overlay" id="lang-modal">
+    <div class="cmd-modal">
+      <div class="cmd-input-wrapper">
+        <span>🌍 SELECT LANGUAGE / DİL SEÇİNİZ (50+ LANGUAGES)</span>
+        <button onclick="closeModal('lang-modal')" style="margin-left:auto; color:var(--color-gold);">✕</button>
+      </div>
+
+      <div class="lang-grid" id="lang-grid">
+        <!-- Dynamically rendered by i18n.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/audio-engine.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/three-hero.js"></script>
+  <script src="js/mini-games.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

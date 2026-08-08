@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Digital HQ · Atlas Protocol — Senior Full Stack Developer Reference System</title>
+<meta name="description" content="5-10 yıllık kişisel dijital merkez inşası için kusursuz araştırma atlası: mimari, tasarım sistemi, animasyon, oyun ve dokümantasyon rehberi.">
+<meta name="theme-color" content="#0b0906">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   ATLAS PROTOCOL — DESIGN TOKEN SYSTEM
+   Original visual identity. Inspired by star-atlases, forge-craft and ancient
+   instruments — NOT affiliated with, nor reproducing, any copyrighted media.
+   Primitive → Semantic → Component token layering.
+   ========================================================================== */
+:root {
+  /* ---- Primitive: surfaces ---- */
+  --p-void:        #0b0906;
+  --p-void-soft:   #120e08;
+  --p-panel:       #17130c;
+  --p-panel-raised:#1e1810;
+  --p-hairline:    rgba(238, 229, 211, 0.09);
+  --p-hairline-2:  rgba(238, 229, 211, 0.16);
+
+  /* ---- Primitive: accents ---- */
+  --p-ember:        #c9762b;
+  --p-ember-bright: #eda552;
+  --p-gold:         #e8bf6a;
+  --p-crimson:      #7a2530;
+  --p-crimson-bright:#a83b48;
+  --p-verdigris:    #3f8172;
+  --p-verdigris-bright:#59a696;
+  --p-violet:       #5b4a8f;
+
+  /* ---- Primitive: ink (text) ---- */
+  --p-ink:        #eee5d3;
+  --p-ink-muted:  #b3a892;
+  --p-ink-faint:  #776d5a;
+
+  /* ---- Semantic ---- */
+  --bg-base:        var(--p-void);
+  --bg-raised:      var(--p-panel);
+  --bg-raised-2:    var(--p-panel-raised);
+  --bg-glass:       rgba(23, 19, 12, 0.78);
+  --bg-hover:       rgba(238, 229, 211, 0.045);
+
+  --border-default: var(--p-hairline);
+  --border-strong:  var(--p-hairline-2);
+  --border-accent:  rgba(201, 118, 43, 0.45);
+
+  --accent-primary:   var(--p-ember);
+  --accent-primary-2: var(--p-ember-bright);
+  --accent-gold:      var(--p-gold);
+  --accent-danger:    var(--p-crimson);
+  --accent-danger-2:  var(--p-crimson-bright);
+  --accent-active:    var(--p-verdigris);
+  --accent-active-2:  var(--p-verdigris-bright);
+  --accent-mystic:    var(--p-violet);
+
+  --text-primary:   var(--p-ink);
+  --text-secondary: var(--p-ink-muted);
+  --text-faint:     var(--p-ink-faint);
+
+  /* ---- Component ---- */
+  --sidebar-width:   308px;
+  --header-height:   72px;
+  --radius-sm:  6px;
+  --radius-md:  11px;
+  --radius-lg:  18px;
+
+  --font-display: 'Cinzel', 'Georgia', serif;
+  --font-accent:  'Cormorant Garamond', 'Georgia', serif;
+  --font-body:    'Manrope', -apple-system, sans-serif;
+  --font-code:    'JetBrains Mono', 'Fira Code', monospace;
+
+  --ease-atlas: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.18s;
+  --dur-mid:  0.35s;
+  --dur-slow: 0.7s;
+
+  --shadow-card: 0 20px 44px rgba(0,0,0,0.55), inset 0 1px 0 rgba(238,229,211,0.04);
+  --shadow-card-hover: 0 24px 56px rgba(0,0,0,0.62), 0 0 0 1px var(--border-accent), 0 0 32px rgba(201,118,43,0.14);
+  --shadow-ember-glow: 0 0 28px rgba(201,118,43,0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.65;
+  position: relative;
+  background:
+    radial-gradient(ellipse 1200px 700px at 15% -10%, rgba(201,118,43,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 900px 600px at 100% 20%, rgba(63,129,114,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 800px 800px at 80% 100%, rgba(122,37,48,0.06) 0%, transparent 60%),
+    var(--p-void);
+}
+
+/* film-grain / parchment noise overlay — subtle, fixed, non-interactive */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: var(--p-void); }
+::-webkit-scrollbar-thumb { background: rgba(238,229,211,0.14); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+:focus-visible {
+  outline: 2px solid var(--accent-primary-2);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a { color: inherit; }
+
+/* ---- Custom cursor: rotating sigil ring (desktop only) ---- */
+#cursor-ring, #cursor-dot {
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+#cursor-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent-primary-2);
+  box-shadow: 0 0 8px rgba(237,165,82,0.8);
+}
+#cursor-ring {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid rgba(237,165,82,0.55);
+  transition: width var(--dur-fast) var(--ease-atlas), height var(--dur-fast) var(--ease-atlas), border-color var(--dur-fast);
+}
+#cursor-ring::before, #cursor-ring::after {
+  content: ''; position: absolute; background: rgba(237,165,82,0.55);
+}
+#cursor-ring::before { width: 5px; height: 1px; top: 50%; left: -8px; }
+#cursor-ring::after { width: 1px; height: 5px; left: 50%; top: -8px; }
+#cursor-ring.hover { width: 54px; height: 54px; border-color: var(--accent-primary-2); background: rgba(201,118,43,0.08); }
+@media (hover: none), (pointer: coarse) {
+  #cursor-ring, #cursor-dot { display: none; }
+}
+
+/* ---- Loading screen ---- */
+#loading-screen {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--p-void);
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  gap: 22px;
+  transition: opacity 0.6s var(--ease-atlas), visibility 0.6s;
+}
+#loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-glyph { width: 72px; height: 72px; position: relative; }
+.loader-glyph svg { width: 100%; height: 100%; animation: spin-slow 3.2s linear infinite; }
+.loader-glyph svg circle { fill: none; stroke: var(--accent-primary); stroke-width: 1; opacity: 0.7; }
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.loader-label { font-family: var(--font-display); letter-spacing: 0.28em; font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; }
+.loader-bar { width: 180px; height: 2px; background: rgba(238,229,211,0.1); border-radius: 2px; overflow: hidden; }
+.loader-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-gold)); transition: width 0.3s ease-out; }
+
+/* ==========================================================================
+   LAYOUT
+   ========================================================================== */
+#app-container { display: flex; min-height: 100vh; position: relative; z-index: 2; }
+
+#sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-right: 1px solid var(--border-default);
+  position: fixed; top: 0; bottom: 0; left: 0; z-index: 100;
+  display: flex; flex-direction: column;
+  transition: transform 0.4s var(--ease-atlas);
+}
+
+.sidebar-header { padding: 22px 20px; border-bottom: 1px solid var(--border-default); }
+.brand-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; color: var(--text-primary); }
+.logo-icon {
+  width: 42px; height: 42px; border-radius: var(--radius-md);
+  background: linear-gradient(150deg, var(--p-panel-raised), var(--p-void));
+  border: 1px solid var(--border-accent);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; flex-shrink: 0;
+}
+.logo-icon svg { width: 22px; height: 22px; }
+.brand-text h1 { font-family: var(--font-display); font-size: 1.0rem; font-weight: 700; letter-spacing: 0.01em; line-height: 1.2; }
+.brand-text span { font-size: 0.66rem; color: var(--accent-primary-2); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-top: 2px; }
+
+.header-controls { display: flex; gap: 6px; margin-top: 14px; }
+.icon-btn {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default); background: rgba(238,229,211,0.03);
+  color: var(--text-secondary); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.85rem; transition: all var(--dur-fast) var(--ease-atlas);
+}
+.icon-btn:hover { border-color: var(--border-accent); color: var(--accent-primary-2); background: rgba(201,118,43,0.08); }
+.icon-btn[aria-pressed="true"] { color: var(--accent-primary-2); border-color: var(--border-accent); background: rgba(201,118,43,0.1); }
+.icon-btn.lang-btn { width: auto; padding: 0 10px; font-family: var(--font-code); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
+
+.search-box { padding: 14px 20px 6px; }
+.search-input-wrapper { position: relative; }
+.search-input-wrapper input {
+  width: 100%; padding: 9px 46px 9px 36px;
+  background: rgba(0,0,0,0.35); border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm); color: var(--text-primary); font-family: var(--font-body);
+  font-size: 0.83rem; outline: none; transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.search-input-wrapper input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px rgba(201,118,43,0.14); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-faint); font-size: 0.85rem; }
+.search-kbd {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-code); font-size: 0.65rem; color: var(--text-faint);
+  border: 1px solid var(--border-default); border-radius: 4px; padding: 2px 5px;
+}
+
+.nav-sections { flex: 1; overflow-y: auto; padding: 10px 12px 22px; }
+.nav-group-title {
+  font-family: var(--font-display); font-size: 0.66rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.13em; color: var(--text-faint); padding: 16px 12px 7px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 9px 13px;
+  border-radius: var(--radius-sm); color: var(--text-secondary); text-decoration: none;
+  font-size: 0.86rem; font-weight: 500; cursor: pointer; margin-bottom: 2px;
+  border-left: 2px solid transparent;
+  transition: background var(--dur-fast) var(--ease-atlas), color var(--dur-fast), border-color var(--dur-fast);
+}
+.nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(201,118,43,0.14), rgba(201,118,43,0.02));
+  color: var(--accent-primary-2); border-left-color: var(--accent-primary); font-weight: 700;
+}
+.nav-icon { font-size: 0.98rem; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; font-size: 0.63rem; padding: 2px 7px; border-radius: 9px;
+  background: rgba(238,229,211,0.06); color: var(--text-faint); font-family: var(--font-code);
+  white-space: nowrap;
+}
+.nav-item.active .nav-badge { background: rgba(201,118,43,0.2); color: var(--accent-primary-2); }
+.nav-badge.new { background: rgba(63,129,114,0.22); color: var(--accent-active-2); font-weight: 700; }
+
+.sidebar-footer { padding: 14px 20px; border-top: 1px solid var(--border-default); font-size: 0.68rem; color: var(--text-faint); }
+
+/* ---- Main content ---- */
+#main-content { margin-left: var(--sidebar-width); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+#top-header {
+  height: var(--header-height); background: var(--bg-glass);
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--border-default); position: sticky; top: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 32px;
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.mobile-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.3rem; cursor: pointer; }
+.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; color: var(--text-secondary); font-family: var(--font-code); }
+.breadcrumb span.active { color: var(--accent-primary-2); font-weight: 600; }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 17px;
+  border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 700;
+  font-family: var(--font-body); cursor: pointer; transition: all var(--dur-fast) var(--ease-atlas);
+  border: 1px solid transparent; text-decoration: none; letter-spacing: 0.01em;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--p-crimson));
+  color: #0b0906; box-shadow: 0 0 0 1px rgba(201,118,43,0.4), 0 8px 20px rgba(201,118,43,0.18);
+}
+.btn-primary:hover { box-shadow: 0 0 0 1px rgba(237,165,82,0.7), 0 10px 28px rgba(201,118,43,0.32); transform: translateY(-1px); }
+.btn-secondary { background: rgba(238,229,211,0.03); border-color: var(--border-default); color: var(--text-primary); }
+.btn-secondary:hover { background: rgba(238,229,211,0.07); border-color: var(--border-accent); }
+.btn-ghost { background: transparent; border-color: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { color: var(--accent-primary-2); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.content-body { padding: 40px 48px 80px; flex: 1; max-width: 1400px; width: 100%; margin: 0 auto; }
+.section-view { display: none; }
+.section-view.active { display: block; }
+.reveal { opacity: 0; transform: translateY(18px); }
+
+/* ---- Hero banner ---- */
+.hero-banner {
+  position: relative; padding: 52px; border-radius: var(--radius-lg);
+  background:
+    linear-gradient(150deg, rgba(30,24,16,0.92), rgba(23,19,12,0.92)),
+    radial-gradient(circle at 100% 0%, rgba(201,118,43,0.16), transparent 55%);
+  border: 1px solid var(--border-default); box-shadow: var(--shadow-card);
+  overflow: hidden; margin-bottom: 40px;
+}
+.hero-banner::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-primary), var(--accent-gold), var(--accent-primary), transparent);
+}
+.hero-banner .rune-corner {
+  position: absolute; width: 130px; height: 130px; top: -30px; right: -30px;
+  opacity: 0.14; pointer-events: none;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 13px; border-radius: 20px;
+  background: rgba(201,118,43,0.1); border: 1px solid var(--border-accent); color: var(--accent-primary-2);
+  font-family: var(--font-code); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+  margin-bottom: 18px; text-transform: uppercase;
+}
+.hero-title {
+  font-family: var(--font-display); font-size: clamp(1.9rem, 3.4vw, 2.7rem); font-weight: 700;
+  line-height: 1.18; margin-bottom: 16px; color: var(--text-primary); letter-spacing: 0.005em;
+}
+.hero-subtitle { font-family: var(--font-accent); font-style: italic; font-size: 1.22rem; color: var(--text-secondary); max-width: 800px; margin-bottom: 26px; font-weight: 500; }
+.hero-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-default); }
+.stat-card { background: rgba(0,0,0,0.24); padding: 15px 19px; border-radius: var(--radius-md); border: 1px solid var(--border-default); }
+.stat-value { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--accent-gold); }
+.stat-label { font-size: 0.74rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+
+/* ---- Grids & cards ---- */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-bottom: 30px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-bottom: 30px; }
+
+.card {
+  background: var(--bg-raised); border: 1px solid var(--border-default); border-radius: var(--radius-md);
+  padding: 26px; transition: transform var(--dur-mid) var(--ease-atlas), box-shadow var(--dur-mid) var(--ease-atlas), border-color var(--dur-mid);
+  position: relative; box-shadow: var(--shadow-card);
+}
+.card:hover { border-color: var(--border-accent); box-shadow: var(--shadow-card-hover); transform: translateY(-3px); }
+.card-icon {
+  width: 46px; height: 46px; border-radius: var(--radius-sm); background: rgba(201,118,43,0.1);
+  border: 1px solid var(--border-accent); color: var(--accent-primary-2); display: flex; align-items: center;
+  justify-content: center; font-size: 1.3rem; margin-bottom: 18px;
+}
+.card-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; color: var(--text-primary); }
+.card-desc { font-size: 0.89rem; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6; }
+
+/* ---- Code blocks ---- */
+.code-block { background: #0d0a06; border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden; margin: 18px 0; }
+.code-header { background: rgba(238,229,211,0.025); padding: 9px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-default); }
+.code-lang { font-family: var(--font-code); font-size: 0.72rem; color: var(--accent-primary-2); text-transform: uppercase; letter-spacing: 0.05em; }
+.copy-btn { background: none; border: none; color: var(--text-faint); font-size: 0.76rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color var(--dur-fast); font-family: var(--font-body); }
+.copy-btn:hover { color: var(--text-primary); }
+pre { padding: 19px; overflow-x: auto; font-family: var(--font-code); font-size: 0.82rem; line-height: 1.65; color: #ede5d3; }
+.kw { color: #d98a5f; font-weight: 600; }
+.fn { color: #8fb8ad; }
+.str { color: #b7c98a; }
+.num { color: #e8bf6a; }
+.cm  { color: #776d5a; font-style: italic; }
+.cls { color: #c9a9d9; font-weight: 600; }
+
+/* ---- Tables ---- */
+.custom-table { width: 100%; border-collapse: collapse; margin: 18px 0; background: var(--bg-raised); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-default); }
+.custom-table th, .custom-table td { padding: 13px 17px; text-align: left; font-size: 0.85rem; border-bottom: 1px solid var(--border-default); }
+.custom-table th { background: rgba(238,229,211,0.025); font-family: var(--font-display); font-weight: 600; color: var(--accent-primary-2); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+.custom-table tr:last-child td { border-bottom: none; }
+.custom-table tr:hover td { background: var(--bg-hover); }
+
+/* ---- Demo box ---- */
+.demo-box { background: rgba(0,0,0,0.3); border: 1px dashed var(--border-accent); border-radius: var(--radius-md); padding: 28px; margin: 18px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+.typo-preview { font-family: var(--font-display); font-size: 2.7rem; transition: font-weight 0.1s, letter-spacing 0.1s; text-align: center; margin: 18px 0; color: var(--accent-gold); }
+.range-slider { width: 100%; max-width: 400px; margin: 10px 0; accent-color: var(--accent-primary); }
+#shader-canvas { width: 100%; height: 220px; border-radius: var(--radius-md); background: #000; display: block; }
+
+.heatmap-grid { display: grid; grid-template-columns: repeat(20, 1fr); gap: 4px; margin-top: 14px; }
+.heatmap-cell { height: 13px; border-radius: 2px; }
+
+/* ---- Magnetic wrapper ---- */
+.magnetic { display: inline-block; will-change: transform; }
+
+/* ---- Command Palette ---- */
+#cmdk-overlay {
+  position: fixed; inset: 0; z-index: 500; background: rgba(6,4,2,0.72); backdrop-filter: blur(4px);
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh;
+  opacity: 0; visibility: hidden; transition: opacity 0.25s var(--ease-atlas), visibility 0.25s;
+}
+#cmdk-overlay.open { opacity: 1; visibility: visible; }
+#cmdk-modal {
+  width: 100%; max-width: 560px; background: var(--bg-raised-2); border: 1px solid var(--border-accent);
+  border-radius: var(--radius-lg); box-shadow: 0 30px 80px rgba(0,0,0,0.7), var(--shadow-ember-glow);
+  overflow: hidden; transform: translateY(-14px) scale(0.98); transition: transform 0.25s var(--ease-atlas);
+}
+#cmdk-overlay.open #cmdk-modal { transform: translateY(0) scale(1); }
+#cmdk-input-row { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--border-default); }
+#cmdk-input-row span { color: var(--accent-primary-2); font-size: 1.05rem; }
+#cmdk-input { flex: 1; background: none; border: none; outline: none; color: var(--text-primary); font-size: 0.98rem; font-family: var(--font-body); }
+#cmdk-list { max-height: 380px; overflow-y: auto; padding: 8px; }
+.cmdk-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.86rem; color: var(--text-secondary); }
+.cmdk-item .ci-icon { width: 18px; text-align: center; }
+.cmdk-item .ci-label { flex: 1; color: var(--text-primary); }
+.cmdk-item .ci-hint { font-family: var(--font-code); font-size: 0.68rem; color: var(--text-faint); }
+.cmdk-item.selected { background: rgba(201,118,43,0.14); color: var(--accent-primary-2); }
+.cmdk-item.selected .ci-label { color: var(--accent-primary-2); }
+.cmdk-empty { padding: 24px; text-align: center; color: var(--text-faint); font-size: 0.85rem; }
+#cmdk-footer { padding: 10px 18px; border-top: 1px solid var(--border-default); display: flex; gap: 16px; font-size: 0.68rem; color: var(--text-faint); font-family: var(--font-code); }
+
+/* ---- Toast ---- */
+#toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 600; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.toast {
+  background: var(--bg-raised-2); border: 1px solid var(--border-accent); color: var(--text-primary);
+  padding: 11px 20px; border-radius: 30px; font-size: 0.83rem; box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+  animation: toast-in 0.35s var(--ease-atlas);
+}
+@keyframes toast-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ---- Playground / Games ---- */
+.game-panel { background: var(--bg-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 26px; }
+.game-panel-head { padding: 18px 24px; border-bottom: 1px solid var(--border-default); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.game-viewport { position: relative; width: 100%; height: 460px; background: #050403; }
+.game-viewport canvas { display: block; width: 100%; height: 100%; }
+.game-hud { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; gap: 10px; pointer-events: none; z-index: 5; }
+.game-hud-chip {
+  background: rgba(11,9,6,0.72); border: 1px solid var(--border-accent); backdrop-filter: blur(6px);
+  border-radius: 8px; padding: 7px 13px; font-family: var(--font-code); font-size: 0.76rem; color: var(--text-primary);
+}
+.game-hud-chip b { color: var(--accent-gold); }
+.game-overlay {
+  position: absolute; inset: 0; z-index: 8; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+  background: rgba(8,6,3,0.82); text-align: center; padding: 24px;
+}
+.game-overlay.hidden { display: none; }
+.game-legend { padding: 18px 24px; border-top: 1px solid var(--border-default); display: flex; gap: 14px; flex-wrap: wrap; }
+.legend-chip { display: flex; align-items: center; gap: 7px; font-size: 0.78rem; color: var(--text-secondary); }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.legend-chip.collected { text-decoration: line-through; color: var(--text-faint); }
+.touch-controls { position: absolute; bottom: 16px; right: 16px; z-index: 6; display: none; grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 6px; }
+.touch-controls.visible { display: grid; }
+.touch-btn { background: rgba(238,229,211,0.08); border: 1px solid var(--border-accent); border-radius: 8px; color: var(--text-primary); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; user-select: none; }
+
+.type-target { font-family: var(--font-code); font-size: 1.02rem; line-height: 1.9; padding: 22px; background: #0d0a06; border-radius: var(--radius-md); border: 1px solid var(--border-default); min-height: 130px; }
+.type-target span.correct { color: var(--accent-active-2); }
+.type-target span.incorrect { color: var(--accent-danger-bright, #d9636f); text-decoration: underline; }
+.type-target span.pending { color: var(--text-faint); }
+.type-target span.current { border-left: 2px solid var(--accent-primary-2); }
+#type-input-hidden { position: absolute; opacity: 0; pointer-events: none; }
+.type-stats { display: flex; gap: 24px; margin-top: 16px; }
+.type-stat b { display: block; font-family: var(--font-display); font-size: 1.5rem; color: var(--accent-gold); }
+.type-stat span { font-size: 0.72rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ---- AI Assistant Drawer ---- */
+#ai-fab {
+  position: fixed; bottom: 26px; right: 26px; z-index: 300; width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-primary), var(--p-crimson)); border: 1px solid rgba(237,165,82,0.5);
+  color: #0b0906; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  box-shadow: 0 10px 30px rgba(201,118,43,0.35); transition: transform var(--dur-fast) var(--ease-atlas);
+}
+#ai-fab:hover { transform: scale(1.08); }
+#ai-drawer {
+  position: fixed; bottom: 96px; right: 26px; z-index: 300; width: 360px; max-width: calc(100vw - 40px);
+  height: 480px; max-height: 70vh; background: var(--bg-raised-2); border: 1px solid var(--border-accent);
+  border-radius: var(--radius-lg); box-shadow: 0 30px 70px rgba(0,0,0,0.6); display: flex; flex-direction: column;
+  overflow: hidden; transform: translateY(16px) scale(0.97); opacity: 0; visibility: hidden; pointer-events: none;
+  transition: all 0.28s var(--ease-atlas);
+}
+#ai-drawer.open { transform: translateY(0) scale(1); opacity: 1; visibility: visible; pointer-events: all; }
+.ai-drawer-head { padding: 14px 16px; border-bottom: 1px solid var(--border-default); display: flex; justify-content: space-between; align-items: center; }
+.ai-drawer-head strong { font-family: var(--font-display); font-size: 0.9rem; }
+.ai-drawer-head p { font-size: 0.68rem; color: var(--text-faint); margin-top: 2px; }
+#ai-messages { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.ai-msg { max-width: 84%; padding: 9px 13px; border-radius: 12px; font-size: 0.82rem; line-height: 1.5; }
+.ai-msg.bot { background: rgba(238,229,211,0.05); border: 1px solid var(--border-default); align-self: flex-start; border-bottom-left-radius: 3px; }
+.ai-msg.user { background: rgba(201,118,43,0.16); border: 1px solid var(--border-accent); align-self: flex-end; border-bottom-right-radius: 3px; color: var(--text-primary); }
+.ai-typing { align-self: flex-start; display: flex; gap: 4px; padding: 10px 13px; }
+.ai-typing span { width: 5px; height: 5px; border-radius: 50%; background: var(--text-faint); animation: ai-blink 1.2s infinite; }
+.ai-typing span:nth-child(2) { animation-delay: 0.2s; } .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes ai-blink { 0%, 60%, 100% { opacity: 0.3; } 30% { opacity: 1; } }
+#ai-input-row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border-default); }
+#ai-input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border-default); border-radius: 8px; padding: 8px 12px; color: var(--text-primary); font-size: 0.82rem; outline: none; font-family: var(--font-body); }
+#ai-input:focus { border-color: var(--accent-primary); }
+#ai-send { width: 36px; height: 36px; border-radius: 8px; background: var(--accent-primary); border: none; color: #0b0906; cursor: pointer; flex-shrink: 0; }
+
+/* ---- Footer ---- */
+#site-footer { border-top: 1px solid var(--border-default); padding: 26px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.76rem; color: var(--text-faint); }
+#site-footer .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+#site-footer a { color: var(--text-secondary); text-decoration: none; }
+#site-footer a:hover { color: var(--accent-primary-2); }
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  :root { --sidebar-width: 264px; }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  #main-content { margin-left: 0; }
+  .mobile-toggle { display: block; }
+  .content-body { padding: 22px 16px 60px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .hero-title { font-size: 1.7rem; }
+  .hero-banner { padding: 30px 22px; }
+  #ai-drawer { right: 14px; left: 14px; width: auto; }
+  #site-footer { padding: 20px; flex-direction: column; align-items: flex-start; }
+  .game-viewport { height: 340px; }
+  .touch-controls.visible { display: grid; }
+}
+[data-lang-en] { display: none; }
+html.lang-en [data-lang-tr] { display: none; }
+html.lang-en [data-lang-en] { display: inline; }
+html.lang-en [data-lang-en].block { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ============ LOADING SCREEN ============ -->
+<div id="loading-screen">
+  <div class="loader-glyph">
+    <svg viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="46"/>
+      <circle cx="50" cy="50" r="34"/>
+      <line x1="50" y1="4" x2="50" y2="16" stroke="#c9762b" stroke-width="1"/>
+      <line x1="50" y1="84" x2="50" y2="96" stroke="#c9762b" stroke-width="1"/>
+      <line x1="4" y1="50" x2="16" y2="50" stroke="#c9762b" stroke-width="1"/>
+      <line x1="84" y1="50" x2="96" y2="50" stroke="#c9762b" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="loader-label" data-lang-tr>Atlas Hazırlanıyor</div>
+  <div class="loader-label" data-lang-en>Preparing Atlas</div>
+  <div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div>
+</div>
+
+<!-- ============ CURSOR ============ -->
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+
+<!-- ============ COMMAND PALETTE ============ -->
+<div id="cmdk-overlay">
+  <div id="cmdk-modal" role="dialog" aria-modal="true" aria-label="Komut Paleti">
+    <div id="cmdk-input-row">
+      <span>&#9670;</span>
+      <input id="cmdk-input" type="text" placeholder="Bir kitap, doküman ya da eylem ara…" autocomplete="off">
+      <span class="search-kbd">ESC</span>
+    </div>
+    <div id="cmdk-list"></div>
+    <div id="cmdk-footer">
+      <span>&uarr;&darr; Gezin</span>
+      <span>&crarr; Seç</span>
+      <span>ESC Kapat</span>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<div id="app-container">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#eda552" stroke-width="1.3">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3 L14 10 L21 12 L14 14 L12 21 L10 14 L3 12 L10 10 Z" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Personal Digital HQ</h1>
+          <span data-lang-tr>Atlas Protokolü</span>
+          <span data-lang-en>Atlas Protocol</span>
+        </div>
+      </a>
+      <div class="header-controls">
+        <button class="icon-btn lang-btn" id="lang-toggle" title="Language / Dil" aria-pressed="false">TR</button>
+        <button class="icon-btn" id="sound-toggle" title="Ambiyans Sesi" aria-pressed="false">&#9834;</button>
+        <button class="icon-btn" id="cmdk-trigger" title="Komut Paleti (Ctrl+K)">&#8984;K</button>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <div class="search-input-wrapper">
+        <span class="search-icon">&#9670;</span>
+        <input type="text" id="global-search" data-lang-tr placeholder="Kitap veya Doküman Ara…" aria-label="Kitap veya Doküman Ara" autocomplete="off">
+        <input type="text" id="global-search-en" data-lang-en placeholder="Search books or docs…" aria-label="Search" autocomplete="off" style="display:none;">
+        <span class="search-kbd">&#8984;K</span>
+      </div>
+    </div>
+
+    <div class="nav-sections" id="nav-sections">
+      <div class="nav-group-title" data-lang-tr>&#9670; Araştırma Kitapları (14 Cilt)</div>
+      <div class="nav-group-title" data-lang-en>&#9670; Research Volumes (14 Books)</div>
+
+      <div class="nav-item active" onclick="switchTab('book-1')" data-title-tr="Cilt 1: Onur Listesi" data-title-en="Vol. 1: Hall Of Fame">
+        <span class="nav-icon">&#9876;&#65039;</span>
+        <span data-lang-tr>Cilt 1: Onur Listesi</span><span data-lang-en>Vol. 1: Hall Of Fame</span>
+        <span class="nav-badge">20 Site</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-2')" data-title-tr="Cilt 2: Giriş Sahneleri" data-title-en="Vol. 2: Hero Sections">
+        <span class="nav-icon">&#128293;</span>
+        <span data-lang-tr>Cilt 2: Giriş Sahneleri</span><span data-lang-en>Vol. 2: Hero Sections</span>
+        <span class="nav-badge">UI/UX</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-3')" data-title-tr="Cilt 3: Hareket & Geçiş" data-title-en="Vol. 3: Motion & Transitions">
+        <span class="nav-icon">&#127916;</span>
+        <span data-lang-tr>Cilt 3: Hareket &amp; Geçiş</span><span data-lang-en>Vol. 3: Motion &amp; Transitions</span>
+        <span class="nav-badge">GSAP</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-4')" data-title-tr="Cilt 4: İmleç & Dokunuş" data-title-en="Vol. 4: Cursor & Touch">
+        <span class="nav-icon">&#128302;</span>
+        <span data-lang-tr>Cilt 4: İmleç &amp; Dokunuş</span><span data-lang-en>Vol. 4: Cursor &amp; Touch</span>
+        <span class="nav-badge">Physics</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-5')" data-title-tr="Cilt 5: Three.js & Shader" data-title-en="Vol. 5: Three.js & Shader">
+        <span class="nav-icon">&#127756;</span>
+        <span data-lang-tr>Cilt 5: Three.js &amp; Shader</span><span data-lang-en>Vol. 5: Three.js &amp; Shader</span>
+        <span class="nav-badge">WebGL</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-6')" data-title-tr="Cilt 6: Proje Vitrini" data-title-en="Vol. 6: Project Showcase">
+        <span class="nav-icon">&#128220;</span>
+        <span data-lang-tr>Cilt 6: Proje Vitrini</span><span data-lang-en>Vol. 6: Project Showcase</span>
+        <span class="nav-badge">Case Study</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-7')" data-title-tr="Cilt 7: Yolculuk & Zaman Çizelgesi" data-title-en="Vol. 7: About &amp; Timeline">
+        <span class="nav-icon">&#129513;</span>
+        <span data-lang-tr>Cilt 7: Yolculuk &amp; Zaman Çizelgesi</span><span data-lang-en>Vol. 7: About &amp; Timeline</span>
+        <span class="nav-badge">Experience</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-8')" data-title-tr="Cilt 8: Yazı & Bilgi Arşivi" data-title-en="Vol. 8: Blog &amp; Knowledge">
+        <span class="nav-icon">&#129534;</span>
+        <span data-lang-tr>Cilt 8: Yazı &amp; Bilgi Arşivi</span><span data-lang-en>Vol. 8: Blog &amp; Knowledge</span>
+        <span class="nav-badge">MDX</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-9')" data-title-tr="Cilt 9: Kumanda Paneli" data-title-en="Vol. 9: Dashboard">
+        <span class="nav-icon">&#9881;&#65039;</span>
+        <span data-lang-tr>Cilt 9: Kumanda Paneli</span><span data-lang-en>Vol. 9: Dashboard</span>
+        <span class="nav-badge">GitHub API</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-10')" data-title-tr="Cilt 10: Uyum & Erişilebilirlik" data-title-en="Vol. 10: Responsive &amp; A11y">
+        <span class="nav-icon">&#128225;</span>
+        <span data-lang-tr>Cilt 10: Uyum &amp; Erişilebilirlik</span><span data-lang-en>Vol. 10: Responsive &amp; A11y</span>
+        <span class="nav-badge">100/100</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-11')" data-title-tr="Cilt 11: Tipografi & Renk" data-title-en="Vol. 11: Type &amp; Color">
+        <span class="nav-icon">&#127912;</span>
+        <span data-lang-tr>Cilt 11: Tipografi &amp; Renk</span><span data-lang-en>Vol. 11: Type &amp; Color</span>
+        <span class="nav-badge">Tokens</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-12')" data-title-tr="Cilt 12: Nihai Mimari" data-title-en="Vol. 12: Final Architecture">
+        <span class="nav-icon">&#128736;&#65039;</span>
+        <span data-lang-tr>Cilt 12: Nihai Mimari</span><span data-lang-en>Vol. 12: Final Architecture</span>
+        <span class="nav-badge">Design</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-13')" data-title-tr="Cilt 13: Yazılım Mimarisi" data-title-en="Vol. 13: Software Architecture">
+        <span class="nav-icon">&#128214;</span>
+        <span data-lang-tr>Cilt 13: Yazılım Mimarisi</span><span data-lang-en>Vol. 13: Software Architecture</span>
+        <span class="nav-badge">.NET 10</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('book-14')" data-title-tr="Cilt 14: Oyun Alanı" data-title-en="Vol. 14: Playground">
+        <span class="nav-icon">&#9876;</span>
+        <span data-lang-tr>Cilt 14: Oyun Alanı</span><span data-lang-en>Vol. 14: Playground</span>
+        <span class="nav-badge new" data-lang-tr>YENİ</span><span class="nav-badge new" data-lang-en>NEW</span>
+      </div>
+
+      <div class="nav-group-title" data-lang-tr style="margin-top:16px;">&#9670; Mimari Dokümanlar (16 Kayıt)</div>
+      <div class="nav-group-title" data-lang-en style="margin-top:16px;">&#9670; Architecture Docs (16 Records)</div>
+      <div class="nav-item" onclick="switchTab('docs-viewer')" data-title-tr="Doküman Arşivi" data-title-en="Document Archive">
+        <span class="nav-icon">&#127963;&#65039;</span>
+        <span data-lang-tr>Doküman Arşivi</span><span data-lang-en>Document Archive</span>
+        <span class="nav-badge">Markdown</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <span data-lang-tr>Tek dosya · sıfır bağımlılık · her tarayıcıda çalışır</span>
+      <span data-lang-en>Single file · zero dependency · runs everywhere</span>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main id="main-content">
+    <header id="top-header">
+      <div class="header-left">
+        <button class="mobile-toggle" onclick="toggleSidebar()" aria-label="Menü">&#9776;</button>
+        <div class="breadcrumb">
+          <span>HQ</span><span>/</span>
+          <span id="active-tab-title" class="active" data-lang-tr>Cilt 1: Onur Listesi</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="exportCurrentMarkdown()">
+          <span data-lang-tr>&#11015;&#65039; Bu Sayfayı İndir</span><span data-lang-en>&#11015;&#65039; Download Page</span>
+        </button>
+        <button class="btn btn-primary" onclick="exportAllBundle()">
+          <span data-lang-tr>&#128230; Tüm Atlası İndir</span><span data-lang-en>&#128230; Download Full Atlas</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-body" id="content-body">
+      <!-- ================= CİLT 1 ================= -->
+      <section id="book-1" class="section-view active">
+        <div class="hero-banner">
+          <span class="hero-tag">&#9876;&#65039; CİLT I &middot; ONUR LİSTESİ</span>
+          <h2 class="hero-title">Onur Listesi: Dünyanın En İyi 20 Developer Portföyü</h2>
+          <p class="hero-subtitle">Awwwards, FWA ve Site of the Day ödülleri kazanan ustaların site mimarisi, tasarım dili ve teknoloji seçimlerinin derinlemesine incelemesi.</p>
+          <div class="hero-stats">
+            <div class="stat-card"><div class="stat-value">20</div><div class="stat-label">İncelenen Usta</div></div>
+            <div class="stat-card"><div class="stat-value">120 FPS</div><div class="stat-label">Hareket Standardı</div></div>
+            <div class="stat-card"><div class="stat-value">100/100</div><div class="stat-label">Performans Hedefi</div></div>
+          </div>
+        </div>
+
+        <h3 class="card-title reveal" style="margin-bottom:18px;">Usta İnceleme Cetveli</h3>
+        <table class="custom-table reveal">
+          <thead><tr><th>Usta</th><th>Uzmanlık Alanı</th><th>Teknoloji Yığını</th><th>Ayırt Edici Özellik</th><th>Performans</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bruno Simon</strong></td><td>3D WebGL Developer</td><td>Three.js, Cannon.js, Vanilla JS</td><td>Küçük bir arabayla portföy sahnesinde dolaşarak projelere erişim — bu atlasın 14. Cilt'teki oyun alanının doğrudan ilham kaynağı.</td><td>60 FPS 3D Fizik</td></tr>
+            <tr><td><strong>Dennis Snellenberg</strong></td><td>Creative Developer</td><td>GSAP, Locomotive Scroll, Next.js</td><td>Manyetik butonlar ve akıcı sayfa geçişleri.</td><td>Lerp Scroll</td></tr>
+            <tr><td><strong>Rauno Freiberg</strong></td><td>Design Engineer (Vercel)</td><td>Next.js, React, Craft UI</td><td>Mikro etkileşimler, klavye kısayolları, ses geri bildirimi.</td><td>100/100 Lighthouse</td></tr>
+            <tr><td><strong>Emil Kowalski</strong></td><td>Design Engineer</td><td>Framer Motion, Sonner, React</td><td>Yay fiziği (spring) ile arayüz cilası.</td><td>Zero-CLS</td></tr>
+            <tr><td><strong>Paco Coursey</strong></td><td>UI Engineer</td><td>Next.js, cmdk, Radix UI</td><td>Karanlık mod minimalizmi ve <code>Cmd+K</code> komut paleti — bu atlasın da omurgası.</td><td>&lt;0.5s FCP</td></tr>
+            <tr><td><strong>Dustin Brett</strong></td><td>Software Engineer</td><td>React, WebSockets, daedalOS</td><td>Tarayıcıda çalışan tam teşekküllü masaüstü işletim sistemi simülasyonu.</td><td>Virtual Desktop API</td></tr>
+            <tr><td><strong>Delba de Oliveira</strong></td><td>Developer Advocate</td><td>Next.js, MDX, Tailwind</td><td>İnteraktif mimari şemalar ve canlı kod blokları.</td><td>Server Components</td></tr>
+            <tr><td><strong>Anthony Fu</strong></td><td>Open Source Core Developer</td><td>Vue, Nuxt, Vite, UnoCSS</td><td>Açık kaynak katkı odaklı interaktif zaman çizelgesi.</td><td>Static Edge</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.78rem; color:var(--text-faint); margin-top:-8px;">Bu cetvel kamuya açık gözlemlere dayanır; siteler zaman içinde değişebilir — güncel haliyle doğrulamanızı öneririz.</p>
+
+        <div class="card reveal" style="margin-top:26px;">
+          <h4 class="card-title">&#9670; Onur Listesi'nden Damıtılan Temel İlkeler</h4>
+          <ul style="padding-left:20px; color:var(--text-secondary); line-height:1.9;">
+            <li><strong>Zamansız Sadelik:</strong> Süsten çok içerik ve tipografiyi öne çıkaran, bilinçli boşluk kullanımı.</li>
+            <li><strong>Dokunsal Mikro Anlar:</strong> Tıklama/hover anındaki geri bildirim, kullanıcı bağlılığını gözle görülür biçimde artırır.</li>
+            <li><strong>Vaka Derinliği:</strong> Ekran görüntüsü değil, çözülüşün mimari hikâyesini anlatan teknik metin.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 2 ================= -->
+      <section id="book-2" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#128293; CİLT II &middot; GİRİŞ SAHNELERİ</span>
+          <h2 class="hero-title">Kinetik Tipografi & Canlı Durum Bildirimleri</h2>
+          <p class="hero-subtitle">Ziyaretçiyi ilk üç saniyede yakalayan dinamik tipografi, 3B sahne ve canlı durum kartları.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card reveal">
+            <div class="card-icon">&#9878;&#65039;</div>
+            <h3 class="card-title">İmleç-Duyarlı Tipografi Ayarlayıcı</h3>
+            <p class="card-desc">İmlecin konumuna veya slider değerine göre tipografinin ağırlığını ve harf aralığını canlı değiştirin.</p>
+            <div class="demo-box">
+              <div id="typo-demo" class="typo-preview magnetic">ATLAS FORGE</div>
+              <input type="range" min="200" max="900" value="700" class="range-slider" id="weight-slider" oninput="updateTypoDemo()" aria-label="Font Weight" aria-valuemin="200" aria-valuemax="900" aria-valuenow="700">
+              <div style="font-size:0.78rem; color:var(--text-faint);">Ağırlık: <span id="weight-val" style="color:var(--accent-primary-2)">700</span></div>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon">&#128302;</div>
+            <h3 class="card-title">Canlı Durum Kartı</h3>
+            <p class="card-desc">Gerçek zamanlı müsaitlik durumu, konum ve şu an çalışılan kayıt/görev bilgisi.</p>
+            <div style="background:rgba(0,0,0,0.35); padding:18px; border-radius:var(--radius-sm); border:1px solid var(--border-default);">
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                <span style="width:9px; height:9px; border-radius:50%; background:var(--accent-active); box-shadow:0 0 10px var(--accent-active);"></span>
+                <span style="font-size:0.83rem; font-weight:700; color:var(--accent-active-2)">Yeni Projelere Açık — 2027</span>
+              </div>
+              <div style="font-size:0.83rem; color:var(--text-secondary);">&#128205; İstanbul, TR</div>
+              <div style="margin-top:13px; padding-top:13px; border-top:1px solid var(--border-default); display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.1rem;">&#9835;</span>
+                <div style="font-size:0.78rem; color:var(--text-faint)">Şu an: <strong style="color:var(--text-primary)">Ambiyans — Atlas Draft No.7</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 3 ================= -->
+      <section id="book-3" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#127916; CİLT III &middot; HAREKET & GEÇİŞ</span>
+          <h2 class="hero-title">Yükleme, Sayfa Geçişleri & Akıcı Kaydırma Mimarisi</h2>
+          <p class="hero-subtitle">Lerp tabanlı yumuşak kaydırma, GSAP ScrollTrigger zaman çizelgesi ve sayfalar arası yumuşak geçiş.</p>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">GSAP ScrollTrigger Entegrasyonu</h3>
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">&#128203; Kopyala</button></div>
+            <pre><code><span class="kw">import</span> { gsap } <span class="kw">from</span> <span class="str">'gsap'</span>;
+<span class="kw">import</span> { ScrollTrigger } <span class="kw">from</span> <span class="str">'gsap/ScrollTrigger'</span>;
+gsap.<span class="fn">registerPlugin</span>(ScrollTrigger);
+
+gsap.<span class="fn">utils</span>.<span class="fn">toArray</span>(<span class="str">'.reveal'</span>).<span class="fn">forEach</span>(el =&gt; {
+  gsap.<span class="fn">fromTo</span>(el, { autoAlpha: <span class="num">0</span>, y: <span class="num">24</span> }, {
+    autoAlpha: <span class="num">1</span>, y: <span class="num">0</span>, duration: <span class="num">0.7</span>, ease: <span class="str">'power3.out'</span>,
+    scrollTrigger: { trigger: el, start: <span class="str">'top 88%'</span> }
+  });
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 4 ================= -->
+      <section id="book-4" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#128302; CİLT IV &middot; İMLEÇ & DOKUNUŞ</span>
+          <h2 class="hero-title">Yay Fiziği & İmleç Mikro-Etkileşimleri</h2>
+          <p class="hero-subtitle">Manyetik butonlar ve sigil-imleç: bu sayfada canlı olarak aktif.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card reveal">
+            <h3 class="card-title">Manyetik Buton Fiziği</h3>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">&#128203; Kopyala</button></div>
+              <pre><code><span class="cm">// pointer konumuna göre sınırlı çekim</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'mousemove'</span>, (e) =&gt; {
+  <span class="kw">const</span> r = el.<span class="fn">getBoundingClientRect</span>();
+  <span class="kw">const</span> x = (e.clientX - r.left - r.width / <span class="num">2</span>) * <span class="num">0.35</span>;
+  <span class="kw">const</span> y = (e.clientY - r.top - r.height / <span class="num">2</span>) * <span class="num">0.35</span>;
+  el.style.transform = <span class="str">`translate(${x}px, ${y}px)`</span>;
+});</code></pre>
+            </div>
+          </div>
+          <div class="card reveal">
+            <h3 class="card-title">Sigil İmleç Denemesi</h3>
+            <p class="card-desc">Bu butonun üzerine gelin — imleç halkası genişler ve döner.</p>
+            <div class="demo-box"><button class="btn btn-primary magnetic">Farenizi Buraya Getirin</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 5 ================= -->
+      <section id="book-5" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#127756; CİLT V &middot; THREE.JS & SHADER</span>
+          <h2 class="hero-title">GLSL Fragment Shader & WebGL Sahne Kurulumu</h2>
+          <p class="hero-subtitle">GPU hızlandırmalı gradyan dalgalanması — bu atlasın Cilt 14 oyun motorunun temel taşı.</p>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">Canlı Shader Denemesi</h3>
+          <canvas id="shader-canvas"></canvas>
+          <div style="font-size:0.78rem; color:var(--text-faint); margin-top:8px;">&#9670; Sinüzoidal gradyan dalgası — Canvas 2D üzerinde çalışan gerçek zamanlı simülasyon.</div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 6 ================= -->
+      <section id="book-6" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#128220; CİLT VI &middot; PROJE VİTRİNİ</span>
+          <h2 class="hero-title">Vaka İncelemesi Mimarisi: Problem &rarr; Mimari &rarr; Sonuç</h2>
+          <p class="hero-subtitle">Yüksek etkili mühendislik projelerinin derinlemesine sunumu.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card reveal">
+            <span style="font-size:0.72rem; color:var(--accent-primary-2); font-weight:700; font-family:var(--font-code);">VAKA #01</span>
+            <h3 class="card-title" style="margin-top:6px;">Personal Digital HQ — Atlas Platformu</h3>
+            <p class="card-desc">ASP.NET Core .NET 10 Web API &amp; Next.js 16 ile inşa edilen, 5-10 yıl ölçeklenecek dijital merkez.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;"><span class="nav-badge">.NET 10</span><span class="nav-badge">CQRS</span><span class="nav-badge">Next.js 16</span><span class="nav-badge">Redis</span></div>
+            <div style="font-size:0.83rem; color:var(--accent-active-2); font-weight:600;">&#9670; Sonuç: %40 daha düşük sunucu maliyeti, 100/100 Lighthouse</div>
+          </div>
+          <div class="card reveal">
+            <span style="font-size:0.72rem; color:var(--accent-danger-2); font-weight:700; font-family:var(--font-code);">VAKA #02</span>
+            <h3 class="card-title" style="margin-top:6px;">Yüksek Hacimli Finansal Akış Motoru</h3>
+            <p class="card-desc">Saniyede 50.000 finansal veri işleyen, hibrit önbellekli dağıtık mikroservis altyapısı.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;"><span class="nav-badge">ASP.NET Core</span><span class="nav-badge">PostgreSQL</span><span class="nav-badge">Kafka</span></div>
+            <div style="font-size:0.83rem; color:var(--accent-active-2); font-weight:600;">&#9670; Sonuç: &lt;5ms P99 gecikme</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 7 ================= -->
+      <section id="book-7" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#129513; CİLT VII &middot; YOLCULUK</span>
+          <h2 class="hero-title">Kariyer Zaman Çizelgesi & Dijital Kimlik</h2>
+          <p class="hero-subtitle">Yıllara göre filtrelenebilir kariyer kilometre taşları ve donanım/yazılım envanteri.</p>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">Zaman Çizelgesi</h3>
+          <div style="border-left:2px solid var(--border-accent); padding-left:20px; margin-top:20px;">
+            <div style="margin-bottom:22px; position:relative;">
+              <span style="position:absolute; left:-26px; top:0; width:9px; height:9px; border-radius:50%; background:var(--accent-primary);"></span>
+              <div style="font-size:0.78rem; color:var(--accent-primary-2); font-weight:700; font-family:var(--font-code);">2027 &mdash; GELECEK</div>
+              <h4 style="font-size:1.05rem; color:var(--text-primary); font-family:var(--font-display);">Atlas Lansmanı & Küresel Ölçek</h4>
+              <p style="font-size:0.86rem; color:var(--text-secondary);">Senior Cloud Architect olarak kurumsal çözümler geliştirme.</p>
+            </div>
+            <div style="position:relative;">
+              <span style="position:absolute; left:-26px; top:0; width:9px; height:9px; border-radius:50%; background:var(--accent-mystic);"></span>
+              <div style="font-size:0.78rem; color:var(--accent-mystic); font-weight:700; font-family:var(--font-code);">2024 &ndash; 2026</div>
+              <h4 style="font-size:1.05rem; color:var(--text-primary); font-family:var(--font-display);">Senior Fullstack Mühendis</h4>
+              <p style="font-size:0.86rem; color:var(--text-secondary);">Clean Architecture, CQRS, Redis ve Next.js tabanlı üretim sistemleri.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 8 ================= -->
+      <section id="book-8" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#129534; CİLT VIII &middot; YAZI & BİLGİ ARŞİVİ</span>
+          <h2 class="hero-title">MDX Motoru & Bilgi Merkezi</h2>
+          <p class="hero-subtitle">Markdown içinde canlı bileşen çalıştırma ve VS Code kalitesinde kod renklendirme.</p>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">Canlı MDX Bileşeni</h3>
+          <div class="demo-box">
+            <div style="font-family:var(--font-code); font-size:0.86rem; color:var(--accent-primary-2)">&lt;InteractiveCounter initial={5} /&gt;</div>
+            <div style="display:flex; gap:12px; margin-top:12px; align-items:center;">
+              <button class="btn btn-secondary" onclick="changeCounter(-1)" aria-label="Azalt">-</button>
+              <span id="counter-val" style="font-size:1.3rem; font-weight:800; color:var(--text-primary); font-family:var(--font-display)">5</span>
+              <button class="btn btn-secondary" onclick="changeCounter(1)" aria-label="Artır">+</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 9 ================= -->
+      <section id="book-9" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#9881;&#65039; CİLT IX &middot; KUMANDA PANELİ</span>
+          <h2 class="hero-title">GitHub Katkı Haritası & Canlı İstatistikler</h2>
+          <p class="hero-subtitle">Gerçek zamanlı geliştirici aktivitesi ve dil kullanım dağılımı.</p>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">Katkı Haritası</h3>
+          <div id="github-heatmap" class="heatmap-grid"></div>
+          <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:0.78rem; color:var(--text-faint);">
+            <span>Son 1 Yılda 1.842 Commit</span><span>En Çok Kullanılan: C# %54, TypeScript %32</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 10 ================= -->
+      <section id="book-10" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#128225; CİLT X &middot; UYUM & ERİŞİLEBİLİRLİK</span>
+          <h2 class="hero-title">%100 Mobil Uyum & Lighthouse Stratejisi</h2>
+          <p class="hero-subtitle">WebGL Lite geri dönüşü, dokunsal geri bildirim ve ARIA erişilebilirliği.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card reveal"><div class="card-icon">&#9889;</div><h4 class="card-title">100 Performans</h4><p class="card-desc">AVIF görsel formatı, sıfır layout shift.</p></div>
+          <div class="card reveal"><div class="card-icon">&#9878;&#65039;</div><h4 class="card-title">100 Erişilebilirlik</h4><p class="card-desc">WCAG 2.1 AA, anlamsal HTML5, yüksek kontrast.</p></div>
+          <div class="card reveal"><div class="card-icon">&#9670;</div><h4 class="card-title">100 SEO & GEO</h4><p class="card-desc">JSON-LD, OpenGraph, dinamik sitemap, AI-crawler dostu semantik yapı.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 11 ================= -->
+      <section id="book-11" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#127912; CİLT XI &middot; TİPOGRAFİ & RENK</span>
+          <h2 class="hero-title">Atlas Renk Paleti & Tipografi Sistemi</h2>
+          <p class="hero-subtitle">Kadim atlas + dövülmüş metal kimliğini oluşturan token seti.</p>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">Renk Token Denetimi</h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:14px; margin-top:18px;">
+            <div style="background:#0b0906; padding:18px; border-radius:var(--radius-sm); border:1px solid var(--border-default); text-align:center;"><div style="font-size:0.78rem; font-weight:700; color:#fff;">#0B0906</div><div style="font-size:0.68rem; color:var(--text-faint);">Void</div></div>
+            <div style="background:#c9762b; padding:18px; border-radius:var(--radius-sm); text-align:center;"><div style="font-size:0.78rem; font-weight:700; color:#0b0906;">#C9762B</div><div style="font-size:0.68rem; color:#0b0906;">Ember</div></div>
+            <div style="background:#7a2530; padding:18px; border-radius:var(--radius-sm); text-align:center;"><div style="font-size:0.78rem; font-weight:700; color:#fff;">#7A2530</div><div style="font-size:0.68rem; color:rgba(255,255,255,0.8);">Crimson</div></div>
+            <div style="background:#3f8172; padding:18px; border-radius:var(--radius-sm); text-align:center;"><div style="font-size:0.78rem; font-weight:700; color:#fff;">#3F8172</div><div style="font-size:0.68rem; color:rgba(255,255,255,0.85);">Verdigris</div></div>
+            <div style="background:#e8bf6a; padding:18px; border-radius:var(--radius-sm); text-align:center;"><div style="font-size:0.78rem; font-weight:700; color:#0b0906;">#E8BF6A</div><div style="font-size:0.68rem; color:#0b0906;">Gold Leaf</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 12 ================= -->
+      <section id="book-12" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#128736;&#65039; CİLT XII &middot; NİHAİ MİMARİ</span>
+          <h2 class="hero-title">Bileşen Hiyerarşisi</h2>
+          <p class="hero-subtitle">Sıfırdan tasarlanan Atlas'ın ekran ve bileşen mimarisi.</p>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">Component Tree</h3>
+          <pre><code>RootLayout (App Shell)
+&#9500;&#9472; SmoothScrollProvider
+&#9500;&#9472; ThemeProvider (Atlas / Dark)
+&#9500;&#9472; Header (Cmd+K + Lang Toggle)
+&#9500;&#9472; MainContentArea
+&#9474;   &#9500;&#9472; HeroSection (Kinetic Type + Ember Particles)
+&#9474;   &#9500;&#9472; ShowcaseSection
+&#9474;   &#9500;&#9472; CareerTimeline
+&#9474;   &#9500;&#9472; KnowledgeHub (MDX)
+&#9474;   &#9492;&#9472; PlaygroundSection (Three.js Games)
+&#9500;&#9472; Footer
+&#9492;&#9472; GlobalOverlays
+    &#9500;&#9472; CommandPaletteModal
+    &#9492;&#9472; AIAssistantDrawer</code></pre>
+        </div>
+      </section>
+
+      <!-- ================= CİLT 13 ================= -->
+      <section id="book-13" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#128214; CİLT XIII &middot; YAZILIM MİMARİSİ (AMİRAL GEMİSİ)</span>
+          <h2 class="hero-title">Nihai Geliştirici Mimarisi (.NET 10 & Next.js 16)</h2>
+          <p class="hero-subtitle">Clean Architecture, CQRS, MediatR, PostgreSQL, Redis Hybrid Cache, Docker ve RAG entegrasyonu.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card reveal">
+            <div class="card-icon">&#9889;</div><h3 class="card-title">Ön Yüz Yığını</h3>
+            <ul style="padding-left:18px; font-size:0.86rem; color:var(--text-secondary); line-height:1.85;">
+              <li><strong>Next.js 16+:</strong> App Router, Server Components &amp; React 19.</li>
+              <li><strong>Tailwind CSS v4:</strong> Zero-runtime, CSS değişken tabanlı.</li>
+              <li><strong>Animasyon:</strong> GSAP ScrollTrigger, Framer Motion.</li>
+              <li><strong>3B Grafik:</strong> Three.js, React Three Fiber &amp; Drei.</li>
+              <li><strong>UI Çekirdeği:</strong> Shadcn UI &amp; Radix Headless.</li>
+              <li><strong>State &amp; Form:</strong> TanStack Query v5, Zod, React Hook Form.</li>
+            </ul>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon">&#128737;&#65039;</div><h3 class="card-title">Arka Yüz Yığını</h3>
+            <ul style="padding-left:18px; font-size:0.86rem; color:var(--text-secondary); line-height:1.85;">
+              <li><strong>ASP.NET Core Web API:</strong> .NET 10 LTS.</li>
+              <li><strong>Clean Architecture:</strong> Domain, Application, Infra, API.</li>
+              <li><strong>CQRS:</strong> MediatR &amp; Pipeline Behaviors.</li>
+              <li><strong>Önbellek:</strong> Redis + L1 HybridCache.</li>
+              <li><strong>Güvenilirlik:</strong> Outbox Pattern &amp; Domain Events.</li>
+              <li><strong>Gözlemlenebilirlik:</strong> OpenTelemetry, Serilog &amp; Health Checks.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title">CQRS Handler Örneği</h3>
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">C# (.NET 10)</span><button class="copy-btn" onclick="copyCode(this)">&#128203; Kopyala</button></div>
+            <pre><code><span class="kw">public record</span> <span class="cls">GetProjectBySlugQuery</span>(<span class="kw">string</span> Slug) : <span class="cls">IRequest</span>&lt;<span class="cls">Result</span>&lt;<span class="cls">ProjectDetailDto</span>&gt;&gt;;
+
+<span class="kw">public class</span> <span class="cls">GetProjectBySlugQueryHandler</span> : <span class="cls">IRequestHandler</span>&lt;<span class="cls">GetProjectBySlugQuery</span>, <span class="cls">Result</span>&lt;<span class="cls">ProjectDetailDto</span>&gt;&gt;
+{
+    <span class="kw">private readonly</span> <span class="cls">IApplicationDbContext</span> _context;
+    <span class="kw">private readonly</span> <span class="cls">IHybridCache</span> _cache;
+
+    <span class="kw">public async</span> <span class="cls">Task</span>&lt;<span class="cls">Result</span>&lt;<span class="cls">ProjectDetailDto</span>&gt;&gt; <span class="fn">Handle</span>(<span class="cls">GetProjectBySlugQuery</span> request, <span class="cls">CancellationToken</span> ct)
+    {
+        <span class="kw">var</span> project = <span class="kw">await</span> _cache.<span class="fn">GetOrCreateAsync</span>(<span class="str">$"project_{request.Slug}"</span>, <span class="kw">async</span> _ =&gt;
+            <span class="kw">await</span> _context.Projects.<span class="fn">AsNoTracking</span>()
+                .<span class="fn">Where</span>(p =&gt; p.Slug == request.Slug)
+                .<span class="fn">Select</span>(p =&gt; <span class="kw">new</span> <span class="cls">ProjectDetailDto</span>(p.Id, p.Title, p.Summary, p.CaseStudyContent))
+                .<span class="fn">FirstOrDefaultAsync</span>(ct), cancellationToken: ct);
+
+        <span class="kw">return</span> project <span class="kw">is null</span> ? <span class="cls">Result</span>.<span class="fn">Failure</span>&lt;<span class="cls">ProjectDetailDto</span>&gt;(<span class="cls">Errors</span>.NotFound) : <span class="cls">Result</span>.<span class="fn">Success</span>(project);
+    }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+      <!-- ================= CİLT 14 · OYUN ALANI ================= -->
+      <section id="book-14" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#9876; CİLT XIV &middot; OYUN ALANI</span>
+          <h2 class="hero-title">Playground: Mühendisliği Oynayarak Kanıtlama</h2>
+          <p class="hero-subtitle">Bruno Simon'ın 3B araba sahnesinden ve umutkorkmaz.net'in "The Lab" kartuş rafından ilham alan, tamamen özgün iki mini oyun. Sıfır dış model/ses dosyası — hepsi Three.js primitifleri ve Web Audio API ile anlık üretiliyor.</p>
+          <div class="hero-stats">
+            <div class="stat-card"><div class="stat-value">2</div><div class="stat-label">Oynanabilir Modül</div></div>
+            <div class="stat-card"><div class="stat-value">0 MB</div><div class="stat-label">Dış Varlık (Asset)</div></div>
+            <div class="stat-card"><div class="stat-value">r128</div><div class="stat-label">Three.js Sürümü</div></div>
+          </div>
+        </div>
+
+        <!-- GAME 1 -->
+        <div class="game-panel reveal">
+          <div class="game-panel-head">
+            <div>
+              <h3 class="card-title" style="margin-bottom:2px;">&#9670; Kalıntı Avcısı <span style="font-size:0.7rem; color:var(--text-faint); font-weight:400;">/ Relic Hunter</span></h3>
+              <p class="card-desc" style="margin-bottom:0;">Kayan-gemiyi sür, dağılmış rün-kalıntılarını (skill token) topla. Three.js ile canlı 3B sahne.</p>
+            </div>
+            <button class="btn btn-secondary" id="relic-fullscreen-btn" title="Tam Ekran">&#9974; Tam Ekran</button>
+          </div>
+          <div class="game-viewport" id="relic-viewport">
+            <div class="game-hud">
+              <div class="game-hud-chip">&#9670; Skor: <b id="relic-score">0</b> / <span id="relic-total">6</span></div>
+              <div class="game-hud-chip">&#9202; Süre: <b id="relic-timer">00:00</b></div>
+            </div>
+            <div class="touch-controls" id="relic-touch">
+              <span></span><button class="touch-btn" data-k="up">&#9650;</button><span></span>
+              <button class="touch-btn" data-k="left">&#9664;</button><button class="touch-btn" data-k="down">&#9660;</button><button class="touch-btn" data-k="right">&#9654;</button>
+            </div>
+            <div class="game-overlay" id="relic-overlay">
+              <div style="font-family:var(--font-display); font-size:1.3rem;" data-lang-tr>Kalıntı Avcısı</div>
+              <div style="font-family:var(--font-display); font-size:1.3rem;" data-lang-en>Relic Hunter</div>
+              <p style="max-width:380px; color:var(--text-secondary); font-size:0.86rem;" data-lang-tr>WASD veya ok tuşlarıyla sür, 6 rün-kalıntısının tamamını topla. Sütunlara çarpmamaya dikkat et.</p>
+              <p style="max-width:380px; color:var(--text-secondary); font-size:0.86rem;" data-lang-en>Drive with WASD / arrow keys, collect all 6 relic tokens. Watch out for the ruined pillars.</p>
+              <button class="btn btn-primary" id="relic-start-btn">&#9654; Oyunu Başlat</button>
+            </div>
+          </div>
+          <div class="game-legend" id="relic-legend"></div>
+        </div>
+
+        <!-- GAME 2 -->
+        <div class="game-panel reveal">
+          <div class="game-panel-head">
+            <div>
+              <h3 class="card-title" style="margin-bottom:2px;">&#9670; Şifre Terminali <span style="font-size:0.7rem; color:var(--text-faint); font-weight:400;">/ Cipher Terminal</span></h3>
+              <p class="card-desc" style="margin-bottom:0;">Eski bir kod parçasını en hızlı ve en doğru şekilde "deşifre et" — yazma hızı (WPM) ve doğruluk testi.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="restartTypingGame()">&#8635; Yeni Parça</button>
+          </div>
+          <div style="padding:24px;">
+            <div class="type-target" id="type-target" tabindex="0"></div>
+            <input id="type-input-hidden" type="text" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <div class="type-stats">
+              <div class="type-stat"><b id="type-wpm">0</b><span>WPM</span></div>
+              <div class="type-stat"><b id="type-acc">100%</b><span>Doğruluk</span></div>
+              <div class="type-stat"><b id="type-time">0.0s</b><span>Süre</span></div>
+            </div>
+            <p style="font-size:0.78rem; color:var(--text-faint); margin-top:14px;" data-lang-tr>Yazmaya başlamak için terminale tıkla, sonra doğrudan yazmaya başla.</p>
+            <p style="font-size:0.78rem; color:var(--text-faint); margin-top:14px;" data-lang-en>Click the terminal to focus, then just start typing.</p>
+          </div>
+        </div>
+
+        <div class="card reveal">
+          <h4 class="card-title">&#9670; Neden Mini Oyun?</h4>
+          <ul style="padding-left:20px; color:var(--text-secondary); line-height:1.9;">
+            <li><strong>Akılda Kalıcılık:</strong> Bruno Simon'ın sitesi 10 yıldır hâlâ "en unutulmaz developer portföyü" örneği olarak gösteriliyor — sebep, deneyimin pasif değil aktif olması.</li>
+            <li><strong>Mühendislik Kanıtı:</strong> Bir 3B oyun motorunu sıfırdan kurmak, "Three.js biliyorum" yazısından çok daha güçlü bir sinyal.</li>
+            <li><strong>Genişleyebilirlik:</strong> umutkorkmaz.net'teki "The Lab" kartuş rafı modelinde olduğu gibi, bu bölüm zamanla yeni kartuşlarla büyüyebilecek şekilde tasarlandı — bkz. <code>PLAYGROUND_GUIDE.md</code>.</li>
+          </ul>
+        </div>
+      </section>
+      <!-- ================= DOKÜMAN ARŞİVİ ================= -->
+      <section id="docs-viewer" class="section-view">
+        <div class="hero-banner">
+          <span class="hero-tag">&#127963;&#65039; DOKÜMAN ARŞİVİ &middot; 16 KAYIT</span>
+          <h2 class="hero-title">Repository Documentation Viewer &amp; Exporter</h2>
+          <p class="hero-subtitle">Gerçek bir <code>docs/</code> klasöründe yaşayacak 16 kurumsal mimari dokümanını doğrudan görüntüle veya indir.</p>
+        </div>
+        <div style="margin-bottom:18px; display:flex; gap:8px; flex-wrap:wrap;" id="doc-tabs-container"></div>
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <h3 id="current-doc-filename" class="card-title" style="margin-bottom:0;">PROJECT_VISION.md</h3>
+            <button class="btn btn-secondary" onclick="downloadActiveDoc()">&#11015;&#65039; Dokümanı İndir (.md)</button>
+          </div>
+          <div id="doc-content-display" style="background:#0d0a06; padding:22px; border-radius:var(--radius-sm); border:1px solid var(--border-default); font-family:var(--font-code); font-size:0.83rem; color:#ede5d3; white-space:pre-wrap; max-height:600px; overflow-y:auto;">Yükleniyor…</div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer id="site-footer">
+      <span data-lang-tr>&#9670; Personal Digital HQ &middot; Atlas Protokolü &middot; Tek dosya, sıfır bağımlılık, kusursuz vizyon.</span>
+      <span data-lang-en>&#9670; Personal Digital HQ &middot; Atlas Protocol &middot; Single file, zero dependency, uncompromising vision.</span>
+      <div class="footer-links">
+        <a href="#" onclick="switchTab('book-1'); return false;" data-lang-tr>Onur Listesi</a>
+        <a href="#" onclick="switchTab('book-1'); return false;" data-lang-en>Hall of Fame</a>
+        <a href="#" onclick="switchTab('book-14'); return false;" data-lang-tr>Oyun Alanı</a>
+        <a href="#" onclick="switchTab('book-14'); return false;" data-lang-en>Playground</a>
+        <a href="#" onclick="switchTab('docs-viewer'); return false;" data-lang-tr>Dokümanlar</a>
+        <a href="#" onclick="switchTab('docs-viewer'); return false;" data-lang-en>Docs</a>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<!-- ============ AI ASSISTANT DRAWER ============ -->
+<button id="ai-fab" title="Atlas Asistanı" aria-label="AI Asistanı Aç">&#9670;</button>
+<div id="ai-drawer">
+  <div class="ai-drawer-head">
+    <div><strong data-lang-tr>Atlas Asistanı</strong><strong data-lang-en>Atlas Assistant</strong><p data-lang-tr>Önizleme &middot; sabit yanıtlarla çalışır</p><p data-lang-en>Preview &middot; runs on canned responses</p></div>
+    <button class="icon-btn" onclick="toggleAIDrawer(false)" aria-label="Kapat">&times;</button>
+  </div>
+  <div id="ai-messages"></div>
+  <div id="ai-input-row">
+    <input id="ai-input" type="text" placeholder="Bir soru sor…" autocomplete="off">
+    <button id="ai-send" onclick="sendAIMessage()" aria-label="Gönder">&#10148;</button>
+  </div>
+</div>
+
+<!-- Optional CDN enhancements: GSAP for motion polish, Three.js (r128) for the Playground game.
+     Both are loaded defensively — every call site below checks for their presence first,
+     so the Atlas still runs fully offline/without-CDN, just with slightly simpler transitions. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* ============================================================
+   ATLAS PROTOCOL — CORE RUNTIME
+   ============================================================ */
+'use strict';
+
+/* ---------- i18n ---------- */
+var currentLang = 'tr';
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.classList.toggle('lang-en', lang === 'en');
+  var btn = document.getElementById('lang-toggle');
+  if (btn) { btn.textContent = lang.toUpperCase(); btn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false'); }
+  var gsTr = document.getElementById('global-search');
+  var gsEn = document.getElementById('global-search-en');
+  if (gsTr && gsEn) { gsTr.style.display = lang === 'en' ? 'none' : 'block'; gsEn.style.display = lang === 'en' ? 'block' : 'none'; }
+  refreshBreadcrumbTitle();
+}
+function toggleLang() { setLang(currentLang === 'tr' ? 'en' : 'tr'); playTick(); }
+
+/* ---------- Toasts ---------- */
+function showToast(msg) {
+  var c = document.getElementById('toast-container');
+  if (!c) return;
+  var t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(function () {
+    t.style.transition = 'opacity .3s ease, transform .3s ease';
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(8px)';
+    setTimeout(function () { t.remove(); }, 320);
+  }, 2600);
+}
+
+/* ---------- Loading screen ---------- */
+window.addEventListener('load', function () {
+  var fill = document.getElementById('loader-fill');
+  var pct = 0;
+  var iv = setInterval(function () {
+    pct += Math.random() * 24;
+    if (pct >= 100) { pct = 100; clearInterval(iv); }
+    if (fill) fill.style.width = pct + '%';
+  }, 90);
+  setTimeout(function () {
+    var ls = document.getElementById('loading-screen');
+    if (ls) ls.classList.add('hidden');
+  }, 700);
+});
+
+/* ---------- Custom cursor ---------- */
+(function initCursor() {
+  if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+  var dot = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+  var mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', function (e) {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+  });
+  (function raf() {
+    rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+    ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%) rotate(' + (performance.now() / 40) + 'deg)';
+    requestAnimationFrame(raf);
+  })();
+  var hoverSelector = 'a, button, .btn, .card, .nav-item, input, .magnetic, .cmdk-item, .touch-btn, [role="button"]';
+  document.addEventListener('mouseover', function (e) {
+    if (e.target.closest && e.target.closest(hoverSelector)) ring.classList.add('hover');
+  });
+  document.addEventListener('mouseout', function (e) {
+    if (e.target.closest && e.target.closest(hoverSelector)) ring.classList.remove('hover');
+  });
+})();
+
+/* ---------- Magnetic buttons ---------- */
+(function initMagnetic() {
+  if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+  document.addEventListener('mousemove', function (e) {
+    var el = e.target.closest ? e.target.closest('.magnetic') : null;
+    document.querySelectorAll('.magnetic').forEach(function (m) {
+      if (m === el) {
+        var r = m.getBoundingClientRect();
+        var x = (e.clientX - r.left - r.width / 2) * 0.28;
+        var y = (e.clientY - r.top - r.height / 2) * 0.28;
+        m.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      } else if (m.style.transform !== '') {
+        m.style.transform = '';
+      }
+    });
+  });
+})();
+
+/* ---------- Web Audio: tick + ambient drone ---------- */
+var audioCtx = null;
+var soundOn = false;
+var ambientNodes = null;
+function getAudioCtx() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch (e) { return null; }
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function playTick() {
+  if (!soundOn) return;
+  var ctx = getAudioCtx();
+  if (!ctx) return;
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = 620;
+  gain.gain.setValueAtTime(0.05, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.09);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.1);
+}
+function startAmbient() {
+  var ctx = getAudioCtx();
+  if (!ctx || ambientNodes) return;
+  var master = ctx.createGain();
+  master.gain.value = 0.028;
+  master.connect(ctx.destination);
+  var freqs = [98, 146.83, 220];
+  var oscs = freqs.map(function (f) {
+    var o = ctx.createOscillator();
+    o.type = 'sine';
+    o.frequency.value = f;
+    var g = ctx.createGain();
+    g.gain.value = 1 / freqs.length;
+    o.connect(g).connect(master);
+    o.start();
+    return o;
+  });
+  var lfo = ctx.createOscillator();
+  lfo.frequency.value = 0.05;
+  var lfoGain = ctx.createGain();
+  lfoGain.gain.value = 0.014;
+  lfo.connect(lfoGain).connect(master.gain);
+  lfo.start();
+  ambientNodes = { master: master, oscs: oscs, lfo: lfo };
+}
+function stopAmbient() {
+  if (!ambientNodes) return;
+  try {
+    ambientNodes.master.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
+    setTimeout(function () {
+      ambientNodes.oscs.forEach(function (o) { try { o.stop(); } catch (e) {} });
+      try { ambientNodes.lfo.stop(); } catch (e) {}
+      ambientNodes = null;
+    }, 500);
+  } catch (e) { ambientNodes = null; }
+}
+function toggleSound() {
+  soundOn = !soundOn;
+  var btn = document.getElementById('sound-toggle');
+  if (btn) btn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  if (soundOn) { startAmbient(); playTick(); showToast(currentLang === 'en' ? 'Ambient sound on' : 'Ambiyans sesi açıldı'); }
+  else { stopAmbient(); showToast(currentLang === 'en' ? 'Ambient sound off' : 'Ambiyans sesi kapatıldı'); }
+}
+
+/* ---------- Tab switching ---------- */
+var navMeta = {};
+function buildNavMeta() {
+  document.querySelectorAll('.nav-item[onclick]').forEach(function (item) {
+    var m = item.getAttribute('onclick').match(/switchTab\('([^']+)'\)/);
+    if (!m) return;
+    navMeta[m[1]] = {
+      titleTr: item.getAttribute('data-title-tr') || item.textContent.trim(),
+      titleEn: item.getAttribute('data-title-en') || item.textContent.trim(),
+      icon: (item.querySelector('.nav-icon') || {}).textContent || '◆'
+    };
+  });
+}
+function refreshBreadcrumbTitle() {
+  var active = document.querySelector('.section-view.active');
+  if (!active) return;
+  var meta = navMeta[active.id];
+  var titleEl = document.getElementById('active-tab-title');
+  if (meta && titleEl) titleEl.textContent = currentLang === 'en' ? meta.titleEn : meta.titleTr;
+}
+function switchTab(sectionId) {
+  var target = document.getElementById(sectionId);
+  if (!target) return;
+  var current = document.querySelector('.section-view.active');
+  document.querySelectorAll('.nav-item').forEach(function (n) { n.classList.remove('active'); });
+  var navBtn = document.querySelector('.nav-item[onclick*="' + sectionId + '"]');
+  if (navBtn) navBtn.classList.add('active');
+
+  function activateNew() {
+    document.querySelectorAll('.section-view').forEach(function (s) { s.classList.remove('active'); });
+    target.classList.add('active');
+    refreshBreadcrumbTitle();
+    observeReveals(target);
+    if (sectionId === 'book-14') { setTimeout(initGamesLazy, 60); }
+    else { pauseRelicGame(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.gsap) {
+      gsap.fromTo(target, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' });
+    }
+  }
+  if (window.gsap && current && current !== target) {
+    gsap.to(current, { autoAlpha: 0, y: -10, duration: 0.18, ease: 'power1.in', onComplete: activateNew });
+  } else {
+    activateNew();
+  }
+  toggleSidebarClose();
+}
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+function toggleSidebarClose() {
+  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+}
+
+/* ---------- Reveal on view ---------- */
+var revealObserver = new IntersectionObserver(function (entries) {
+  entries.forEach(function (entry) {
+    if (entry.isIntersecting) {
+      var el = entry.target;
+      revealObserver.unobserve(el);
+      if (window.gsap) {
+        gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' });
+      } else {
+        el.style.transition = 'opacity .5s ease, transform .5s ease';
+        el.style.opacity = '1'; el.style.transform = 'translateY(0)';
+      }
+    }
+  });
+}, { threshold: 0.12 });
+function observeReveals(scope) {
+  (scope || document).querySelectorAll('.reveal').forEach(function (el) {
+    if (el.dataset.revealed) return;
+    el.dataset.revealed = '1';
+    revealObserver.observe(el);
+  });
+}
+
+/* ---------- Command Palette ---------- */
+var cmdkItems = [];
+function buildCmdkItems() {
+  cmdkItems = [];
+  Object.keys(navMeta).forEach(function (id) {
+    cmdkItems.push({
+      icon: navMeta[id].icon, label: currentLang === 'en' ? navMeta[id].titleEn : navMeta[id].titleTr,
+      hint: 'Cilt', action: function () { switchTab(id); }
+    });
+  });
+  cmdkItems.push({ icon: '◐', label: currentLang === 'en' ? 'Switch language (TR/EN)' : 'Dili Değiştir (TR/EN)', hint: 'Eylem', action: toggleLang });
+  cmdkItems.push({ icon: '♪', label: currentLang === 'en' ? 'Toggle ambient sound' : 'Ambiyans Sesini Aç/Kapat', hint: 'Eylem', action: toggleSound });
+  cmdkItems.push({ icon: '⬇', label: currentLang === 'en' ? 'Download current page' : 'Bu Sayfayı İndir', hint: 'Eylem', action: exportCurrentMarkdown });
+  cmdkItems.push({ icon: '◆', label: currentLang === 'en' ? 'Play Relic Hunter' : 'Kalıntı Avcısı\'nı Oyna', hint: 'Oyun', action: function () { switchTab('book-14'); } });
+}
+var cmdkSelected = 0, cmdkFiltered = [];
+function openCmdk() {
+  buildCmdkItems();
+  document.getElementById('cmdk-overlay').classList.add('open');
+  document.getElementById('cmdk-input').value = '';
+  document.getElementById('cmdk-input').focus();
+  renderCmdkList('');
+}
+function closeCmdk() { document.getElementById('cmdk-overlay').classList.remove('open'); }
+function renderCmdkList(query) {
+  var list = document.getElementById('cmdk-list');
+  var q = query.toLowerCase().trim();
+  cmdkFiltered = cmdkItems.filter(function (it) { return it.label.toLowerCase().indexOf(q) !== -1; });
+  cmdkSelected = 0;
+  if (!cmdkFiltered.length) {
+    list.innerHTML = '<div class="cmdk-empty">' + (currentLang === 'en' ? 'No results' : 'Sonuç bulunamadı') + '</div>';
+    return;
+  }
+  list.innerHTML = cmdkFiltered.map(function (it, i) {
+    return '<div class="cmdk-item' + (i === 0 ? ' selected' : '') + '" data-idx="' + i + '"><span class="ci-icon">' + it.icon + '</span><span class="ci-label">' + it.label + '</span><span class="ci-hint">' + it.hint + '</span></div>';
+  }).join('');
+  list.querySelectorAll('.cmdk-item').forEach(function (el) {
+    el.addEventListener('click', function () { runCmdkSelected(parseInt(el.dataset.idx, 10)); });
+  });
+}
+function moveCmdkSelection(delta) {
+  if (!cmdkFiltered.length) return;
+  cmdkSelected = (cmdkSelected + delta + cmdkFiltered.length) % cmdkFiltered.length;
+  document.querySelectorAll('.cmdk-item').forEach(function (el, i) { el.classList.toggle('selected', i === cmdkSelected); });
+  var sel = document.querySelector('.cmdk-item.selected');
+  if (sel) sel.scrollIntoView({ block: 'nearest' });
+}
+function runCmdkSelected(idx) {
+  var item = cmdkFiltered[idx !== undefined ? idx : cmdkSelected];
+  if (item) { item.action(); closeCmdk(); playTick(); }
+}
+document.addEventListener('keydown', function (e) {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault(); openCmdk(); return;
+  }
+  var overlay = document.getElementById('cmdk-overlay');
+  if (overlay && overlay.classList.contains('open')) {
+    if (e.key === 'Escape') { closeCmdk(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); moveCmdkSelection(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); moveCmdkSelection(-1); }
+    else if (e.key === 'Enter') { e.preventDefault(); runCmdkSelected(); }
+  }
+});
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('cmdk-trigger').addEventListener('click', openCmdk);
+  document.getElementById('cmdk-overlay').addEventListener('mousedown', function (e) {
+    if (e.target.id === 'cmdk-overlay') closeCmdk();
+  });
+  document.getElementById('cmdk-input').addEventListener('input', function (e) { renderCmdkList(e.target.value); });
+  document.getElementById('lang-toggle').addEventListener('click', toggleLang);
+  document.getElementById('sound-toggle').addEventListener('click', toggleSound);
+  document.getElementById('global-search').addEventListener('input', function (e) { filterSidebar(e.target.value); });
+  document.getElementById('global-search-en').addEventListener('input', function (e) { filterSidebar(e.target.value); });
+});
+function filterSidebar(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(function (item) {
+    item.style.display = item.textContent.toLowerCase().indexOf(q) !== -1 ? 'flex' : 'none';
+  });
+}
+
+/* ============================================================
+   DOCUMENT ARCHIVE — 16 records
+   ============================================================ */
+var docsStore = {
+'PROJECT_VISION.md': `# PROJECT_VISION.md — Personal Digital HQ · Atlas Protokolü
+
+## 1. Misyon
+Bu proje standart bir "portföy sitesi" değil; geliştiricinin tüm kariyeri boyunca büyüyen, dijital varlığının merkezinde yer alan Personal Digital HQ ekosistemidir. 2027'de yayına alınacak platform, 2032'de bile mimari değişikliğe ihtiyaç duymadan yeni projeleri, makaleleri, açık kaynak katkılarını ve yapay zeka yeteneklerini bünyesine katabilmelidir.
+
+## 2. Temel Sütunlar
+1. Dünya standartlarında estetik & mühendislik (Awwwards/Site of the Day seviyesi).
+2. Kurumsal sınıf arka yüz mimarisi (ASP.NET Core .NET 10, Clean Architecture, CQRS).
+3. Geleceğe hazır yapay zeka ekosistemi (RAG tabanlı asistan, semantik arama).
+4. Uzun vadeli sürdürülebilirlik (5-10 yıl ölçeklenebilirlik).
+5. Özgün görsel kimlik — Atlas Protokolü: kadim atlas + dövülmüş metal estetiği, hiçbir markaya ait olmayan, tamamen özgün bir tasarım dili (bkz. RESEARCH_SYNTHESIS.md §4).
+
+## 3. Kapsam Dışı (Non-Goals) — v1
+- Gerçek zamanlı çok kullanıcılı işbirliği (multiplayer) özellikleri.
+- Native mobil uygulama (ilk sürüm yalnızca responsive web).
+- 50'den fazla dilde tam içerik çevirisi — bunun yerine sağlam bir i18n altyapısı + kaliteli çekirdek dil seti tercih edilir (bkz. SITE_MAP.md §4).
+- Kullanıcı hesabı / girişi gerektiren özellikler (site tek-yönlü bir vitrin, çift-yönlü bir platform değil).
+
+## 4. Riskler & Azaltma
+| Risk | Etki | Azaltma |
+|---|---|---|
+| Aşırı görsel efekt → performans kaybı | Yüksek | WebGL sahneleri opt-in (Cilt 14), lazy-init, mobilde hafif mod |
+| Telifli marka/estetik taklidi | Yüksek | Özgün token sistemi, hiçbir gerçek marka/logo/müzik kullanılmaz |
+| 3B oyunun tarayıcı uyumsuzluğu | Orta | Three.js r128 (geniş uyumluluk), WebGL yoksa zarif metin geri dönüşü |
+| İçerik bakımsızlığı (5 yıl sonra eskime) | Orta | MDX + Git tabanlı içerik, çeyreklik ROADMAP.md gözden geçirmesi |
+
+## 5. Başarı Metrikleri (KPI)
+1. Lighthouse: Performance 100, Accessibility 100, Best Practices 100, SEO 100.
+2. 60 FPS taban çizgisi (masaüstünde 120 FPS'e kadar), reduced-motion tam destek.
+3. LCP < 1.2s, INP < 200ms, CLS = 0.
+4. Ortalama oturum süresi > 2.5 dk, Oyun Alanı etkileşim oranı > %20.`,
+
+'PRD.md': `# PRD.md — Product Requirements Document
+
+## 1. Özet
+Personal Digital HQ'nun fonksiyonel/fonksiyonel-olmayan gereksinimleri, modül bazlı kullanıcı hikayeleri ve kabul kriterleri.
+
+## 2. Modül & Özellik Matrisi
+### Modül 1 — Dynamic Hero & Kinetic Type
+- F1.1 İmleç-duyarlı değişken font ağırlığı (Pedro Duarte deseni).
+- F1.2 Hafif parçacık/ember arka plan (WebGL değil, Canvas 2D — mobilde de akıcı).
+- **Kabul Kriteri:** Hero, düşük uçlu bir mobil cihazda dahi 50ms altında etkileşimli hale gelir.
+
+### Modül 2 — Proje Vitrini
+- F2.1 Teknolojiye/kategoriye göre anlık filtreleme.
+- F2.2 Derin vaka incelemesi: Problem → Mimari → Sonuç, ölçülebilir ROI rakamlarıyla.
+- F2.3 GitHub GraphQL API üzerinden canlı yıldız/commit verisi.
+- **Kabul Kriteri:** API kesintisinde önbellekten son bilinen veri gösterilir, hata sayfası göstermez.
+
+### Modül 3 — Zaman Çizelgesi & Deneyim
+- F3.1 Yıla göre filtrelenebilir kariyer kilometre taşları.
+- F3.2 Donanım/yazılım envanteri (Uses page).
+
+### Modül 4 — MDX Blog & Bilgi Merkezi
+- F4.1 Markdown içinde canlı bileşen çalıştırma.
+- F4.2 Shiki/Prism kalitesinde kod renklendirme + tek tık kopyalama.
+- F4.3 Scroll ile senkron İçindekiler paneli.
+
+### Modül 5 — Kumanda Paneli
+- F5.1 GitHub katkı haritası, dil dağılımı.
+- F5.2 WakaTime tarzı haftalık kodlama süresi grafiği.
+
+### Modül 6 — Gömülü AI Asistan
+- F6.1 RAG tabanlı sohbet paneli — bu Atlas dosyasında **önizleme** (canned response) olarak, gerçek sitede API destekli.
+- F6.2 Site içi semantik arama.
+
+### Modül 7 — Oyun Alanı (Playground) — YENİ
+- F7.1 3B "topla-ve-keşfet" mini oyunu (Cilt 14 §Kalıntı Avcısı).
+- F7.2 Yazma hızı / mühendislik-refleksi mini oyunu (Cipher Terminal).
+- **Kabul Kriteri:** Her iki oyun da harici model/ses dosyası indirmeden, sıfır ek ağ isteğiyle çalışır.
+
+## 3. Kapsam Dışı — v1 (Explicit Out of Scope)
+- Ödeme/e-ticaret akışları.
+- Çoklu-kullanıcı skor tablosu (leaderboard) — v1'de yalnızca yerel skor; API'li leaderboard Faz 2'de (bkz. ROADMAP.md).
+
+## 4. Fonksiyonel Olmayan Gereksinimler
+1. Performans: TTI < 1.2s, FCP < 0.6s.
+2. Erişilebilirlik: WCAG 2.1 AA, tam klavye navigasyonu, \`prefers-reduced-motion\` desteği.
+3. Güvenlik: CSP, Rate Limiting (100req/dk), CORS sıkılaştırma, JWT HttpOnly Secure Cookies.
+4. Tarayıcı uyumu: Chrome, Edge, Safari, Firefox, Brave + mobil eşdeğerleri.`,
+
+'SITE_MAP.md': `# SITE_MAP.md — Sayfa Haritası & Bilgi Mimarisi
+
+## 1. Rota Hiyerarşisi
+
+/ (Landing: Hero, Showcase, Timeline, Articles, Playground teaser)
+/projects            (Vitrin)
+  /projects/[slug]    (Vaka incelemesi)
+/about                (Hakkımda, Timeline, Uses, Now)
+/blog                 (MDX bilgi merkezi)
+/dashboard            (GitHub + WakaTime canlı panel)
+/playground           (Kalıntı Avcısı + Cipher Terminal + gelecekteki kartuşlar)
+/admin                (Opsiyonel hibrit yönetim paneli)
+/api                  (ASP.NET Core Web API)
+
+
+## 2. Navigasyon & Katmanlar
+1. Komut Paleti (Cmd/Ctrl+K): global arama, rotalar arası ışınlanma, dil/ses geçişi.
+2. AI Assistant Drawer: her sayfadan erişilebilir sohbet paneli.
+3. Ses Denetleyici: ambiyans sesini aç/kapat.
+
+## 3. Geri Uyumluluk & Yönlendirmeler
+Eski slug'lar (ör. /portfolio → /projects) 301 kalıcı yönlendirme ile korunur; SEO otoritesi kaybedilmez.
+
+## 4. Yerelleştirme (i18n) Mimarisi
+- Birincil diller: Türkçe (varsayılan) + İngilizce, tam kalite.
+- Mimari: data-i18n anahtar sistemi + JSON dil paketleri — yeni bir dil eklemek yalnızca yeni bir locale.json dosyası gerektirir, bileşen kodunun değişmesini gerektirmez.
+- hreflang etiketleri her dil varyantı için otomatik üretilir (GEO/SEO için kritik).
+- Genişleme planı: ES, DE, FR, PT, RU, AR, ZH, JA, HI — öncelik sırası ROADMAP.md'de.`,
+
+'DESIGN_SYSTEM.md': `# DESIGN_SYSTEM.md — Atlas Protokolü Tasarım Sistemi
+
+## 1. Kimlik Bildirisi
+Atlas Protokolü, kadim yıldız-atlasları ve dövülmüş metal zanaatinden ilham alan, **tamamen özgün** bir görsel dildir. Hiçbir film, oyun ya da marka evrenine ait isim, logo, sembol ya da müzik içermez — yalnızca "epik, kadim, ustalık" duygusunu özgün biçimde inşa eder. **Kesinlikle siberpunk-neon değildir.**
+
+## 2. Renk Token Katmanları (Primitive → Semantic → Component)
+| Primitive | Hex | Semantic Rolü |
+|---|---|---|
+| Void | #0B0906 | Taban arka plan |
+| Ember | #C9762B | Birincil vurgu / CTA |
+| Gold Leaf | #E8BF6A | İstatistik, öne çıkan rakam |
+| Crimson | #7A2530 | İkincil vurgu / uyarı |
+| Verdigris | #3F8172 | Aktif/çevrimiçi durum |
+| Ink | #EEE5D3 | Birincil metin (parşömen tonu) |
+
+## 3. Tipografi Sistemi
+- **Cinzel** — başlıklar, kısıtlı kullanım (oyulmuş taş karakteri).
+- **Cormorant Garamond (italik)** — alt başlık/manifesto cümleleri.
+- **Manrope** — gövde metni ve arayüz (Inter/Roboto DEĞİL — bilinçli bir seçim, bkz. $10K Checklist §2).
+- **JetBrains Mono** — kod ve veri.
+
+## 4. Hareket Kişiliği & Süre Tokenları
+| Token | Süre | Kullanım |
+|---|---|---|
+| --dur-fast | 180ms | Hover, buton geri bildirimi |
+| --dur-mid | 350ms | Kart geçişleri, sekme değişimi |
+| --dur-slow | 700ms | Sayfa/loader geçişleri |
+Easing: cubic-bezier(0.16,1,0.3,1) — "Atlas ease", ani başlayıp yumuşak biten, kesinlik hissi veren bir eğri.
+
+## 5. Bileşen Durumları (States)
+Her etkileşimli bileşen 5 durumu tanımlamalıdır: default, hover, focus-visible, active/pressed, disabled. Focus-visible daima 2px --accent-primary-2 halkasıyla belirtilir — hiçbir zaman \`outline: none\` yazılıp geri konulmadan bırakılmaz.
+
+## 6. Doğrulama: Ne DEĞİLDİR
+- ❌ Siberpunk/neon (elektrik mavisi-macenta parıltı, tarama çizgileri).
+- ❌ Gerçek bir film/oyun/marka evreninin isim, logo veya müziğinin kopyası.
+- ❌ Varsayılan "AI tasarım" kalıpları: krem+turuncu-kil paleti, ya da salt siyah+tek neon vurgu.`,
+
+'UI_UX_GUIDE.md': `# UI_UX_GUIDE.md — Arayüz & Kullanıcı Deneyimi
+
+## 1. Temel İlkeler
+1. **Dokunsal Geri Bildirim:** Her etkileşim milisaniyelik görsel + opsiyonel işitsel (Web Audio) yanıt verir.
+2. **Sıfır Bekleme Algısı:** Skeleton loader + optimistic UI.
+3. **Akıllı Gezinme:** Cmd+K komut paleti + yapışkan başlık.
+
+## 2. Yay Fiziği Standartları
+
+springSmooth = { stiffness: 300, damping: 30, mass: 0.8 }
+springBouncy = { stiffness: 450, damping: 20, mass: 0.5 }
+
+
+## 3. Mikro Etkileşim Kataloğu
+- Manyetik butonlar (imlece %20-28 çekim).
+- Sigil imleç: hover'da genişleyen döner halka.
+- Kart eğilme (tilt) efekti: fareye doğru 6-10° perspektif.
+
+## 4. Oyunlaştırma UX İlkeleri (Cilt 14 için)
+- Bir oyun asla otomatik başlamaz — her zaman net bir "Başlat" eylemi ile devreye girer (kullanıcı kontrolü).
+- Klavye VE dokunmatik kontrol paralel sağlanır; hiçbir mekanik yalnızca fareye bağımlı olmaz.
+- Oyunu atlayan kullanıcı için içerik kaybı olmaz — legend/skor paneli aynı bilgiyi metinle de sunar.
+
+## 5. Nielsen Sezgisel Kontrol Listesi (uyarlanmış)
+| İlke | Atlas Karşılığı |
+|---|---|
+| Sistem durumu görünürlüğü | Yükleme çubuğu, oyun HUD, "Kaydedildi" toast'ları |
+| Kullanıcı kontrolü & özgürlük | Her modal ESC ile kapanır, her oyun duraklatılabilir |
+| Tutarlılık | Tek bir buton/kart/renk dili tüm site boyunca |
+| Hata önleme | Devre dışı butonlar disabled state ile netleşir |`,
+
+'ANIMATION_GUIDE.md': `# ANIMATION_GUIDE.md — Hareket Rehberi
+
+## 1. Hareket Katmanları
+1. **GSAP:** Sekme geçişleri, giriş animasyonları, HUD sayaçları.
+2. **IntersectionObserver + CSS/GSAP:** Scroll ile ortaya çıkma (reveal) — ScrollTrigger yerine tercih edilir çünkü sekmeler \`display:none\` ile gizlenip gösterildiğinde konum hesaplamaları kırılganlaşır; IntersectionObserver her gösterimde doğal olarak yeniden tetiklenir.
+3. **Web Audio API:** Tık/onay sesleri + üretimsel ambiyans (gerçek bir film/oyun müziği değil, orijinal drone sentez).
+4. **Three.js requestAnimationFrame döngüsü:** Yalnızca Oyun Alanı sekmesi aktifken çalışır, diğer sekmelerde duraklatılır (pil/CPU tasarrufu).
+
+## 2. Kolaylaştırma (Easing) Referansı
+| İsim | Eğri | Ruh Hali |
+|---|---|---|
+| Atlas Ease | cubic-bezier(0.16,1,0.3,1) | Kesin, kendinden emin |
+| Power3 Out | GSAP power3.out | Yumuşak iniş |
+| Power1 In | GSAP power1.in | Hızlı çıkış (sekme kapanışı) |
+
+## 3. Reduced Motion Stratejisi
+@media (prefers-reduced-motion: reduce) bloğu tüm animation-duration/transition-duration değerlerini 0.001ms'e indirir; hiçbir bilgi yalnızca animasyonla iletilmez (ör. skor değişimi her zaman sayısal olarak da yazılıdır).
+
+## 4. Oyun Döngüsü (Game Loop) Deseni
+
+function tick(time) {
+  const delta = clock.getDelta();
+  updatePhysics(delta);
+  checkCollisions();
+  renderer.render(scene, camera);
+  if (gameActive) requestAnimationFrame(tick);
+}
+
+Sekme değişiminde gameActive = false yapılarak döngü doğal olarak durur — cancelAnimationFrame çağrısına gerek kalmadan temiz bir durdurma sağlanır.`,
+
+'TECH_STACK.md': `# TECH_STACK.md — Teknoloji Yığını
+
+## 1. Ön Yüz (Üretim Hedefi — Next.js Sürümü)
+| Teknoloji | Sürüm | Gerekçe |
+|---|---|---|
+| Next.js | 16+ | RSC, Streaming SSR |
+| React | 19 | Server Actions, Compiler |
+| TypeScript | 5.5+ | Uçtan uca tip güvenliği |
+| Tailwind CSS | v4 | Zero-runtime, CSS değişkenleri |
+| GSAP | Latest | ScrollTrigger, timeline |
+| Three.js / R3F | Latest | 3B sahne yönetimi |
+| Framer Motion | Latest | Sayfa geçişleri (yalnızca React ortamında) |
+
+## 2. Bu Atlas Dosyasının Teknik Kapsamı (Şu An Elinizdeki Dosya)
+Bu .html dosyası kasıtlı olarak **saf HTML/CSS/Vanilla JS + GSAP + Three.js (CDN)** ile inşa edilmiştir — React/Next.js/Framer Motion GEREKTİRMEZ, tek tıkla, build adımı olmadan her tarayıcıda çalışır. Üretim sitesi Next.js'e taşındığında, buradaki tüm bileşen mantığı (cursor, command palette, oyun motoru, i18n) doğrudan React bileşenlerine çevrilebilir — mimari zaten bileşen sınırlarına göre ayrıştırılmıştır.
+
+## 3. Arka Yüz Mimarisi
+
+PersonalHQ.Backend
+├── Domain             (Entities, Value Objects, Domain Events)
+├── Application         (CQRS/MediatR, FluentValidation, DTO)
+├── Infrastructure       (EF Core, PostgreSQL, Redis, Outbox)
+└── API                  (Controllers, Middleware, Health Checks)
+
+
+## 4. Test Stratejisi
+- Backend: xUnit + FluentAssertions, entegrasyon testleri Testcontainers ile gerçek PostgreSQL üzerinde.
+- Frontend: Vitest (birim) + Playwright (e2e, Cmd+K ve oyun etkileşimlerini kapsayan senaryolar).
+- Performans: Lighthouse CI her PR'da otomatik çalışır, regresyon eşiği %5.
+
+## 5. Sürümleme Politikası
+Majör bağımlılık yükseltmeleri (Next.js, .NET LTS) yalnızca yeni LTS sürümünde ve ayrı bir chore/upgrade dalında yapılır; asla main üzerinde doğrudan denenmez.`,
+
+'DATABASE_DESIGN.md': `# DATABASE_DESIGN.md — Veritabanı Tasarımı
+
+## 1. PostgreSQL Şeması (özet)
+
+Users(Id, Email, PasswordHash, FullName, Role, CreatedAt)
+Projects(Id, Slug, Title, Summary, CaseStudyContent, Tags[], IsFeatured, ViewCount)
+Articles(Id, Slug, Title, Content, ReadingTimeMinutes, PublishedAt, IsPublished)
+GameScores(Id, UserAlias, GameId, Score, DurationMs, CreatedAt)   -- YENİ: Cilt 14 için
+DomainEventsOutbox(Id, EventType, Content JSONB, OccurredOnUtc, ProcessedOnUtc)
+
+
+## 2. GameScores Tablosu — Oyun Alanı için
+playground/scores uç noktasının arka planı. Anti-cheat için: sunucu tarafında DurationMs ile Score arasındaki oran mantıksal bir üst sınırla doğrulanır (ör. saniyede en fazla 1 relic toplanabilir); bu sınırı aşan skorlar flagged = true olarak işaretlenir ve genel skor tablosunda gösterilmez.
+
+## 3. İndeksleme
+IX_Projects_Slug, IX_Articles_Slug, IX_Outbox_Unprocessed (kısmi indeks, yalnızca ProcessedOnUtc IS NULL), IX_GameScores_GameId_Score (leaderboard sıralaması için).
+
+## 4. Redis Önbellekleme Matrisi
+| Anahtar | TTL | Notlar |
+|---|---|---|
+| Projects_List_Cache | 24s | Proje güncellemesinde evict |
+| GitHub_Metrics_Cache | 1s | API kotasını korur |
+| Leaderboard_Top10 | 5dk | Yüksek okuma trafiği, düşük yazma |
+
+## 5. Migrasyon Stratejisi
+EF Core Migrations, her migrasyon Up/Down çiftiyle geri alınabilir olmalı; üretimde expand → backfill → contract deseni izlenir (bkz. ROADMAP.md Faz 2), asla tek adımda yıkıcı şema değişikliği yapılmaz.
+
+## 6. Blob Storage
+Görseller, sertifikalar, proje ekran görüntüleri Cloudflare R2 üzerinde WEBP/AVIF formatında saklanır.`,
+
+'API_SPECIFICATION.md': `# API_SPECIFICATION.md — API Sözleşmeleri
+
+## 1. Projects API
+- GET /api/v1/projects — GetProjectsQuery{Category,Tag,Page,PageSize}, Redis 24s cache.
+- GET /api/v1/projects/{slug} — GetProjectBySlugQuery.
+- POST /api/v1/projects (Admin) — cache invalidation + Outbox event.
+
+## 2. Playground API — YENİ
+- POST /api/v1/playground/scores — { gameId, score, durationMs }, sunucu tarafı anti-cheat doğrulaması (bkz. DATABASE_DESIGN.md §2).
+- GET /api/v1/playground/leaderboard/{gameId} — Redis Leaderboard_Top10 üzerinden.
+
+## 3. AI RAG Assistant API
+- POST /api/v1/ai/chat — SSE/chunked stream, { prompt, conversationId }.
+
+## 4. Hata Sözleşmesi (RFC 7807 ProblemDetails)
+
+{
+  "type": "https://hq.dev/errors/not-found",
+  "title": "Project not found",
+  "status": 404,
+  "traceId": "00-..."
+}
+
+Her hata yanıtı bu şemaya uyar; istemci asla ham stack trace görmez.
+
+## 5. Sürümleme & Sayfalama Kuralları
+- URL tabanlı sürümleme: /api/v1/..., kırıcı değişiklik → /v2.
+- Sayfalama: page/pageSize query, yanıt zarfı { items, total, page, pageSize }.
+- Rate limiting: 100 istek/dk/IP, aşımda 429 + Retry-After başlığı.`,
+
+'ADMIN_PANEL.md': `# ADMIN_PANEL.md — Yönetim Paneli & CMS Stratejisi
+
+## 1. CMS Karşılaştırma
+| Kriter | Özel Panel | Headless CMS | Hibrit (Tavsiye) |
+|---|---|---|---|
+| Kod Kontrolü | %100 | Sınırlı | %100 + hazır motor |
+| Eforu | Yüksek | Düşük | Orta |
+| Veri Mülkiyeti | Kendi DB | SaaS'a bağımlı | Kendi DB |
+
+## 2. Hibrit Mimari
+- **Blog/İçerik:** Git-tabanlı MDX (push → otomatik build).
+- **Canlı Metrik/Yönetim:** ASP.NET Core Web API + özel React panel.
+
+## 3. Oyun Skoru Moderasyonu — YENİ
+Leaderboard'a giren skorlar admin panelinde flagged bayrağıyla listelenir; yönetici tek tıkla gizleyebilir. Otomatik anti-cheat eşiği aşılmadıkça manuel müdahale gerekmez — amaç, aşırı moderasyon yükü yaratmadan bariz kötüye kullanımı engellemektir.`,
+
+'SEO_STRATEGY.md': `# SEO_STRATEGY.md — SEO & GEO Stratejisi
+
+## 1. JSON-LD (Person / ProfilePage)
+Kişi ve profil şeması, hem klasik arama motorları hem de LLM tabanlı "generative engine" tarayıcıları (ChatGPT, Perplexity, Google AI Overviews) için yapılandırılmış veri sağlar.
+
+## 2. GEO (Generative Engine Optimization)
+- Net, kendi kendini açıklayan başlıklar (LLM özetleme için).
+- /llms.txt dosyası: sitenin AI ajanlarına kendini tanıttığı basit metin dosyası.
+- Yanıltıcı/aşırı-optimize edilmiş anahtar kelime yığını yok — GEO, klasik SEO'nun aksine "makine tarafından okunabilir dürüstlük" ister.
+
+## 3. Hreflang & Uluslararasılaştırma
+Her dil varyantı için <link rel="alternate" hreflang="..">; x-default İngilizce sürüme işaret eder.
+
+## 4. Core Web Vitals İzleme
+Vercel Analytics / Web Vitals API ile gerçek kullanıcı verisi (RUM) toplanır; LCP/INP/CLS aylık trend raporu ROADMAP gözden geçirmelerine girdi sağlar.
+
+## 5. Dynamic OG & Sitemap
+Her proje/blog için 1200×630 dinamik OG görseli; /sitemap.xml 24 saatte bir yeniden üretilir; robots.txt AI-crawler'ları (GPTBot, ClaudeBot vb.) bilinçli olarak izin verir.`,
+
+'CONTENT_STRATEGY.md': `# CONTENT_STRATEGY.md — İçerik Stratejisi
+
+## 1. İçerik Sütunları
+1. Derin vaka incelemeleri (problem → başarısız denemeler → mimari karar → sonuç).
+2. Mimari/Clean Code denemeleri.
+3. Açık kaynak araçlar.
+4. Konuşmalar & sertifikalar.
+
+## 2. Üretim Pipeline'ı
+Makaleler /content/blog/*.mdx altında Git'te tutulur; push sonrası GitHub Actions lint + yayın yapar.
+
+## 3. Editoryal Takvim & Tazelik Politikası
+- Hedef: ayda en az 1 derin teknik yazı.
+- Her makale 12 ayda bir "tazelik denetiminden" geçer: kod örnekleri güncel sürümlerle test edilir, kırık linkler onarılır, üstte "Son güncelleme" tarihi gösterilir — bu hem GEO hem kullanıcı güveni için kritik.`,
+
+'DEPLOYMENT.md': `# DEPLOYMENT.md — Yayına Alma & CI/CD
+
+## 1. Ortamlar
+| Ortam | Amaç | URL Deseni |
+|---|---|---|
+| dev | Yerel geliştirme | localhost |
+| staging | PR önizlemeleri | *.preview.hq.dev |
+| production | Canlı | hq.dev |
+
+## 2. Topoloji
+
+Cloudflare CDN → Vercel Edge (Next.js) + Railway/VPS (ASP.NET Core API, Docker)
+                                   → Managed PostgreSQL + Redis Cloud
+
+
+## 3. Geri Alma (Rollback) Stratejisi
+Her dağıtım immutable bir sürüm etiketi alır; bir regresyon tespit edildiğinde Vercel/Railway üzerinde tek tıkla bir önceki immutable sürüme dönülür — veritabanı migrasyonları her zaman geriye dönük uyumlu (expand/contract) olduğundan, rollback şema kilitlenmesi yaratmaz.
+
+## 4. İzleme & Uyarı
+OpenTelemetry + Grafana/Prometheus (veya Azure Monitor); P99 gecikme, hata oranı ve Core Web Vitals için eşik-tabanlı uyarılar Slack/e-posta kanalına düşer.
+
+## 5. Dockerfile (özet)
+Multi-stage build: SDK imajı ile derleme → ASP.NET runtime imajı ile yayınlama, imaj boyutu küçük tutulur.`,
+
+'ROADMAP.md': `# ROADMAP.md — 2027–2032+ Yol Haritası
+
+## 1. Fazlar
+
+2027 Faz 1        2028 Faz 2              2029-2030 Faz 3        2031-2032+ Faz 4
+Launch V1.0       RAG AI Chatbot          Eğitim Platformu        Tam Otonom Kişisel AI
+Atlas Sistemi     Playground Leaderboard  CLI Araçları             Digital Twin
+Clean Arch.       WakaTime Live           Kitap Yayıncılığı        Web3/Decentralized ID
+
+
+## 2. Faz Detayları
+### Faz 1 (2027 Q1-Q2)
+Next.js 16 frontend, ASP.NET Core .NET 10 API, 16 mimari dokümanın yayınlanması, Atlas görsel kimliğinin uygulanması, Cilt 14 Oyun Alanı'nın (yerel skorla) yayına alınması.
+
+### Faz 2 (2028)
+RAG tabanlı AI asistanın gerçek API ile devreye alınması, Playground leaderboard'unun API'li hale getirilmesi (bkz. API_SPECIFICATION.md §2, DATABASE_DESIGN.md §2), GitHub/WakaTime canlı entegrasyonu.
+
+### Faz 3 (2029-2030)
+Blog mimarisinin interaktif eğitim kurslarına dönüşmesi; Oyun Alanı'na umutkorkmaz.net'teki "The Lab" modeline benzer şekilde yeni kartuşlar eklenmesi (bkz. PLAYGROUND_GUIDE.md §4).
+
+### Faz 4 (2031-2032+)
+Tam otonom, sesli etkileşimli kişisel AI temsilci; ziyaretçi sorusunu yanıtlayıp takvime görüşme ekleyen ajan yetenekleri.`,
+
+'RESEARCH_SYNTHESIS.md': `# RESEARCH_SYNTHESIS.md — Saha Araştırması Sentezi (100+ Site, 12 Kategori)
+
+## 1. Yöntem
+Bu doküman, kullanıcının paylaştığı iki ayrı derin araştırma oturumunun (Gemini + ChatGPT) ve doğrudan incelenen canlı örneklerin (umutkorkmaz.net, barandasdemir.com) damıtılmış sentezidir. Amaç kopyalamak değil, kalıpları çıkarıp özgün bir kimliğe uyarlamaktır.
+
+## 2. 12 Kategori — Damıtılmış Dersler
+| # | Kategori | Referans Örnek(ler) | Atlas'a Uyarlanışı |
+|---|---|---|---|
+| 1 | Hall of Fame | Bruno Simon, Dennis Snellenberg, Rauno Freiberg | Cilt 1 inceleme matrisi |
+| 2 | Hero | Pedro Duarte (imleç→font-weight) | Cilt 2 canlı demo |
+| 3 | Cursor/Micro | Emil Kowalski (spring+ses), Dennis Snellenberg (durum makinesi imleç) | Sigil imleç + manyetik buton |
+| 4 | Scroll | Lenis/lerp deseni | ANIMATION_GUIDE.md §1 |
+| 5 | GSAP | Olivier Larose (text-split, clip-path) | Cilt 3 kod örneği |
+| 6 | Three.js/R3F | Bruno Simon, Jordan Breton | Cilt 14 Kalıntı Avcısı |
+| 7 | Proje Vitrini | Brian Lovin, Delba de Oliveira (canlı GitHub metrikleri) | Cilt 6 vaka kartları |
+| 8 | Blog | Anthony Fu, Lee Robinson (MDX + Shiki) | Cilt 8 |
+| 9 | About | Rauno Freiberg, Henry Heffernan (filtrelenebilir timeline) | Cilt 7 |
+| 10 | Mobil | Paco Coursey (alt navigasyon, haptic) | Cilt 10 |
+| 11 | Performans | Lee Robinson (100/100 Lighthouse) | Cilt 10 |
+| 12 | Awwwards Kriterleri | Design %20 / Usability %30 / Creativity %25 / Developer %25 | §3 aşağıda |
+
+## 3. Awwwards Değerlendirme Ağırlıkları (yön verici, garanti değil)
+Tasarım (%20): tipografik ölçek, tutarlı palet, bilinçli boşluk. Kullanılabilirlik (%30): tam klavye erişimi, WCAG AA kontrast, kırık link yok. Yaratıcılık (%25): şablon değil, özgün bir kavram (Atlas Protokolü bu kutuyu işaretler). Mühendislik (%25): Core Web Vitals mükemmelliği, 60-120 FPS, temiz mimari.
+
+## 4. "$10K Checklist" — Damıtılmış 8 İlke
+1. Şablon değil, net bir bakış açısı — kararlılıkla uygulanmış bir yön (Atlas: kadim atlas + dövülmüş metal).
+2. İş yapan tipografi — Inter/Roboto değil, kasıtlı bir eşleştirme (Cinzel + Manrope).
+3. Kısıtlı renk sistemi — 3-5 ana renk, tutarlı kullanım.
+4. Nefes alan hiyerarşi — boşluk ve kontrast, çabasız yön gösterir.
+5. Amaçlı görsel — stok görsel değil, üretilen/özel içerik.
+6. Fısıldayan hareket — el işçiliği hissi veren mikro etkileşim, "AOS-fade-up" klişesi değil.
+7. Küçültülmüş değil, mobil için tasarlanmış deneyim.
+8. Görünmez pahalılık — <2s yükleme, WCAG AA, klavye navigasyonu, semantik HTML, gerçek meta etiketleri.
+
+## 5. Brief Yöntemi — 4 Adımlı Prompt Çerçevesi
+Bundan sonra Atlas'a yapılacak her büyük tasarım talebi şu 4 adımla çerçevelenir (kaynak: kullanıcının $10K Checklist ekiyle birlikte paylaştığı görsel):
+1. **Markayı Tanımla:** Marka bilgisi, hedef kitle, marka karakteri.
+2. **Tasarım Dilini Belirle:** Renk paleti, tipografi, görsel atmosfer, referans siteler.
+3. **Sayfa Deneyimini Planla:** Bölüm yapısı, video/görsel/3B kullanımı, scroll/hover efektleri, CTA alanları.
+4. **Teknik Beklentileri Yaz:** Kullanılacak teknolojiler, responsive yapı, performans hedefleri, kaçınılması gerekenler.
+
+## 6. Bilinçli Olarak Uygulanmayan Öneriler ve Neden
+- **Framer Motion / 21st.dev / doğrudan React bileşenleri:** Bu dosya tek-dosya, sıfır-bağımlılık, build'siz çalışma hedefiyle çeliştiği için GSAP + Vanilla JS ile eşdeğer kalitede uygulanmıştır (bkz. TECH_STACK.md §2). Üretim Next.js sürümünde birebir uygulanabilir.
+- **Siberpunk/neon tema:** Kullanıcı tarafından açıkça hariç tutuldu; bunun yerine özgün Atlas Protokolü tercih edildi (bkz. DESIGN_SYSTEM.md §1).
+- **50+ dil tam çeviri:** Güvenilirlik riski nedeniyle sağlam bir mimari + kaliteli çekirdek dil seti ile sınırlandı (bkz. SITE_MAP.md §4).`,
+
+'PLAYGROUND_GUIDE.md': `# PLAYGROUND_GUIDE.md — Oyun Alanı Tasarım Rehberi
+
+## 1. Amaç
+Bruno Simon'ın "3B araba sahnesi ne kadar akılda kalıcıysa" ve umutkorkmaz.net'in "100 kartuşluk The Lab"ı ne kadar mühendislik güveni veriyorsa, Atlas'ın Oyun Alanı da aynı işlevi görür: pasif okumayı aktif kanıta çevirmek.
+
+## 2. Tasarım Kararları
+- **Sıfır dış varlık:** Hiçbir .glb/.mp3 dosyası yok — tüm geometri Three.js primitifleriyle (BoxGeometry, IcosahedronGeometry, CylinderGeometry), tüm ses Web Audio osilatörleriyle anlık üretilir. Bu, dosyayı gerçekten "tek dosya" ve anında açılabilir tutar.
+- **Opt-in performans:** Three.js sahnesi yalnızca kullanıcı "Oyunu Başlat"a bastığında kurulur; sekmeden çıkıldığında döngü durur.
+- **Erişilebilirlik önce:** Klavye + dokunmatik kontrol paralel; oyunu oynamayan ziyaretçi için legend paneli aynı bilgiyi statik olarak sunar.
+
+## 3. Kalıntı Avcısı — Teknik Özet
+Three.js r128 (global THREE ad alanı, build adımı gerektirmez). Üçüncü şahıs takip kamerası, kutu-gövdeli araç, ivme/sürtünme tabanlı kinematik (tam fizik motoru yok — kasıtlı sadelik, güvenilirlik için). Çarpışma: basit mesafe kontrolü. Skor + süre HUD'da.
+
+## 4. Genişleme Modeli (2029-2030 için)
+umutkorkmaz.net'teki kartuş-rafı deseninden ilham alan bir "cartridge" mimarisi: her yeni mini oyun {id, title, category, mount(), unmount()} arayüzüne uyan bağımsız bir modül olarak eklenir; mevcut oyunlar hiç dokunulmadan yeni kartuşlar rafa eklenebilir (bkz. ROADMAP.md Faz 3).
+
+## 5. Erişilebilirlik Notları
+- Tüm oyun kontrolleri klavyeyle ulaşılabilir (tab-sırası, aria-label).
+- Zamanlayıcı bir engel değil bilgi amaçlıdır — hiçbir görev katı bir süre sınırına bağlı değildir.
+- prefers-reduced-motion aktifse parçacık/titreşim efektleri sadeleştirilir, oyun mekaniği değişmez.`
+};
+
+var activeDocKey = 'PROJECT_VISION.md';
+function initDocTabs() {
+  var container = document.getElementById('doc-tabs-container');
+  container.innerHTML = '';
+  Object.keys(docsStore).forEach(function (key) {
+    var btn = document.createElement('button');
+    btn.className = 'btn ' + (key === activeDocKey ? 'btn-primary' : 'btn-secondary');
+    btn.style.fontSize = '0.76rem';
+    btn.textContent = key;
+    btn.onclick = function () { selectDoc(key); };
+    container.appendChild(btn);
+  });
+  renderActiveDoc();
+}
+function selectDoc(key) { activeDocKey = key; playTick(); initDocTabs(); }
+function renderActiveDoc() {
+  document.getElementById('current-doc-filename').textContent = activeDocKey;
+  document.getElementById('doc-content-display').textContent = docsStore[activeDocKey] || 'Doküman bulunamadı.';
+}
+function downloadActiveDoc() {
+  var content = docsStore[activeDocKey];
+  var blob = new Blob([content], { type: 'text/markdown' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = activeDocKey; a.click();
+  URL.revokeObjectURL(url);
+  showToast((currentLang === 'en' ? 'Downloaded: ' : 'İndirildi: ') + activeDocKey);
+}
+function exportCurrentMarkdown() { downloadActiveDoc(); }
+function exportAllBundle() {
+  showToast(currentLang === 'en'
+    ? 'This single HTML file already contains the full Atlas system — open Document Archive to browse or export each file.'
+    : 'Bu tek HTML dosyası zaten tüm Atlas sistemini içeriyor — her dosyayı görüntülemek/indirmek için Doküman Arşivi\\u2019ni açın.');
+  switchTab('docs-viewer');
+}
+
+/* ---------- Small demos ---------- */
+function updateTypoDemo() {
+  var sliderVal = document.getElementById('weight-slider').value;
+  var typoText = document.getElementById('typo-demo');
+  document.getElementById('weight-val').textContent = sliderVal;
+  typoText.style.fontWeight = sliderVal;
+  document.getElementById('weight-slider').setAttribute('aria-valuenow', sliderVal);
+}
+function changeCounter(delta) {
+  var el = document.getElementById('counter-val');
+  var cur = parseInt(el.textContent, 10);
+  el.textContent = cur + delta;
+  playTick();
+}
+function copyCode(btn) {
+  var code = btn.closest('.code-block').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(function () {
+    var old = btn.innerHTML;
+    btn.innerHTML = '&#10003; ' + (currentLang === 'en' ? 'Copied' : 'Kopyalandı');
+    setTimeout(function () { btn.innerHTML = old; }, 1800);
+  }).catch(function () { showToast(currentLang === 'en' ? 'Copy failed' : 'Kopyalama başarısız'); });
+}
+function renderHeatmap() {
+  var hm = document.getElementById('github-heatmap');
+  if (!hm) return;
+  hm.innerHTML = '';
+  for (var i = 0; i < 100; i++) {
+    var opacity = Math.random() > 0.4 ? (Math.random() * 0.8 + 0.2).toFixed(2) : '0.05';
+    var cell = document.createElement('div');
+    cell.className = 'heatmap-cell';
+    cell.style.background = 'rgba(201, 118, 43, ' + opacity + ')';
+    hm.appendChild(cell);
+  }
+}
+function initCanvasShader() {
+  var canvas = document.getElementById('shader-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var time = 0;
+  function resize() { canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function render() {
+    time += 0.024;
+    var w = canvas.width, h = canvas.height;
+    ctx.fillStyle = '#0b0906';
+    ctx.fillRect(0, 0, w, h);
+    var grad = ctx.createRadialGradient(
+      w / 2 + Math.sin(time) * 90, h / 2 + Math.cos(time * 0.7) * 36, 10,
+      w / 2, h / 2, w / 1.4
+    );
+    grad.addColorStop(0, 'rgba(201, 118, 43, 0.38)');
+    grad.addColorStop(0.5, 'rgba(122, 37, 48, 0.18)');
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+    requestAnimationFrame(render);
+  }
+  render();
+}
+
+/* ---------- Confetti / celebratory burst ---------- */
+function burstConfetti(x, y) {
+  var colors = ['#c9762b', '#e8bf6a', '#7a2530', '#3f8172'];
+  for (var i = 0; i < 26; i++) {
+    var el = document.createElement('div');
+    var size = 4 + Math.random() * 5;
+    el.style.cssText = 'position:fixed;left:' + x + 'px;top:' + y + 'px;width:' + size + 'px;height:' + (size * 1.6) + 'px;' +
+      'background:' + colors[i % colors.length] + ';z-index:9998;pointer-events:none;border-radius:2px;';
+    document.body.appendChild(el);
+    var angle = Math.random() * Math.PI * 2;
+    var dist = 80 + Math.random() * 160;
+    var dx = Math.cos(angle) * dist, dy = Math.sin(angle) * dist - 60;
+    var rot = Math.random() * 720 - 360;
+    if (window.gsap) {
+      gsap.to(el, { x: dx, y: dy + 260, rotation: rot, opacity: 0, duration: 1.1 + Math.random() * 0.6, ease: 'power2.out', onComplete: function () { this.targets()[0].remove(); } });
+    } else {
+      el.style.transition = 'transform 1.2s ease-out, opacity 1.2s ease-out';
+      requestAnimationFrame(function () { el.style.transform = 'translate(' + dx + 'px,' + (dy + 260) + 'px) rotate(' + rot + 'deg)'; el.style.opacity = '0'; });
+      setTimeout(function () { el.remove(); }, 1300);
+    }
+  }
+}
+
+/* ---------- Konami easter egg ---------- */
+(function konami() {
+  var seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  var pos = 0;
+  document.addEventListener('keydown', function (e) {
+    var overlay = document.getElementById('cmdk-overlay');
+    if (overlay && overlay.classList.contains('open')) return;
+    var key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === seq[pos]) {
+      pos++;
+      if (pos === seq.length) {
+        pos = 0;
+        burstConfetti(window.innerWidth / 2, window.innerHeight / 3);
+        showToast(currentLang === 'en' ? '\u2726 Secret unlocked: Atlas Keeper' : '\u2726 Sır çözüldü: Atlas Bekçisi');
+      }
+    } else {
+      pos = (key === seq[0]) ? 1 : 0;
+    }
+  });
+})();
+
+/* ============================================================
+   GAME 1 — RELIC HUNTER (Three.js r128, zero external assets)
+   ============================================================ */
+var RELIC_DEFS = [
+  { name: 'React',     color: 0xc9762b },
+  { name: '.NET',      color: 0x7a2530 },
+  { name: 'PostgreSQL',color: 0x3f8172 },
+  { name: 'Three.js',  color: 0xe8bf6a },
+  { name: 'Docker',    color: 0x5b4a8f },
+  { name: 'GSAP',      color: 0xeda552 }
+];
+var TOKEN_POSITIONS = [[6, 6], [-10, -6], [14, -18], [-18, 14], [2, -22], [20, 4]];
+var OBSTACLE_POSITIONS = [[10, -14, 1.8, 4], [-16, 8, 1.6, 5], [18, 16, 2.0, 3.5], [-8, -20, 1.7, 4.5], [0, 24, 1.9, 4]];
+
+var relicGame = {
+  inited: false, active: false,
+  scene: null, camera: null, renderer: null, clock: null,
+  ship: null, tokens: [], obstacles: [], keys: {},
+  velocity: 0, score: 0, startTimeMs: 0, elapsedMs: 0, rafId: null, bounds: 46
+};
+
+function buildShipMesh() {
+  var g = new THREE.Group();
+  var hull = new THREE.Mesh(
+    new THREE.BoxGeometry(1.5, 0.4, 2.4),
+    new THREE.MeshStandardMaterial({ color: 0x2a2318, metalness: 0.4, roughness: 0.55 })
+  );
+  hull.position.y = 0.4;
+  g.add(hull);
+  var cockpit = new THREE.Mesh(
+    new THREE.BoxGeometry(0.8, 0.35, 1.0),
+    new THREE.MeshStandardMaterial({ color: 0xe8bf6a, emissive: 0xc9762b, emissiveIntensity: 0.4, metalness: 0.2, roughness: 0.3 })
+  );
+  cockpit.position.set(0, 0.72, 0.5);
+  g.add(cockpit);
+  [[-0.55, -1.15], [0.55, -1.15]].forEach(function (p) {
+    var light = new THREE.Mesh(
+      new THREE.SphereGeometry(0.12, 8, 8),
+      new THREE.MeshStandardMaterial({ color: 0xeda552, emissive: 0xeda552, emissiveIntensity: 1 })
+    );
+    light.position.set(p[0], 0.4, p[1]);
+    g.add(light);
+  });
+  g.position.set(0, 0, 6);
+  return g;
+}
+
+function buildRelicScene() {
+  relicGame.inited = true;
+  var vp = document.getElementById('relic-viewport');
+  relicGame.scene = new THREE.Scene();
+  relicGame.scene.fog = new THREE.Fog(0x0b0906, 22, 80);
+
+  relicGame.camera = new THREE.PerspectiveCamera(52, Math.max(vp.clientWidth, 1) / Math.max(vp.clientHeight, 1), 0.1, 200);
+  relicGame.camera.position.set(0, 7, 18);
+
+  relicGame.renderer = new THREE.WebGLRenderer({ antialias: true });
+  relicGame.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  relicGame.renderer.setSize(vp.clientWidth, vp.clientHeight);
+  relicGame.renderer.setClearColor(0x0b0906, 1);
+  vp.appendChild(relicGame.renderer.domElement);
+
+  relicGame.scene.add(new THREE.AmbientLight(0x54432f, 0.95));
+  var dirLight = new THREE.DirectionalLight(0xffcf9e, 0.85);
+  dirLight.position.set(20, 30, 10);
+  relicGame.scene.add(dirLight);
+
+  var ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(160, 160),
+    new THREE.MeshStandardMaterial({ color: 0x15100a, roughness: 1 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  relicGame.scene.add(ground);
+
+  var grid = new THREE.GridHelper(160, 32, 0xc9762b, 0x241c12);
+  grid.position.y = 0.02;
+  relicGame.scene.add(grid);
+
+  relicGame.ship = buildShipMesh();
+  relicGame.scene.add(relicGame.ship);
+
+  OBSTACLE_POSITIONS.forEach(function (o) {
+    var mesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(o[2] * 0.7, o[2], o[3], 8),
+      new THREE.MeshStandardMaterial({ color: 0x2b2013, roughness: 0.95 })
+    );
+    mesh.position.set(o[0], o[3] / 2, o[1]);
+    mesh.userData.radius = o[2];
+    relicGame.scene.add(mesh);
+    relicGame.obstacles.push(mesh);
+  });
+
+  relicGame.clock = new THREE.Clock();
+  document.getElementById('relic-total').textContent = RELIC_DEFS.length;
+  window.addEventListener('resize', resizeRelicRenderer);
+  document.addEventListener('fullscreenchange', resizeRelicRenderer);
+}
+
+function resetRelicRound() {
+  relicGame.tokens.forEach(function (t) { relicGame.scene.remove(t); });
+  relicGame.tokens = [];
+  relicGame.score = 0;
+  relicGame.velocity = 0;
+  relicGame.keys = {};
+  relicGame.ship.position.set(0, 0, 6);
+  relicGame.ship.rotation.y = 0;
+  TOKEN_POSITIONS.forEach(function (p, i) {
+    var def = RELIC_DEFS[i];
+    var mesh = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(0.55, 0),
+      new THREE.MeshStandardMaterial({ color: def.color, emissive: def.color, emissiveIntensity: 0.4, metalness: 0.25, roughness: 0.4 })
+    );
+    mesh.position.set(p[0], 1.1, p[1]);
+    mesh.userData = { legendIndex: i, baseY: 1.1, phase: Math.random() * Math.PI * 2 };
+    relicGame.scene.add(mesh);
+    relicGame.tokens.push(mesh);
+  });
+  document.querySelectorAll('.legend-chip').forEach(function (c) { c.classList.remove('collected'); });
+  updateRelicHud();
+}
+function updateRelicHud() { document.getElementById('relic-score').textContent = relicGame.score; }
+function markRelicCollected(idx) {
+  var chip = document.getElementById('legend-' + idx);
+  if (chip) chip.classList.add('collected');
+}
+function renderRelicLegend() {
+  var el = document.getElementById('relic-legend');
+  el.innerHTML = RELIC_DEFS.map(function (d, i) {
+    var hex = '#' + ('000000' + d.color.toString(16)).slice(-6);
+    return '<div class="legend-chip" id="legend-' + i + '"><span class="legend-dot" style="background:' + hex + '"></span>' + d.name + '</div>';
+  }).join('');
+}
+function formatTime(ms) {
+  var totalSec = Math.floor(ms / 1000);
+  var m = Math.floor(totalSec / 60), s = totalSec % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+var RELIC_KEYMAP = { w: 'up', arrowup: 'up', s: 'down', arrowdown: 'down', a: 'left', arrowleft: 'left', d: 'right', arrowright: 'right' };
+document.addEventListener('keydown', function (e) {
+  if (document.activeElement && document.activeElement.id === 'type-input-hidden') return;
+  var k = RELIC_KEYMAP[e.key.toLowerCase()];
+  if (k) { relicGame.keys[k] = true; if (relicGame.active) e.preventDefault(); }
+});
+document.addEventListener('keyup', function (e) {
+  var k = RELIC_KEYMAP[e.key.toLowerCase()];
+  if (k) relicGame.keys[k] = false;
+});
+
+function updateRelicGame(delta) {
+  var g = relicGame, accel = 24, maxSpeed = 18, friction = 11, turnSpeed = 2.3;
+  var forwardInput = 0, turnInput = 0;
+  if (g.keys.up) forwardInput += 1;
+  if (g.keys.down) forwardInput -= 1;
+  if (g.keys.left) turnInput += 1;
+  if (g.keys.right) turnInput -= 1;
+
+  g.velocity += forwardInput * accel * delta;
+  if (forwardInput === 0) {
+    var sign = g.velocity > 0 ? -1 : (g.velocity < 0 ? 1 : 0);
+    g.velocity += sign * friction * delta;
+    if (Math.abs(g.velocity) < 0.4) g.velocity = 0;
+  }
+  g.velocity = Math.max(-maxSpeed * 0.5, Math.min(maxSpeed, g.velocity));
+
+  g.ship.rotation.y += turnInput * turnSpeed * delta * (0.35 + Math.min(1, Math.abs(g.velocity) / maxSpeed));
+
+  var dir = new THREE.Vector3(Math.sin(g.ship.rotation.y), 0, Math.cos(g.ship.rotation.y));
+  g.ship.position.addScaledVector(dir, g.velocity * delta);
+  g.ship.position.x = Math.max(-g.bounds, Math.min(g.bounds, g.ship.position.x));
+  g.ship.position.z = Math.max(-g.bounds, Math.min(g.bounds, g.ship.position.z));
+
+  g.obstacles.forEach(function (ob) {
+    var dx = g.ship.position.x - ob.position.x, dz = g.ship.position.z - ob.position.z;
+    var dist = Math.sqrt(dx * dx + dz * dz);
+    var minDist = ob.userData.radius + 1.5;
+    if (dist < minDist && dist > 0.0001) {
+      var push = (minDist - dist);
+      g.ship.position.x += (dx / dist) * push;
+      g.ship.position.z += (dz / dist) * push;
+      g.velocity *= 0.55;
+    }
+  });
+
+  for (var i = g.tokens.length - 1; i >= 0; i--) {
+    var tok = g.tokens[i];
+    var ddx = g.ship.position.x - tok.position.x, ddz = g.ship.position.z - tok.position.z;
+    if (Math.sqrt(ddx * ddx + ddz * ddz) < 2.5) {
+      g.scene.remove(tok);
+      g.tokens.splice(i, 1);
+      g.score++;
+      markRelicCollected(tok.userData.legendIndex);
+      playTick();
+      updateRelicHud();
+      if (g.tokens.length === 0) { winRelicGame(); return; }
+    }
+  }
+  g.tokens.forEach(function (tok) {
+    tok.rotation.y += delta * 0.9;
+    tok.position.y = tok.userData.baseY + Math.sin(performance.now() / 480 + tok.userData.phase) * 0.28;
+  });
+
+  var camDir = new THREE.Vector3(Math.sin(g.ship.rotation.y), 0, Math.cos(g.ship.rotation.y));
+  var camTarget = g.ship.position.clone().addScaledVector(camDir, -9);
+  camTarget.y += 5.2;
+  var lerpF = 1 - Math.pow(0.001, delta);
+  g.camera.position.lerp(camTarget, lerpF);
+  var lookTarget = g.ship.position.clone(); lookTarget.y += 1;
+  g.camera.lookAt(lookTarget);
+}
+
+function relicLoop() {
+  if (!relicGame.active) return;
+  var delta = Math.min(relicGame.clock.getDelta(), 0.1);
+  updateRelicGame(delta);
+  relicGame.renderer.render(relicGame.scene, relicGame.camera);
+  relicGame.elapsedMs = performance.now() - relicGame.startTimeMs;
+  var timerEl = document.getElementById('relic-timer');
+  if (timerEl) timerEl.textContent = formatTime(relicGame.elapsedMs);
+  relicGame.rafId = requestAnimationFrame(relicLoop);
+}
+function startRelicGame() {
+  if (typeof THREE === 'undefined') {
+    showToast(currentLang === 'en' ? '3D engine failed to load — check your connection.' : '3B motor yüklenemedi — bağlantınızı kontrol edin.');
+    return;
+  }
+  if (!relicGame.inited) buildRelicScene();
+  resetRelicRound();
+  document.getElementById('relic-overlay').classList.add('hidden');
+  relicGame.active = true;
+  relicGame.startTimeMs = performance.now();
+  if (relicGame.rafId) cancelAnimationFrame(relicGame.rafId);
+  relicLoop();
+  playTick();
+}
+function pauseRelicGame() {
+  relicGame.active = false;
+  if (relicGame.rafId) { cancelAnimationFrame(relicGame.rafId); relicGame.rafId = null; }
+}
+function winRelicGame() {
+  pauseRelicGame();
+  var overlay = document.getElementById('relic-overlay');
+  overlay.innerHTML =
+    '<div style="font-family:var(--font-display); font-size:1.25rem; color:var(--accent-gold);">' +
+    (currentLang === 'en' ? 'All relics recovered!' : 'Tüm kalıntılar toplandı!') + '</div>' +
+    '<p style="color:var(--text-secondary); font-size:0.86rem;">' +
+    (currentLang === 'en' ? 'Time: ' : 'Süre: ') + formatTime(relicGame.elapsedMs) + '</p>' +
+    '<button class="btn btn-primary" onclick="startRelicGame()">' +
+    (currentLang === 'en' ? '\u21bb Play Again' : '\u21bb Tekrar Oyna') + '</button>';
+  overlay.classList.remove('hidden');
+  var rect = document.getElementById('relic-viewport').getBoundingClientRect();
+  burstConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  showToast(currentLang === 'en' ? 'Victory! Every relic recovered.' : 'Zafer! Tüm kalıntılar geri alındı.');
+}
+function resizeRelicRenderer() {
+  if (!relicGame.inited) return;
+  var vp = document.getElementById('relic-viewport');
+  var w = Math.max(vp.clientWidth, 1), h = Math.max(vp.clientHeight, 1);
+  relicGame.renderer.setSize(w, h);
+  relicGame.camera.aspect = w / h;
+  relicGame.camera.updateProjectionMatrix();
+}
+function toggleRelicFullscreen() {
+  var el = document.getElementById('relic-viewport');
+  try {
+    if (!document.fullscreenElement) {
+      (el.requestFullscreen || el.webkitRequestFullscreen || function () {}).call(el);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || function () {}).call(document);
+    }
+  } catch (e) { /* fullscreen not available — silently ignore */ }
+}
+
+/* ============================================================
+   GAME 2 — CIPHER TERMINAL (typing speed / accuracy test)
+   ============================================================ */
+var CODE_SNIPPETS = [
+  "public record GetProjectQuery(string Slug) : IRequest<Result<ProjectDto>>;",
+  "const lenis = new Lenis({ duration: 1.2, smoothWheel: true });",
+  "SELECT * FROM Projects WHERE Slug = @slug ORDER BY CreatedAt DESC;",
+  "await _cache.GetOrCreateAsync(key, factory, cancellationToken: ct);",
+  "gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' });",
+  "const scene = new THREE.Scene(); scene.fog = new THREE.Fog(0x0b0906, 22, 80);"
+];
+var typingGame = { target: '', typed: '', startTime: null, done: false };
+function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function renderTypingTarget() {
+  var el = document.getElementById('type-target');
+  if (!el) return;
+  var target = typingGame.target, typed = typingGame.typed, html = '';
+  for (var i = 0; i < target.length; i++) {
+    var ch = target[i] === ' ' ? '&nbsp;' : escapeHtml(target[i]);
+    var cls = 'pending';
+    if (i < typed.length) cls = typed[i] === target[i] ? 'correct' : 'incorrect';
+    else if (i === typed.length) cls = 'current pending';
+    html += '<span class="' + cls + '">' + ch + '</span>';
+  }
+  el.innerHTML = html;
+}
+function updateTypingStats() {
+  var elapsedMs = performance.now() - (typingGame.startTime || performance.now());
+  var elapsedMin = elapsedMs / 60000;
+  var correct = 0;
+  for (var i = 0; i < typingGame.typed.length; i++) { if (typingGame.typed[i] === typingGame.target[i]) correct++; }
+  var wpm = elapsedMin > 0 ? Math.round((correct / 5) / elapsedMin) : 0;
+  var acc = typingGame.typed.length ? Math.round((correct / typingGame.typed.length) * 100) : 100;
+  document.getElementById('type-wpm').textContent = wpm;
+  document.getElementById('type-acc').textContent = acc + '%';
+  document.getElementById('type-time').textContent = (elapsedMs / 1000).toFixed(1) + 's';
+}
+function finishTypingGame() {
+  typingGame.done = true;
+  updateTypingStats();
+  playTick();
+  showToast(currentLang === 'en' ? 'Decoded! Nice work.' : 'Deşifre edildi! Harika iş.');
+  var rect = document.getElementById('type-target').getBoundingClientRect();
+  burstConfetti(rect.left + rect.width / 2, rect.top + 20);
+}
+function restartTypingGame() {
+  typingGame.target = CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
+  typingGame.typed = '';
+  typingGame.startTime = null;
+  typingGame.done = false;
+  renderTypingTarget();
+  var w = document.getElementById('type-wpm'), a = document.getElementById('type-acc'), t = document.getElementById('type-time');
+  if (w) w.textContent = '0';
+  if (a) a.textContent = '100%';
+  if (t) t.textContent = '0.0s';
+  var hidden = document.getElementById('type-input-hidden');
+  if (hidden) hidden.value = '';
+  playTick();
+}
+
+/* ---------- Games lazy wiring (runs once when Playground tab first opens) ---------- */
+var gamesLazyInited = false;
+function initGamesLazy() {
+  if (gamesLazyInited) return;
+  gamesLazyInited = true;
+  renderRelicLegend();
+  document.getElementById('relic-start-btn').addEventListener('click', startRelicGame);
+  document.getElementById('relic-fullscreen-btn').addEventListener('click', toggleRelicFullscreen);
+  document.querySelectorAll('#relic-touch .touch-btn').forEach(function (btn) {
+    var k = btn.dataset.k;
+    btn.addEventListener('pointerdown', function (e) { e.preventDefault(); relicGame.keys[k] = true; });
+    btn.addEventListener('pointerup', function (e) { e.preventDefault(); relicGame.keys[k] = false; });
+    btn.addEventListener('pointerleave', function (e) { relicGame.keys[k] = false; });
+  });
+  if (window.matchMedia('(hover: none), (pointer: coarse)').matches) {
+    document.getElementById('relic-touch').classList.add('visible');
+  }
+  var target = document.getElementById('type-target');
+  var hidden = document.getElementById('type-input-hidden');
+  if (target && hidden) {
+    target.addEventListener('click', function () { hidden.focus(); });
+    hidden.addEventListener('input', function (e) {
+      if (typingGame.done) return;
+      if (!typingGame.startTime) typingGame.startTime = performance.now();
+      typingGame.typed = e.target.value;
+      renderTypingTarget();
+      updateTypingStats();
+      if (typingGame.typed.length >= typingGame.target.length) finishTypingGame();
+    });
+  }
+  restartTypingGame();
+}
+
+/* ============================================================
+   AI ASSISTANT DRAWER (preview — canned responses)
+   ============================================================ */
+var aiMessages = [];
+var AI_RESPONSES = [
+  { keys: ["stack", "teknoloji", "tech"], tr: "Bu Atlas; .NET 10 Clean Architecture arka yüz, Next.js 16 ön yüz ve GSAP + Three.js hareket katmanı üzerine kurulu — detaylar için Cilt 13'e bakabilirsin.", en: "This Atlas runs on a .NET 10 Clean Architecture backend, a Next.js 16 frontend, and a GSAP + Three.js motion layer — see Volume 13 for details." },
+  { keys: ["database", "veritaban", "postgres"], tr: "Veri katmanı PostgreSQL + Redis HybridCache ile kurulu — şema için DATABASE_DESIGN.md dokümanına bak.", en: "The data layer runs on PostgreSQL + Redis HybridCache — see DATABASE_DESIGN.md for the schema." },
+  { keys: ["oyun", "game", "playground"], tr: "Cilt 14'te iki mini oyun var: Kalıntı Avcısı (3B) ve Şifre Terminali (yazma testi). İkisi de tamamen özgün, sıfır dış varlık kullanıyor.", en: "Volume 14 has two mini games: Relic Hunter (3D) and Cipher Terminal (typing test). Both are fully original with zero external assets." },
+  { keys: ["hire", "işe", "musait", "müsait", "contact", "iletişim"], tr: "Bu bölüm bir önizleme — gerçek sitede iletişim bilgileri ve müsaitlik durumu buraya bağlanacak.", en: "This section is a preview — on the real site, contact info and availability status will be wired in here." },
+  { keys: ["renk", "color", "tasarim", "design", "tema", "theme"], tr: "Görsel kimlik 'Atlas Protokolü' — kadim atlas ve dövülmüş metal esintili, tamamen özgün bir tema. Detaylar için DESIGN_SYSTEM.md'ye bak.", en: "The visual identity is the 'Atlas Protocol' — an original theme inspired by ancient atlases and forged metal. See DESIGN_SYSTEM.md for details." }
+];
+var AI_FALLBACK = { tr: "Bu, gerçek bir RAG API'sine bağlanana kadar sabit yanıtlarla çalışan bir önizleme. Cilt 13 ve Doküman Arşivi'nde çok daha fazla detay var!", en: "This is a preview running on canned responses until it is wired to a real RAG API. Volume 13 and the Document Archive have far more detail!" };
+
+function toggleAIDrawer(force) {
+  var drawer = document.getElementById('ai-drawer');
+  var open = typeof force === 'boolean' ? force : !drawer.classList.contains('open');
+  drawer.classList.toggle('open', open);
+  if (open && !aiMessages.length) {
+    pushAIMessage('bot', currentLang === 'en'
+      ? "Hi! I'm a preview assistant for this Atlas. Ask about the stack, the games, or the docs."
+      : "Merhaba! Bu Atlas için önizleme asistanıyım. Teknoloji yığını, oyunlar ya da dokümanlar hakkında soru sorabilirsin.");
+  }
+}
+function pushAIMessage(role, text) {
+  aiMessages.push({ role: role, text: text });
+  var wrap = document.getElementById('ai-messages');
+  var el = document.createElement('div');
+  el.className = 'ai-msg ' + role;
+  el.textContent = text;
+  wrap.appendChild(el);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+function sendAIMessage() {
+  var input = document.getElementById('ai-input');
+  var text = input.value.trim();
+  if (!text) return;
+  pushAIMessage('user', text);
+  input.value = '';
+  var wrap = document.getElementById('ai-messages');
+  var typingEl = document.createElement('div');
+  typingEl.className = 'ai-typing';
+  typingEl.innerHTML = '<span></span><span></span><span></span>';
+  wrap.appendChild(typingEl);
+  wrap.scrollTop = wrap.scrollHeight;
+  var lower = text.toLowerCase();
+  var match = AI_RESPONSES.find(function (r) { return r.keys.some(function (k) { return lower.indexOf(k) !== -1; }); });
+  setTimeout(function () {
+    typingEl.remove();
+    var reply = match ? (currentLang === 'en' ? match.en : match.tr) : (currentLang === 'en' ? AI_FALLBACK.en : AI_FALLBACK.tr);
+    pushAIMessage('bot', reply);
+  }, 600 + Math.random() * 500);
+}
+
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  buildNavMeta();
+  setLang('tr');
+  initDocTabs();
+  renderHeatmap();
+  initCanvasShader();
+  observeReveals(document.getElementById('book-1'));
+  document.getElementById('ai-fab').addEventListener('click', function () { toggleAIDrawer(); playTick(); });
+  document.getElementById('ai-send').addEventListener('click', sendAIMessage);
+  document.getElementById('ai-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendAIMessage(); });
+});
+</script>
+</body>
+</html>

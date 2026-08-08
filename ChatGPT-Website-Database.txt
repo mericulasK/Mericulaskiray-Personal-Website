@@ -1,0 +1,326 @@
+Sana bir soru sormak istiyorum bu kişisel Web sitemi yaparken Backend'ini ve Frontend kısmını detaylı olarak yapıyoruz fakat sitemizdeki verileri bir yerde tutmak için Database kullanmak gerekiyor mu? Yani verilerimizi herhangi bir databasede tutmak-saklamak gerekli midir? Eğer kesin Database kurulumu ve verilerin saklanması gerek dersen o zaman bana hangi databaseleri kullanmayı önerirsin? Postressql, SQL, Angular ya da başka hangi önerilerin olur? En çok hangi Database'i tercih etmemi önerirsin ?
+
+Bu soru aslında bütün projenin mimarisini belirleyecek kadar önemli. Senin hedeflediğin siteyi düşündüğümüzde cevabım net:
+
+Evet, kesinlikle bir veritabanı kullanmanı öneririm.
+
+Ama nedenini açıklayayım.
+
+Önce şu soruyu soralım
+Veritabanı olmadan yapılabilir mi?
+
+Evet.
+
+Eğer siten sadece:
+
+Hakkımda
+İletişim
+5-10 proje
+Sabit metinler
+
+içeren basit bir portföy olsaydı, Next.js içinde MDX, JSON veya Markdown dosyalarıyla bile çalışabilirdin.
+
+Fakat senin yapmak istediğin site bu değil.
+
+Senin hedeflediğin site
+
+Bizim planladığımız sistemde şunlar olacak:
+
+📝 Blog sistemi
+🚀 Proje yönetimi
+📜 Sertifikalar
+💼 Deneyimler
+🏆 Başarılar
+📚 Öğrenme yolculuğu
+🏷️ Teknoloji etiketleri
+🌍 Çoklu dil (TR / EN)
+🔍 Arama
+📩 İletişim formu
+👤 Admin Panel
+📊 Dashboard
+📈 Ziyaretçi istatistikleri
+⭐ Featured Projects
+📷 Galeri
+📅 Timeline
+🔗 GitHub entegrasyonu
+🤖 İleride AI destekli içerik özellikleri
+
+Bunların hepsini verimli yönetebilmek için veritabanı çok büyük avantaj sağlar.
+
+Ben olsam hangi veritabanını seçerim?
+
+Açık ara:
+
+🥇 PostgreSQL
+
+Benim ilk önerim budur.
+
+Neden?
+
+1. Açık kaynak
+
+Ücretsiz.
+
+Lisans problemi yok.
+
+2. Dünyanın en güçlü veritabanlarından biri
+
+Bugün kullananlardan bazıları:
+
+Instagram
+Reddit
+Discord
+GitLab
+Shopify
+OpenStreetMap
+
+ve binlerce büyük şirket.
+
+3. ASP.NET ile mükemmel çalışıyor
+
+Sen zaten backend tarafında ASP.NET Core Web API + EF Core kullanmayı planlıyorsun. PostgreSQL bununla çok iyi uyum sağlar.
+
+Örneğin:
+
+ASP.NET Core
+
+↓
+
+Entity Framework Core
+
+↓
+
+Npgsql Provider
+
+↓
+
+PostgreSQL
+4. JSON desteği
+
+Bu benim en sevdiğim özelliklerinden biri.
+
+Örneğin
+
+AI ayarları
+
+GitHub verileri
+
+Sosyal medya linkleri
+
+gibi değişken yapıları JSONB alanlarında saklayabilirsin.
+
+Bu çok güçlü bir avantajdır.
+
+5. Performans
+
+Milyonlarca kayıtla bile rahat çalışabilir.
+
+Senin kişisel siten hiçbir zaman bu kadar büyümese bile, ölçeklenebilir olması güzel bir artıdır.
+
+SQL Server mı PostgreSQL mi?
+Özellik	PostgreSQL	SQL Server
+Ücretsiz	✅	Developer sürümü ücretsiz, üretim lisansı maliyetli olabilir
+Linux desteği	⭐⭐⭐⭐⭐	⭐⭐⭐⭐
+Docker	⭐⭐⭐⭐⭐	⭐⭐⭐⭐
+ASP.NET	⭐⭐⭐⭐⭐	⭐⭐⭐⭐⭐
+JSON	⭐⭐⭐⭐⭐	⭐⭐⭐⭐
+Performans	⭐⭐⭐⭐⭐	⭐⭐⭐⭐⭐
+Topluluk	⭐⭐⭐⭐⭐	⭐⭐⭐⭐
+Cloud desteği	⭐⭐⭐⭐⭐	⭐⭐⭐⭐⭐
+MySQL?
+
+Ben olsam kullanmam.
+
+Kötü olduğu için değil.
+
+Sadece PostgreSQL bana göre daha modern özellikler sunuyor.
+
+SQLite?
+
+Çok sevdiğim bir veritabanı.
+
+Ama
+
+kişisel portföyümüzde
+
+ana veritabanı yapmam.
+
+Şunlar için kullanırım:
+
+Local cache
+Offline veri
+Geçici bilgiler
+MongoDB?
+
+Hayır.
+
+Çünkü
+
+bizim verilerimiz ilişkisel.
+
+Örneğin
+
+Project
+
+↓
+
+Category
+
+↓
+
+Technology
+
+↓
+
+Images
+
+↓
+
+Tags
+
+↓
+
+Certificates
+
+↓
+
+Experience
+
+Bunlar ilişkisel veri.
+
+Dolayısıyla NoSQL burada bana göre doğru tercih değil.
+
+Ben olsam mimariyi şöyle kurarım
+Next.js
+
+↓
+
+ASP.NET Core Web API
+
+↓
+
+Entity Framework Core
+
+↓
+
+PostgreSQL
+
+Bu yapı hem güçlü hem de uzun ömürlüdür.
+
+Peki Redis?
+
+Evet.
+
+Ama ilk gün değil.
+
+Sonradan.
+
+Redis'i şunlar için eklerim:
+
+Cache
+Session
+Rate Limiting
+Sık okunan veriler
+Peki ElasticSearch?
+
+Şimdilik hayır.
+
+İleride
+
+Blog
+
+Arama
+
+Makale
+
+sayısı çok artarsa eklenebilir.
+
+Blob Storage?
+
+Kesinlikle.
+
+Ama veritabanı yerine değil.
+
+Örneğin:
+
+PostgreSQL'de
+
+Project
+
+Id
+
+Title
+
+Description
+
+ImageUrl
+
+resmin kendisi değil,
+
+yalnızca yolu tutulur.
+
+Resim ise
+
+Cloudflare R2
+Azure Blob Storage
+AWS S3
+
+gibi bir depolama alanında bulunur.
+
+Benim 2027 için sana önerdiğim mimari
+Frontend
+────────────
+Next.js
+React
+TypeScript
+Tailwind CSS
+Motion
+GSAP
+Three.js
+
+↓
+
+Backend
+────────────
+ASP.NET Core Web API
+Entity Framework Core
+
+↓
+
+Database
+────────────
+PostgreSQL
+
+↓
+
+Cache
+────────────
+Redis
+
+↓
+
+Storage
+────────────
+Cloudflare R2
+
+↓
+
+Deploy
+────────────
+Frontend → Vercel
+
+Backend → Azure App Service / Railway / VPS
+
+Database → PostgreSQL Managed Service
+Son kararım
+
+Eğer bu proje sadece 4-5 sayfalık bir tanıtım sitesi olsaydı, "veritabanına gerek yok" derdim.
+
+Ama senin hedeflediğin şey, yıllarca kullanacağın, sürekli yeni projeler, blog yazıları, sertifikalar, deneyimler ve içerikler ekleyebileceğin bir kişisel dijital merkez. Bu yüzden:
+
+🥇 Ana veritabanı: PostgreSQL
+🥈 ORM: Entity Framework Core
+🥉 Cache: Redis (ikinci aşamada)
+📦 Dosya depolama: Cloudflare R2 (veya benzer bir object storage)
+
+Bence bu kombinasyon, hem teknik olarak çok güçlü hem de uzun yıllar seni rahatlıkla taşıyabilecek en dengeli çözümdür.

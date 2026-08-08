@@ -1,0 +1,21 @@
+{
+  "name": "meric-ulas-kiray-portfolio",
+  "version": "1.0.0",
+  "description": "Meriç Ulaş Kıray · Senior Full Stack Developer & Software Engineer $10K Awwwards Portfolio",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -p 3000 .",
+    "dev": "npx serve -p 3000 ."
+  },
+  "keywords": [
+    "portfolio",
+    "fullstack",
+    "dotnet",
+    "react",
+    "threejs",
+    "awwwards",
+    "meric-ulas-kiray"
+  ],
+  "author": "Meriç Ulaş Kıray <mericulas1@gmail.com>",
+  "license": "MIT"
+}
