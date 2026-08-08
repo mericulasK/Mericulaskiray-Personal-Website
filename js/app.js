@@ -16,21 +16,23 @@ document.addEventListener('DOMContentLoaded', () => {
   initModalBackdrops();
 });
 
-/* Autoplay Background Audio on First User Gesture */
+/* Autoplay Background Audio on First User Gesture (Mobile Safari & Android Compatible) */
 function initAudioAutoplay() {
-  const enableAudioOnGesture = () => {
+  const triggerAutoPlay = () => {
     if (typeof sanctumAudio !== 'undefined') {
       sanctumAudio.autoStart();
     }
-    window.removeEventListener('click', enableAudioOnGesture);
-    window.removeEventListener('touchstart', enableAudioOnGesture);
-    window.removeEventListener('scroll', enableAudioOnGesture);
-    window.removeEventListener('keydown', enableAudioOnGesture);
   };
-  window.addEventListener('click', enableAudioOnGesture, { once: true });
-  window.addEventListener('touchstart', enableAudioOnGesture, { once: true });
-  window.addEventListener('scroll', enableAudioOnGesture, { once: true });
-  window.addEventListener('keydown', enableAudioOnGesture, { once: true });
+
+  // Immediate attempt
+  triggerAutoPlay();
+
+  // Attach gesture events for mobile Safari & Android unlock
+  const events = ['touchstart', 'touchend', 'pointerdown', 'mousedown', 'click', 'scroll'];
+  events.forEach(evt => {
+    window.addEventListener(evt, triggerAutoPlay, { passive: true });
+    document.addEventListener(evt, triggerAutoPlay, { passive: true });
+  });
 }
 
 /* Modal Overlay Backdrop Click Handler */
@@ -84,7 +86,7 @@ function initCursorHalo() {
   renderHalo();
 }
 
-/* 3. Interactive Scroll-Driven Scrubber (Keeps content fully visible while reading) */
+/* 3. Interactive Scroll-Driven Scrubber (Direct 1-to-1 sync reveal & hide on scroll down/up) */
 function initScrollScrubber() {
   const targets = document.querySelectorAll('.scroll-scrub-target');
   const heroContent = document.querySelector('.hero-content');
@@ -92,24 +94,39 @@ function initScrollScrubber() {
 
   function onScrollScrub() {
     const currentScrollY = window.scrollY;
+    const viewHeight = window.innerHeight;
 
-    // 1. Hero Content parallax & gradual fade
+    // 1. Hero Content parallax & smooth fade in direct sync with scroll
     if (heroContent) {
       const heroOffset = Math.min(currentScrollY * 0.25, 180);
-      const heroOpacity = Math.max(1 - (currentScrollY / 1000), 0);
-      heroContent.style.transform = `translate3d(0, ${heroOffset}px, 0)`;
-      heroContent.style.opacity = heroOpacity;
+      const heroOpacity = Math.max(1 - (currentScrollY / (viewHeight * 0.75)), 0);
+      heroContent.style.transform = `translate3d(0, ${heroOffset.toFixed(1)}px, 0)`;
+      heroContent.style.opacity = heroOpacity.toFixed(3);
     }
 
-    // 2. Scroll Scrub Targets: Reveal when entering screen and stay active until scrolled far past
-    const viewHeight = window.innerHeight;
+    // 2. Scroll Scrub Targets: Continuous 1-to-1 fade in and fade out synchronized with scroll down & up
     targets.forEach(target => {
       const rect = target.getBoundingClientRect();
-      if (rect.top < viewHeight * 0.94 && rect.bottom > -150) {
-        target.classList.add('scrub-active');
-      } else if (rect.top >= viewHeight * 0.98 || rect.bottom <= -150) {
-        target.classList.remove('scrub-active');
-      }
+
+      // Entry Progress (0 at 92% of viewHeight down to 1 at 40% of viewHeight)
+      const entryStart = viewHeight * 0.92;
+      const entryEnd = viewHeight * 0.40;
+      const inProgress = (entryStart - rect.top) / (entryStart - entryEnd);
+
+      // Exit Progress (1 at 20% of viewHeight down to 0 at -80px above top)
+      const exitStart = viewHeight * 0.20;
+      const exitEnd = -80;
+      const outProgress = (rect.bottom - exitEnd) / (exitStart - exitEnd);
+
+      // Raw progress is the minimum of entry and exit progress
+      const rawProgress = Math.min(inProgress, outProgress);
+      const opacity = Math.max(0, Math.min(1, rawProgress));
+
+      // Calculate subtle translateY shift matching opacity (22px when 0 opacity -> 0px when 1 opacity)
+      const translateY = (1 - opacity) * 22;
+
+      target.style.opacity = opacity.toFixed(3);
+      target.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
     });
 
     // 3. Timeline Nodes Scale Pulse on scroll pass

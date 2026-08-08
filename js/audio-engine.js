@@ -29,12 +29,28 @@ class SanctumAudioEngine {
   }
 
   autoStart() {
-    if (this.hasAutoStarted || this.isMuted) return;
+    if (this.isMuted) return;
     this.init();
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+    if (this.ctx) {
+      if (this.ctx.state === 'suspended') {
+        try {
+          const buffer = this.ctx.createBuffer(1, 1, 22050);
+          const source = this.ctx.createBufferSource();
+          source.buffer = buffer;
+          source.connect(this.ctx.destination);
+          source.start(0);
+        } catch (e) {
+          // Fallback if silent buffer unsupported
+        }
+        this.ctx.resume().then(() => {
+          if (!this.isMuted) {
+            this.startAmbientDrone();
+          }
+        });
+      } else {
+        this.startAmbientDrone();
+      }
     }
-    this.startAmbientDrone();
     this.hasAutoStarted = true;
     this.updateBtnUI();
   }
