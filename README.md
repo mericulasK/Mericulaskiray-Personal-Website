@@ -1,5 +1,5 @@
 # ⚡ Meriç Ulaş Kıray · Senior Full Stack Developer & Software Engineer
-### *The Sanctum Codex · Awwwards-Grade $10K Personal Digital HQ & 3D WebGL Portfolio*
+### *The Sanctum Codex · Personal Digital HQ & 3D WebGL Portfolio*
 
 [![Live Site](https://img.shields.io/badge/Live_Website-mericulaskiray.com-e5b869?style=for-the-badge&logo=netlify&logoColor=white)](https://mericulaskiray.com)
 [![Architecture Grade](https://img.shields.io/badge/Awwwards-M%C3%BCkemmellik_Standard%C4%B1-d96b27?style=for-the-badge&logo=awwwards&logoColor=white)](#-proje-vizyonu-ve-felsefesi)
@@ -10,7 +10,7 @@
 
 ## 🌟 Proje Özeti (Executive Summary)
 
-**Meriç Ulaş Kıray Personal Digital HQ**, sıradan ve şablonlaşmış portföy web sitelerinin ötesinde; **dünya standartlarında ($10,000+ değerinde)** görsel kimlik, 3B WebGL grafikleri, ses sentezleme motoru ve kurumsal yazılım mimarisi felsefesiyle inşa edilmiş kişisel dijital karargâhtır.
+** Meriç Ulaş Kıray **, sıradan ve şablonlaşmış portföy web sitelerinin ötesinde; **dünya standartlarında ($10,000+ değerinde)** görsel kimlik, 3B WebGL grafikleri, ses sentezleme motoru ve kurumsal yazılım mimarisi felsefesiyle inşa edilmiş kişisel dijital karargâhtır.
 
 Bu proje, **BilgeAdam BOOST Yıldız Yazılımcı Yetiştirme Programı** mezunu bir Full Stack Developer ve Yazılım Mühendisiyim olarak geliştirdiğim kurumsal backend (.NET Core, ASP.NET Core Web API, MSSQL) ve modern frontend (React, TypeScript, Three.js, Node.js) yeteneklerimi, siber-antik sci-fi estetiği ve sıfır harici kütüphane yükü prensibiyle sergilemektedir.
 
