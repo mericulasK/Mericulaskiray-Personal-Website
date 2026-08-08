@@ -171,7 +171,7 @@ Proje, **Netlify** üzerinde barındırılmakta olup GitHub deposu ile **Continu
 Proje hakkında sorularınız, iş birliği teklifleriniz veya projeleriniz için benimle iletişime geçebilirsiniz:
 
 - 👤 **İsim:** Meriç Ulaş Kıray
-- 💼 **Unvan:** Senior Full Stack Developer & Software Engineer
+- 💼 **Unvan:** Full Stack Developer & Software Engineer
 - 📧 **E-Posta:** [mericulas1@gmail.com](mailto:mericulas1@gmail.com)
 - 📱 **Telefon & WhatsApp:** [+90 537 478 26 66](https://wa.me/905374782666)
 - 🌐 **Web Sitesi:** [https://mericulaskiray.netlify.app/)
