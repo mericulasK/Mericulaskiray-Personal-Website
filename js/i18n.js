@@ -106,7 +106,7 @@ const translations = {
     navSanctum: "Oyun Alanı",
     navContact: "İletişim",
     statusBadge: "Full-Stack & Yazılım Mühendisliği Pozisyonları İçin Müsait",
-    heroTitle: "Yüksek Performanslı Sistemlerin ve Dijital Dünyaların Mimarım",
+    heroTitle: "Yüksek Performanslı Sistemlerin ve Dijital Dünyaların Mimarı",
     heroSubtitle: "Mühendislik hassasiyetini karanlık sci-fi ve epik fantezi estetiğiyle harmanlıyorum",
     heroDesc: "Milisaniyeler mertebesinde performans, sarsılmaz güvenilirlik ve unutulmaz görsel deneyimler sunan kurumsal .NET Core, React ve Node.js çözümleri geliştiriyorum.",
     btnExplore: "Sistemi Keşfet",
