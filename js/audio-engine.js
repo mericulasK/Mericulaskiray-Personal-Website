@@ -6,11 +6,12 @@
 class SanctumAudioEngine {
   constructor() {
     this.ctx = null;
-    this.isMuted = true;
+    this.isMuted = false; // Audio enabled by default per user request
     this.ambientGain = null;
     this.masterGain = null;
     this.ambientOsc = null;
     this.ambientLfo = null;
+    this.hasAutoStarted = false;
   }
 
   init() {
@@ -25,6 +26,17 @@ class SanctumAudioEngine {
     this.ambientGain = this.ctx.createGain();
     this.ambientGain.gain.value = 0;
     this.ambientGain.connect(this.masterGain);
+  }
+
+  autoStart() {
+    if (this.hasAutoStarted || this.isMuted) return;
+    this.init();
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+    this.startAmbientDrone();
+    this.hasAutoStarted = true;
+    this.updateBtnUI();
   }
 
   toggleSound() {
@@ -42,12 +54,16 @@ class SanctumAudioEngine {
       this.stopAmbientDrone();
     }
 
-    // Update UI icon
+    this.updateBtnUI();
+  }
+
+  updateBtnUI() {
     const btn = document.getElementById('sound-toggle-btn');
     if (btn) {
       btn.innerHTML = this.isMuted 
         ? '<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>'
         : '<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+      btn.title = this.isMuted ? "Sesi Aç / Turn Audio On" : "Sesi Kapat / Turn Audio Off";
     }
   }
 

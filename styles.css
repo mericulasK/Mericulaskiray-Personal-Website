@@ -551,7 +551,7 @@ ul, ol {
    -------------------------------------------------------------------------- */
 .section {
   position: relative;
-  padding: 120px 5%;
+  padding: 90px 5%;
   z-index: 2;
   max-width: var(--max-width);
   margin: 0 auto;
@@ -562,7 +562,7 @@ ul, ol {
 /* Scroll Scrubbing Reveal State */
 .scroll-scrub-target {
   opacity: 0;
-  transform: translateY(35px);
+  transform: translateY(30px);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
@@ -745,6 +745,7 @@ ul, ol {
   box-shadow: var(--shadow-box);
   transition: transform 0.6s var(--ease-out), border-color 0.4s ease, box-shadow 0.4s ease;
   will-change: transform;
+  width: 100%;
 }
 
 .project-card:hover {
@@ -783,6 +784,7 @@ ul, ol {
   box-shadow: 0 15px 35px rgba(0,0,0,0.8);
   will-change: transform;
   transition: transform 0.5s var(--ease-out);
+  overflow: hidden;
 }
 
 .mockup-header {
@@ -809,6 +811,10 @@ ul, ol {
   font-size: 0.78rem;
   color: var(--color-cyan);
   line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .project-info {
@@ -1462,8 +1468,52 @@ ul, ol {
 }
 
 @media (max-width: 768px) {
+  .section {
+    padding: 50px 4%;
+  }
+
+  .section-header {
+    margin-bottom: 35px;
+  }
+
   .header {
-    padding: 0 20px;
+    padding: 0 14px;
+    height: 70px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .logo-name {
+    font-size: 0.92rem;
+    letter-spacing: 0.5px;
+  }
+
+  .logo-title {
+    font-size: 0.6rem;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .cmd-k-badge {
+    padding: 3px 6px;
+    font-size: 0.7rem;
+  }
+
+  .lang-selector-btn {
+    padding: 0 8px;
+    height: 36px;
+    font-size: 0.75rem;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
   }
 
   .nav-links {
@@ -1474,23 +1524,110 @@ ul, ol {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: var(--header-height);
+    top: 70px;
     left: 0; width: 100%;
     background: var(--bg-glass-heavy);
-    padding: 30px;
+    padding: 24px 18px;
     border-bottom: 1px solid var(--border-medium);
-    gap: 20px;
+    gap: 16px;
   }
 
   .mobile-nav-toggle {
     display: flex;
   }
 
+  .hero-section {
+    padding: 100px 4% 40px 4%;
+    min-height: auto;
+  }
+
   .hero-heading {
-    font-size: 2.5rem;
+    font-size: clamp(1.9rem, 7.5vw, 2.6rem);
+    line-height: 1.15;
+  }
+
+  .hero-subheading {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+
+  .hero-description {
+    font-size: 0.94rem;
+    margin-bottom: 28px;
   }
 
   .bio-stats {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .about-card, .contact-info-card, .contact-form-card {
+    padding: 22px 16px;
+  }
+
+  .projects-grid {
+    gap: 35px;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+    border-radius: var(--radius-md);
+  }
+
+  .project-media {
+    min-height: auto;
+    padding: 16px 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .project-mockup {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .mockup-code {
+    font-size: 0.72rem;
+  }
+
+  .project-info {
+    padding: 22px 16px;
+  }
+
+  .project-title {
+    font-size: 1.4rem;
+    word-break: break-word;
+  }
+
+  .project-desc {
+    font-size: 0.92rem;
+  }
+
+  .tech-tag-list {
+    gap: 6px;
+  }
+
+  .tech-tag {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+
+  .games-sanctum {
+    padding: 20px 14px;
+    margin-top: 20px;
+  }
+
+  .game-tabs {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .game-tab-btn {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .cmd-modal {
+    width: 94%;
   }
 }

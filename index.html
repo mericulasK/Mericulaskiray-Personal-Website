@@ -19,10 +19,10 @@
   <meta property="og:description" content="World-class 3D Full Stack Developer Portfolio blending .NET Core, React, TypeScript & dark sci-fi aesthetics.">
   <meta property="og:url" content="https://mericulaskiray.com">
 
-  <!-- Fonts (Cinzel, Cormorant Garamond, Manrope, JetBrains Mono) -->
+  <!-- Fonts (Cinzel, Cormorant Garamond, Manrope, JetBrains Mono with Turkish/Latin-Ext glyphs) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -81,8 +81,8 @@
     </nav>
 
     <div class="header-actions">
-      <button class="icon-btn" id="sound-toggle-btn" onclick="sanctumAudio.toggleSound()" title="Toggle Ambient Audio">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>
+      <button class="icon-btn" id="sound-toggle-btn" onclick="sanctumAudio.toggleSound()" title="Sesi Kapat / Turn Audio Off">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
       </button>
 
       <button class="lang-selector-btn" onclick="openModal('lang-modal')">
@@ -141,7 +141,7 @@
   <!-- SECTION I: ABOUT SANCTUM -->
   <section class="section scroll-scrub-target" id="about">
     <div class="section-header">
-      <span class="section-tag" data-i18n="aboutTag">Sütun I · Temel</span>
+      <span class="section-tag" data-i18n="aboutTag">I · Temel</span>
       <h2 class="section-title" data-i18n="aboutTitle">Mimarın Vizyonu</h2>
     </div>
 
@@ -202,7 +202,7 @@
   <!-- SECTION II: PROJECTS (ELITESHOP & EXAMAPP) -->
   <section class="section scroll-scrub-target" id="projects">
     <div class="section-header">
-      <span class="section-tag" data-i18n="projectsTag">Sütun II · Üretimler</span>
+      <span class="section-tag" data-i18n="projectsTag">II · Üretimler</span>
       <h2 class="section-title" data-i18n="projectsTitle">Önemli Projeler ve Vitrin</h2>
     </div>
 
@@ -292,7 +292,7 @@ public class ExamController : ControllerBase {
   <!-- SECTION III: TECH MATRIX & SKILL ARSENAL -->
   <section class="section scroll-scrub-target" id="skills">
     <div class="section-header">
-      <span class="section-tag" data-i18n="skillsTag">Sütun III · Uzmanlık</span>
+      <span class="section-tag" data-i18n="skillsTag">III · Uzmanlık</span>
       <h2 class="section-title" data-i18n="skillsTitle">Teknoloji Matrisi ve Yetenekler</h2>
     </div>
 
@@ -398,7 +398,7 @@ public class ExamController : ControllerBase {
   <!-- SECTION IV: EXPERIENCE CHRONICLES -->
   <section class="section scroll-scrub-target" id="experience">
     <div class="section-header">
-      <span class="section-tag" data-i18n="timelineTag">Sütun IV · Geçmiş</span>
+      <span class="section-tag" data-i18n="timelineTag">IV · Geçmiş</span>
       <h2 class="section-title" data-i18n="timelineTitle">Kariyer ve Eğitim Yolculuğu</h2>
     </div>
 
@@ -456,7 +456,7 @@ public class ExamController : ControllerBase {
   <!-- SECTION V: MINI-GAMES SANCTUM -->
   <section class="section scroll-scrub-target" id="games">
     <div class="section-header">
-      <span class="section-tag" data-i18n="gamesTag">Sütun V · Deneyim</span>
+      <span class="section-tag" data-i18n="gamesTag">V · Deneyim</span>
       <h2 class="section-title" data-i18n="gamesTitle">İnteraktif Oyun ve Test Alanı</h2>
     </div>
 
@@ -500,7 +500,7 @@ public class ExamController : ControllerBase {
   <!-- SECTION VI: CONTACT PORTAL -->
   <section class="section scroll-scrub-target" id="contact">
     <div class="section-header">
-      <span class="section-tag" data-i18n="contactTag">Sütun VI · Bağlantı</span>
+      <span class="section-tag" data-i18n="contactTag">VI · Bağlantı</span>
       <h2 class="section-title" data-i18n="contactTitle">Sinyal Gönder / İletişim</h2>
     </div>
 
@@ -595,6 +595,7 @@ public class ExamController : ControllerBase {
       <div class="cmd-input-wrapper">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a command or jump to section..." autofocus>
+        <button class="cmd-close-btn" onclick="closeModal('cmd-modal')" title="Kapat / Close" style="background:none; border:none; color:var(--color-gold); font-size:1.3rem; cursor:pointer; padding:4px 8px; margin-left:auto;">✕</button>
       </div>
 
       <div class="cmd-results-list">

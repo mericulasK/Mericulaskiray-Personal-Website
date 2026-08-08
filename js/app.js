@@ -12,7 +12,38 @@ document.addEventListener('DOMContentLoaded', () => {
   initCounterAnimations();
   initCursorHalo();
   initScrollScrubber();
+  initAudioAutoplay();
+  initModalBackdrops();
 });
+
+/* Autoplay Background Audio on First User Gesture */
+function initAudioAutoplay() {
+  const enableAudioOnGesture = () => {
+    if (typeof sanctumAudio !== 'undefined') {
+      sanctumAudio.autoStart();
+    }
+    window.removeEventListener('click', enableAudioOnGesture);
+    window.removeEventListener('touchstart', enableAudioOnGesture);
+    window.removeEventListener('scroll', enableAudioOnGesture);
+    window.removeEventListener('keydown', enableAudioOnGesture);
+  };
+  window.addEventListener('click', enableAudioOnGesture, { once: true });
+  window.addEventListener('touchstart', enableAudioOnGesture, { once: true });
+  window.addEventListener('scroll', enableAudioOnGesture, { once: true });
+  window.addEventListener('keydown', enableAudioOnGesture, { once: true });
+}
+
+/* Modal Overlay Backdrop Click Handler */
+function initModalBackdrops() {
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        closeModal('cmd-modal');
+        closeModal('lang-modal');
+      }
+    });
+  });
+}
 
 /* 1. Header Scroll Listener */
 function initScrollHeader() {
@@ -42,7 +73,7 @@ function initCursorHalo() {
   });
 
   function renderHalo() {
-    // Increased lerp factor from 0.12 to 0.40 for fast, responsive, smooth follow
+    // Fast, smooth follow
     haloX += (mouseX - haloX) * 0.40;
     haloY += (mouseY - haloY) * 0.40;
 
@@ -53,7 +84,7 @@ function initCursorHalo() {
   renderHalo();
 }
 
-/* 3. Interactive Scroll-Driven Scrubber (Ultra-smooth reveal without sideways distortion) */
+/* 3. Interactive Scroll-Driven Scrubber (Keeps content fully visible while reading) */
 function initScrollScrubber() {
   const targets = document.querySelectorAll('.scroll-scrub-target');
   const heroContent = document.querySelector('.hero-content');
@@ -62,23 +93,21 @@ function initScrollScrubber() {
   function onScrollScrub() {
     const currentScrollY = window.scrollY;
 
-    // 1. Hero Content parallax & fade on scroll down/up
+    // 1. Hero Content parallax & gradual fade
     if (heroContent) {
-      const heroOffset = Math.min(currentScrollY * 0.35, 200);
-      const heroOpacity = Math.max(1 - (currentScrollY / 650), 0);
+      const heroOffset = Math.min(currentScrollY * 0.25, 180);
+      const heroOpacity = Math.max(1 - (currentScrollY / 1000), 0);
       heroContent.style.transform = `translate3d(0, ${heroOffset}px, 0)`;
       heroContent.style.opacity = heroOpacity;
     }
 
-    // 2. Scroll Scrub Targets (pure vertical fade/translate reveal, zero skewY sideways shift)
+    // 2. Scroll Scrub Targets: Reveal when entering screen and stay active until scrolled far past
     const viewHeight = window.innerHeight;
     targets.forEach(target => {
       const rect = target.getBoundingClientRect();
-      const progress = 1 - (rect.top / viewHeight);
-
-      if (progress > 0.12 && progress < 1.35) {
+      if (rect.top < viewHeight * 0.94 && rect.bottom > -150) {
         target.classList.add('scrub-active');
-      } else {
+      } else if (rect.top >= viewHeight * 0.98 || rect.bottom <= -150) {
         target.classList.remove('scrub-active');
       }
     });
@@ -86,7 +115,7 @@ function initScrollScrubber() {
     // 3. Timeline Nodes Scale Pulse on scroll pass
     timelineNodes.forEach(node => {
       const rect = node.getBoundingClientRect();
-      if (rect.top > 100 && rect.top < viewHeight * 0.7) {
+      if (rect.top > 80 && rect.top < viewHeight * 0.75) {
         node.style.transform = 'scale(1.3)';
         node.style.boxShadow = '0 0 25px var(--color-gold-bright)';
       } else {

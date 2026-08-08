@@ -74,7 +74,7 @@ const translations = {
     statProjects: "Enterprise Projects",
     statUptime: "System Uptime Goal",
     aboutTitle: "The Architect's Vision",
-    aboutTag: "Pillar I · Foundation",
+    aboutTag: "I · FOUNDATION",
     aboutText1: "I am Meriç Ulaş Kıray, a Full Stack Developer and Software Engineer trained under the BilgeAdam BOOST program. My passion lies in crafting complex web applications, backend APIs, microservices, and interactive web experiences.",
     aboutText2: "Grounded in SOLID principles, layered architecture, and scalable design patterns, I bridge the gap between heavy enterprise backend logic (.NET Core, Express) and cutting-edge frontend interfaces (React, TypeScript, Three.js).",
     codexTitle: "Architect Identification",
@@ -87,15 +87,15 @@ const translations = {
     codexLanguages: "Spoken",
     codexLangVal: "Turkish (Native), English (B2), German (A2)",
     projectsTitle: "Masterwork Artifacts",
-    projectsTag: "Pillar II · Creations",
+    projectsTag: "II · ARTIFACTS",
     skillsTitle: "Tech Matrix & Skill Arsenal",
-    skillsTag: "Pillar III · Mastery",
+    skillsTag: "III · MATRIX",
     timelineTitle: "Chronicles of Journey",
-    timelineTag: "Pillar IV · History",
+    timelineTag: "IV · CHRONICLES",
     gamesTitle: "Interactive Arcade Sanctum",
-    gamesTag: "Pillar V · Experience",
+    gamesTag: "V · SANCTUM",
     contactTitle: "Transmit Signal",
-    contactTag: "Pillar VI · Connection",
+    contactTag: "VI · SIGNAL",
     footerCopy: "© 2026 Meriç Ulaş Kıray. Built for Awwwards Excellence & $10K Standards."
   },
   tr: {
@@ -115,7 +115,7 @@ const translations = {
     statProjects: "Kurumsal Projeler",
     statUptime: "Sistem Çalışma Süresi",
     aboutTitle: "Mimarın Vizyonu",
-    aboutTag: "Sütun I · Temel",
+    aboutTag: "I · TEMEL",
     aboutText1: "Ben Meriç Ulaş Kıray; BilgeAdam BOOST Yıldız Yazılımcı Yetiştirme Programı mezunu Full Stack Developer ve Yazılım Mühendisiyim. Karmaşık web uygulamaları, backend API'leri, mikroservisler ve etkileşimli dijital deneyimler üretme tutkusuna sahibim.",
     aboutText2: "SOLID prensipleri, katmanlı mimari ve ölçeklenebilir tasarım desenleri ışığında; .NET Core ve Express ile backend mantığı kurarken, React, TypeScript ve Three.js ile kullanıcı dostu arayüzler geliştiriyorum.",
     codexTitle: "Geliştirici Kimlik Kartı",
@@ -128,16 +128,116 @@ const translations = {
     codexLanguages: "Bildiği Diller",
     codexLangVal: "Türkçe (Ana Dil), İngilizce (B2), Almanca (A2)",
     projectsTitle: "Önemli Projeler ve Vitrin",
-    projectsTag: "Sütun II · Üretimler",
+    projectsTag: "II · ÜRETİMLER",
     skillsTitle: "Teknoloji Matrisi ve Yetenekler",
-    skillsTag: "Sütun III · Uzmanlık",
+    skillsTag: "III · UZMANLIK",
     timelineTitle: "Kariyer ve Eğitim Yolculuğu",
-    timelineTag: "Sütun IV · Geçmiş",
+    timelineTag: "IV · GEÇMİŞ",
     gamesTitle: "İnteraktif Oyun ve Test Alanı",
-    gamesTag: "Sütun V · Deneyim",
+    gamesTag: "V · DENEYİM",
     contactTitle: "Sinyal Gönder / İletişim",
-    contactTag: "Sütun VI · Bağlantı",
+    contactTag: "VI · BAĞLANTI",
     footerCopy: "© 2026 Meriç Ulaş Kıray. Awwwards mükemmellik standartları ile tasarlanmıştır."
+  },
+  de: {
+    navAbout: "Über mich",
+    navProjects: "Projekte",
+    navSkills: "Fähigkeiten",
+    navExperience: "Erfahrung",
+    navSanctum: "Spielplatz",
+    navContact: "Kontakt",
+    statusBadge: "Verfügbar für Full-Stack & Software Engineering Positionen",
+    heroTitle: "Architekt von Hochleistungssystemen & Digitalen Welten",
+    heroSubtitle: "Verschmelzung von Ingenieurspräzision mit Sci-Fi & Fantasy-Ästhetik",
+    btnExplore: "System Erkunden",
+    btnContact: "Kontakt Aufnehmen",
+    aboutTitle: "Die Vision des Architekten",
+    aboutTag: "I · TEMEL",
+    projectsTitle: "Meisterwerke & Vitrine",
+    projectsTag: "II · ÜRETİMLER",
+    skillsTitle: "Technologiematrix & Fähigkeiten",
+    skillsTag: "III · UZMANLIK",
+    timelineTitle: "Karriere & Bildungsweg",
+    timelineTag: "IV · GEÇMİŞ",
+    gamesTitle: "Interaktiver Spielbereich",
+    gamesTag: "V · DENEYİM",
+    contactTitle: "Signal Senden / Kontakt",
+    contactTag: "VI · BAĞLANTI"
+  },
+  fr: {
+    navAbout: "À propos",
+    navProjects: "Projets",
+    navSkills: "Compétences",
+    navExperience: "Expérience",
+    navSanctum: "Jeux",
+    navContact: "Contact",
+    statusBadge: "Disponible pour les postes de Full-Stack & Génie Logiciel",
+    heroTitle: "Architecte de Systèmes Haute Performance & Mondes Numériques",
+    heroSubtitle: "Fusion de la précision de l'ingénierie avec l'esthétique sci-fi",
+    btnExplore: "Explorer le Système",
+    btnContact: "Prendre Contact",
+    aboutTitle: "La Vision de l'Architecte",
+    aboutTag: "I · TEMEL",
+    projectsTitle: "Projets Majeurs & Vitrine",
+    projectsTag: "II · ÜRETİMLER",
+    skillsTitle: "Matrice de Compétences",
+    skillsTag: "III · UZMANLIK",
+    timelineTitle: "Parcours Professionnel",
+    timelineTag: "IV · GEÇMİŞ",
+    gamesTitle: "Espace Interactif & Jeux",
+    gamesTag: "V · DENEYİM",
+    contactTitle: "Envoyer un Signal / Contact",
+    contactTag: "VI · BAĞLANTI"
+  },
+  es: {
+    navAbout: "Sobre mí",
+    navProjects: "Proyectos",
+    navSkills: "Habilidades",
+    navExperience: "Experiencia",
+    navSanctum: "Juegos",
+    navContact: "Contacto",
+    statusBadge: "Disponible para Roles de Full-Stack e Ingeniería de Software",
+    heroTitle: "Arquitecto de Sistemas de Alto Rendimiento y Mundos Digitales",
+    heroSubtitle: "Fusión de precisión de ingeniería con estética sci-fi y fantasía",
+    btnExplore: "Explorar Sistema",
+    btnContact: "Iniciar Contacto",
+    aboutTitle: "La Visión del Arquitecto",
+    aboutTag: "I · TEMEL",
+    projectsTitle: "Proyectos Principales y Escaparate",
+    projectsTag: "II · ÜRETİMLER",
+    skillsTitle: "Matriz Tecnológica y Habilidades",
+    skillsTag: "III · UZMANLIK",
+    timelineTitle: "Trayectoria Profesional",
+    timelineTag: "IV · GEÇMİŞ",
+    gamesTitle: "Área Interactiva de Juegos",
+    gamesTag: "V · DENEYİM",
+    contactTitle: "Enviar Señal / Contacto",
+    contactTag: "VI · BAĞLANTI"
+  },
+  az: {
+    navAbout: "Haqqımda",
+    navProjects: "Layihələr",
+    navSkills: "Biliklər",
+    navExperience: "Təcrübə",
+    navSanctum: "Oyun Sahəsi",
+    navContact: "Əlaqə",
+    statusBadge: "Full-Stack və Proqram Təminatı Mühəndisliyi Vəzifələri Üçün Əlverişlidir",
+    heroTitle: "Yüksək Məhsuldarlıqlı Sistemlərin və Rəqəmsal Dünyaların Memarı",
+    heroSubtitle: "Mühəndislik dəqiqliyini sci-fi və fantastika estetikası ilə birləşdirirəm",
+    btnExplore: "Sistemi Kəşf Et",
+    btnContact: "Əlaqə Qur",
+    aboutTitle: "Memarın Vizyonu",
+    aboutTag: "I · TEMEL",
+    projectsTitle: "Əsas Layihələr və Vitrin",
+    projectsTag: "II · ÜRETİMLER",
+    skillsTitle: "Texnologiya Matrisi və Bacarıqlar",
+    skillsTag: "III · UZMANLIK",
+    timelineTitle: "Karyera və Təhsil Yolu",
+    timelineTag: "IV · GEÇMİŞ",
+    gamesTitle: "İnteraktiv Oyun Sahəsi",
+    gamesTag: "V · DENEYİM",
+    contactTitle: "Siqnal Göndər / Əlaqə",
+    contactTag: "VI · BAĞLANTI"
   }
 };
 
@@ -147,7 +247,12 @@ function setLanguage(langCode) {
   currentLang = langCode;
   localStorage.setItem('sanctum_lang', langCode);
   
-  const dict = translations[langCode] || translations['en'] || translations['tr'];
+  // Safe fallback dictionary merge
+  const baseDict = translations['tr'] || {};
+  const fallbackDict = translations['en'] || {};
+  const targetDict = translations[langCode] || {};
+
+  const dict = Object.assign({}, baseDict, fallbackDict, targetDict);
   
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -162,6 +267,15 @@ function setLanguage(langCode) {
     const langObj = i18nLanguages.find(l => l.code === langCode) || i18nLanguages[0];
     langBtnText.textContent = `${langObj.flag} ${langObj.code.toUpperCase()}`;
   }
+
+  // Update active state in language modal grid
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    if (btn.getAttribute('onclick') === `selectLanguage('${langCode}')`) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
 }
 
 function initI18n() {
