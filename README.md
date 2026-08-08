@@ -175,7 +175,7 @@ Proje hakkında sorularınız, iş birliği teklifleriniz veya projeleriniz içi
 - 📧 **E-Posta:** [mericulas1@gmail.com](mailto:mericulas1@gmail.com)
 - 📱 **Telefon & WhatsApp:** [+90 537 478 26 66](https://wa.me/905374782666)
 - 🌐 **Web Sitesi:** [mericulaskiray.com](https://mericulaskiray.com)
-- 🔗 **LinkedIn:** [linkedin.com/in/meric-ulas-kiray-b51254224](https://www.linkedin.com/in/meric-ulas-kiray-b51254224/)
+- 🔗 **LinkedIn:** [linkedin.com/in/meriç-ulaş-kıray-b51254224](https://www.linkedin.com/in/meri%C3%A7-ula%C5%9F-k%C4%B1ray-b51254224/)
 - 🐙 **GitHub:** [github.com/mericulasK](https://github.com/mericulasK)
 - 📸 **Instagram:** [instagram.com/mericulas](https://www.instagram.com/mericulas/)
 - 📍 **Konum:** Lüleburgaz / Kırklareli, Türkiye
