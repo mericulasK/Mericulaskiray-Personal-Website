@@ -1626,3 +1626,19 @@ ul, ol {
     width: 94%;
   }
 }
+
+/* ==========================================================================
+   SCROLL-SCRUBBED SECTION & RICE-GRAIN TEXT SPRINKLE SYSTEM
+   ========================================================================== */
+.scroll-scrub-target {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.sprinkle-grain {
+  will-change: opacity, transform, filter;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+

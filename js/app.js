@@ -102,11 +102,58 @@ function initCursorHalo() {
   renderHalo();
 }
 
-/* 3. Interactive Scroll-Driven Scrubber (Direct 1-to-1 sync reveal & hide on scroll down/up) */
+/* 3. Interactive Scroll-Driven Scrubber & Staggered Rice-Grain Text Sprinkle Animation System */
 function initScrollScrubber() {
   const targets = document.querySelectorAll('.scroll-scrub-target');
   const heroContent = document.querySelector('.hero-content');
   const timelineNodes = document.querySelectorAll('.timeline-node');
+
+  // Selector for text-bearing and content elements inside each section
+  const sprinkleSelector = [
+    '.section-tag',
+    '.section-title',
+    '.about-text',
+    '.stat-item',
+    '.codex-header',
+    '.codex-row',
+    '.project-badge',
+    '.project-title',
+    '.project-desc',
+    '.tech-tag',
+    '.skill-cat-header',
+    '.skill-item',
+    '.timeline-date',
+    '.timeline-title',
+    '.timeline-company',
+    '.timeline-text',
+    '.game-tab-btn',
+    '.cipher-header',
+    '.cipher-target-text',
+    '.cipher-stats',
+    '.relic-overlay-hud',
+    '.contact-method',
+    '.form-label',
+    '.form-group',
+    '.contact-detail-link',
+    '.btn-primary',
+    '.btn-secondary'
+  ].join(', ');
+
+  // Map sections to their sprinkle child elements
+  const sectionDataMap = Array.from(targets).map(target => {
+    let elements = Array.from(target.querySelectorAll(sprinkleSelector));
+    if (elements.length === 0) {
+      elements = Array.from(target.querySelectorAll('h1, h2, h3, h4, p, span, a, button, div'));
+    }
+    // Tag child elements with class for hardware acceleration & transform styling
+    elements.forEach(el => {
+      el.classList.add('sprinkle-grain');
+    });
+    return {
+      target,
+      elements
+    };
+  });
 
   function onScrollScrub() {
     const currentScrollY = window.scrollY;
@@ -120,13 +167,13 @@ function initScrollScrubber() {
       heroContent.style.opacity = heroOpacity.toFixed(3);
     }
 
-    // 2. Scroll Scrub Targets: Continuous 1-to-1 fade in and fade out synchronized with scroll down & up
-    targets.forEach(target => {
+    // 2. Section Containers & Rice-Grain Text Sprinkle Animation Loop
+    sectionDataMap.forEach(({ target, elements }) => {
       const rect = target.getBoundingClientRect();
 
-      // Entry Progress (0 at 92% of viewHeight down to 1 at 40% of viewHeight)
-      const entryStart = viewHeight * 0.92;
-      const entryEnd = viewHeight * 0.40;
+      // Entry Progress (0 at 95% of viewHeight down to 1 at 35% of viewHeight)
+      const entryStart = viewHeight * 0.95;
+      const entryEnd = viewHeight * 0.35;
       const inProgress = (entryStart - rect.top) / (entryStart - entryEnd);
 
       // Exit Progress (1 at 20% of viewHeight down to 0 at -80px above top)
@@ -134,15 +181,39 @@ function initScrollScrubber() {
       const exitEnd = -80;
       const outProgress = (rect.bottom - exitEnd) / (exitStart - exitEnd);
 
-      // Raw progress is the minimum of entry and exit progress
+      // Continuous 1-to-1 section progress P bounded [0, 1]
       const rawProgress = Math.min(inProgress, outProgress);
-      const opacity = Math.max(0, Math.min(1, rawProgress));
+      const sectionP = Math.max(0, Math.min(1, rawProgress));
 
-      // Calculate subtle translateY shift matching opacity (22px when 0 opacity -> 0px when 1 opacity)
-      const translateY = (1 - opacity) * 22;
+      // 2a. Section Container: Smooth appearance/disappearance at exact scroll speed (No scattering effect)
+      const sectionTranslateY = (1 - sectionP) * 16;
+      target.style.opacity = sectionP.toFixed(3);
+      target.style.transform = `translate3d(0, ${sectionTranslateY.toFixed(1)}px, 0)`;
 
-      target.style.opacity = opacity.toFixed(3);
-      target.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+      // 2b. Text Elements: Staggered Rice-Grain Sprinkle / Drop Reveal (Scrolling Down & Up Synchronized)
+      const totalElements = elements.length;
+      elements.forEach((el, index) => {
+        // Calculate staggered sub-window for element [start_i, end_i]
+        const step = totalElements > 1 ? 0.55 / (totalElements - 1) : 0;
+        const start_i = 0.05 + index * step;
+        const end_i = Math.min(1.0, start_i + 0.30);
+
+        const rawLocalP = (sectionP - start_i) / (end_i - start_i);
+        const localP = Math.max(0, Math.min(1, rawLocalP));
+
+        // Cubic smoothstep easing
+        const smoothP = localP * localP * (3 - 2 * localP);
+
+        // Rice grain sprinkling drop physics
+        const opacity = smoothP;
+        const translateY = (1 - smoothP) * -22; // Drops down from above like rice grains / sprinkling
+        const scale = 0.95 + 0.05 * smoothP;
+        const blur = (1 - smoothP) * 2.5;
+
+        el.style.opacity = opacity.toFixed(3);
+        el.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+        el.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : 'none';
+      });
     });
 
     // 3. Timeline Nodes Scale Pulse on scroll pass
