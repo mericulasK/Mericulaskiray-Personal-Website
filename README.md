@@ -10,7 +10,7 @@
 
 ## 🌟 Proje Özeti (Executive Summary)
 
-** Meriç Ulaş Kıray **, sıradan ve şablonlaşmış portföy web sitelerinin ötesinde; **dünya standartlarında ($10,000+ değerinde)** görsel kimlik, 3B WebGL grafikleri, ses sentezleme motoru ve kurumsal yazılım mimarisi felsefesiyle inşa edilmiş kişisel dijital karargâhtır.
+** Meriç Ulaş Kıray **, sıradan ve şablonlaşmış portföy web sitelerinin ötesinde; ** dünya standartlarında ** görsel kimlik, 3B WebGL grafikleri, ses sentezleme motoru ve kurumsal yazılım mimarisi felsefesiyle inşa edilmiş kişisel dijital karargâhtır.
 
 Bu proje, **BilgeAdam BOOST Yıldız Yazılımcı Yetiştirme Programı** mezunu bir Full Stack Developer ve Yazılım Mühendisiyim olarak geliştirdiğim kurumsal backend (.NET Core, ASP.NET Core Web API, MSSQL) ve modern frontend (React, TypeScript, Three.js, Node.js) yeteneklerimi, siber-antik sci-fi estetiği ve sıfır harici kütüphane yükü prensibiyle sergilemektedir.
 
