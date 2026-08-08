@@ -57,25 +57,38 @@ class SanctumAudioEngine {
 
   toggleSound() {
     this.init();
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
-    }
-
     this.isMuted = !this.isMuted;
     
-    if (!this.isMuted) {
-      if (this.masterGain && this.ctx) {
-        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
-        this.masterGain.gain.setValueAtTime(0.5, this.ctx.currentTime);
-      }
-      this.startAmbientDrone();
-      this.playChime(600, 'sine', 0.2);
-    } else {
-      if (this.masterGain && this.ctx) {
-        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
-        this.masterGain.gain.setValueAtTime(0, this.ctx.currentTime);
-      }
+    if (this.isMuted) {
       this.stopAmbientDrone();
+      if (this.masterGain && this.ctx) {
+        try {
+          this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+          this.masterGain.gain.setValueAtTime(0, this.ctx.currentTime);
+        } catch (e) {}
+      }
+      if (this.ctx && this.ctx.state !== 'closed') {
+        try { this.ctx.suspend(); } catch (e) {}
+      }
+    } else {
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume().then(() => {
+          if (!this.isMuted) {
+            if (this.masterGain) {
+              this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+              this.masterGain.gain.setValueAtTime(0.5, this.ctx.currentTime);
+            }
+            this.startAmbientDrone();
+          }
+        });
+      } else {
+        if (this.masterGain && this.ctx) {
+          this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+          this.masterGain.gain.setValueAtTime(0.5, this.ctx.currentTime);
+        }
+        this.startAmbientDrone();
+      }
+      this.playChime(600, 'sine', 0.2);
     }
 
     this.updateBtnUI();
@@ -126,12 +139,16 @@ class SanctumAudioEngine {
 
   stopAmbientDrone() {
     if (this.ambientGain && this.ctx) {
-      this.ambientGain.gain.cancelScheduledValues(this.ctx.currentTime);
-      this.ambientGain.gain.setValueAtTime(0, this.ctx.currentTime);
+      try {
+        this.ambientGain.gain.cancelScheduledValues(this.ctx.currentTime);
+        this.ambientGain.gain.setValueAtTime(0, this.ctx.currentTime);
+      } catch (e) {}
     }
     if (this.masterGain && this.ctx) {
-      this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
-      this.masterGain.gain.setValueAtTime(0, this.ctx.currentTime);
+      try {
+        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+        this.masterGain.gain.setValueAtTime(0, this.ctx.currentTime);
+      } catch (e) {}
     }
     if (this.ambientOsc) {
       try { this.ambientOsc.stop(); } catch (e) {}

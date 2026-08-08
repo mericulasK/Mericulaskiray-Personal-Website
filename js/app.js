@@ -18,9 +18,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* Autoplay Background Audio on First User Gesture (Mobile Safari & Android Compatible) */
 function initAudioAutoplay() {
-  const triggerAutoPlay = () => {
+  const events = ['touchstart', 'touchend', 'pointerdown', 'mousedown', 'click', 'scroll'];
+
+  const triggerAutoPlay = (e) => {
     if (typeof sanctumAudio !== 'undefined') {
-      sanctumAudio.autoStart();
+      if (!sanctumAudio.isMuted && !sanctumAudio.hasAutoStarted) {
+        sanctumAudio.autoStart();
+      }
+      if (sanctumAudio.hasAutoStarted) {
+        events.forEach(evt => {
+          window.removeEventListener(evt, triggerAutoPlay);
+          document.removeEventListener(evt, triggerAutoPlay);
+        });
+      }
     }
   };
 
@@ -28,11 +38,17 @@ function initAudioAutoplay() {
   triggerAutoPlay();
 
   // Attach gesture events for mobile Safari & Android unlock
-  const events = ['touchstart', 'touchend', 'pointerdown', 'mousedown', 'click', 'scroll'];
   events.forEach(evt => {
     window.addEventListener(evt, triggerAutoPlay, { passive: true });
     document.addEventListener(evt, triggerAutoPlay, { passive: true });
   });
+
+  const soundBtn = document.getElementById('sound-toggle-btn');
+  if (soundBtn) {
+    soundBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
 }
 
 /* Modal Overlay Backdrop Click Handler */
