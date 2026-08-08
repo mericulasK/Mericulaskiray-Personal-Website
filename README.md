@@ -1,4 +1,4 @@
-# Personal Digital HQ · Atlas Protocol
+# Meriç Ulaş Kıray - Personal Website Protocol 
 
 Bir Full Stack Developer / Software Engineer kişisel web sitesini **dünya standartlarında**
 inşa etmek için hazırlanmış, tek dosyalık interaktif araştırma atlası + 16 parça kurumsal
