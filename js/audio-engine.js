@@ -57,16 +57,24 @@ class SanctumAudioEngine {
 
   toggleSound() {
     this.init();
-    if (this.ctx.state === 'suspended') {
+    if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
 
     this.isMuted = !this.isMuted;
     
     if (!this.isMuted) {
+      if (this.masterGain && this.ctx) {
+        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+        this.masterGain.gain.setValueAtTime(0.5, this.ctx.currentTime);
+      }
       this.startAmbientDrone();
       this.playChime(600, 'sine', 0.2);
     } else {
+      if (this.masterGain && this.ctx) {
+        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+        this.masterGain.gain.setValueAtTime(0, this.ctx.currentTime);
+      }
       this.stopAmbientDrone();
     }
 
@@ -84,7 +92,7 @@ class SanctumAudioEngine {
   }
 
   startAmbientDrone() {
-    if (!this.ctx || this.ambientOsc) return;
+    if (!this.ctx || this.ambientOsc || this.isMuted) return;
 
     // Deep low drone oscillator (55Hz / A1 note)
     this.ambientOsc = this.ctx.createOscillator();
@@ -111,24 +119,29 @@ class SanctumAudioEngine {
     this.ambientLfo.start();
 
     // Fade in
-    this.ambientGain.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime + 3);
+    this.ambientGain.gain.cancelScheduledValues(this.ctx.currentTime);
+    this.ambientGain.gain.setValueAtTime(0, this.ctx.currentTime);
+    this.ambientGain.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime + 1.5);
   }
 
   stopAmbientDrone() {
-    if (this.ambientGain) {
-      this.ambientGain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 1);
-      setTimeout(() => {
-        if (this.ambientOsc) {
-          this.ambientOsc.stop();
-          this.ambientOsc.disconnect();
-          this.ambientOsc = null;
-        }
-        if (this.ambientLfo) {
-          this.ambientLfo.stop();
-          this.ambientLfo.disconnect();
-          this.ambientLfo = null;
-        }
-      }, 1000);
+    if (this.ambientGain && this.ctx) {
+      this.ambientGain.gain.cancelScheduledValues(this.ctx.currentTime);
+      this.ambientGain.gain.setValueAtTime(0, this.ctx.currentTime);
+    }
+    if (this.masterGain && this.ctx) {
+      this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+      this.masterGain.gain.setValueAtTime(0, this.ctx.currentTime);
+    }
+    if (this.ambientOsc) {
+      try { this.ambientOsc.stop(); } catch (e) {}
+      try { this.ambientOsc.disconnect(); } catch (e) {}
+      this.ambientOsc = null;
+    }
+    if (this.ambientLfo) {
+      try { this.ambientLfo.stop(); } catch (e) {}
+      try { this.ambientLfo.disconnect(); } catch (e) {}
+      this.ambientLfo = null;
     }
   }
 
